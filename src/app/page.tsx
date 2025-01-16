@@ -5,6 +5,9 @@ import AccordionComponent from '../components/Accordion';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 import { FaQuoteRight, FaQuoteLeft } from 'react-icons/fa6';
+import { Roboto } from 'next/font/google';
+
+const roboto = Roboto({ weight: '400', subsets: ['latin'] });
 
 export default function Home() {
   const renderDotsItem = ({ isActive }: { isActive: boolean }) => {
@@ -25,7 +28,9 @@ export default function Home() {
   return (
     <div className='md:pt-0 pt-24'>
       <section className=' flex justify-evenly md:flex-row md:gap-0 gap-8 flex-col items-center min-h-screen p-3'>
-        <div className=' flex flex-col justify-center md:w-1/2'>
+        <div
+          className={` flex flex-col justify-center md:w-1/2 ${roboto.className}`}
+        >
           <Image
             src='/logo.png'
             alt='logo'
