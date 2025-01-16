@@ -24,9 +24,10 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang='fr'>
         <body
-          className={`${nunitoSans.className} } antialiased bg-classy-dotted min-h-screen flex flex-col `}
+          className={`${nunitoSans.className}  antialiased bg-classy-dotted min-h-screen flex flex-col `}
         >
           <Header />
+
           <main className=' text-colorone flex-grow '>{children}</main>
           <Footer />
         </body>

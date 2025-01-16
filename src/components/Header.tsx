@@ -14,13 +14,13 @@ export default function Header() {
         </Link>
         <section className='flex gap-5'>
           <Link
-            href='/signup'
+            href='/sign-up'
             className='text-blue-50 md:hover:text-blue-200 md:transition'
           >
             Inscription
           </Link>
           <Link
-            href='/signin'
+            href='/sign-in'
             className='text-blue-50 md:hover:text-blue-200 md:transition'
           >
             Connexion

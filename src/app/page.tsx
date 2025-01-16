@@ -2,34 +2,35 @@
 
 import Image from 'next/image';
 import AccordionComponent from '../components/Accordion';
-import AliceCarousel from 'react-alice-carousel';
-import 'react-alice-carousel/lib/alice-carousel.css';
 import { FaQuoteRight, FaQuoteLeft } from 'react-icons/fa6';
 import { Roboto } from 'next/font/google';
+
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
 const roboto = Roboto({ weight: '400', subsets: ['latin'] });
 
 export default function Home() {
-  const renderDotsItem = ({ isActive }: { isActive: boolean }) => {
-    return (
-      <div
-        className={`alice-carousel__dots-item ${isActive ? 'active' : ''} `}
-        style={{
-          backgroundColor: isActive ? '#253145' : '#858589',
-          width: '10px',
-          height: '10px',
-          borderRadius: '50%',
-          margin: '0 5px',
-        }}
-      />
-    );
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 1,
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 1,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+    },
   };
 
   return (
     <div className='md:pt-0 pt-24'>
       <section className=' flex justify-evenly md:flex-row md:gap-0 gap-8 flex-col items-center min-h-screen p-3'>
         <div
-          className={` flex flex-col justify-center md:w-1/2 ${roboto.className}`}
+          className={` flex flex-col justify-center md:w-1/2 ${roboto.className} h-1/2`}
         >
           <Image
             src='/logo.png'
@@ -47,31 +48,33 @@ export default function Home() {
             <FaQuoteRight className='inline mx-3' />
           </p>
         </div>
-        <div className='md:w-1/2 w-full pt-24'>
-          <AliceCarousel renderDotsItem={renderDotsItem}>
-            <Image
-              src='/dashboard1.jpg'
-              alt='dashboard'
-              className='mx-auto w-3/4   rounded-lg '
-              width={500}
-              height={500}
-            />
-            <Image
-              src='/dashboard2.jpg'
-              alt='dashboard2'
-              className='mx-auto w-3/4  rounded-lg '
-              width={500}
-              height={500}
-            />
-            <Image
-              src='/dashboard3.jpg'
-              alt='dashboard2'
-              className='mx-auto w-3/4  rounded-lg '
-              width={500}
-              height={500}
-            />
-          </AliceCarousel>
-        </div>
+
+        <Carousel
+          className='md:w-1/2 w-full  md:pt-0 pt-24 '
+          responsive={responsive}
+        >
+          <Image
+            src='/dashboard1.jpg'
+            alt='dashboard'
+            className='mx-auto w-3/4   rounded-lg '
+            width={500}
+            height={500}
+          />
+          <Image
+            src='/dashboard2.jpg'
+            alt='dashboard2'
+            className='mx-auto w-3/4  rounded-lg '
+            width={500}
+            height={500}
+          />
+          <Image
+            src='/dashboard3.jpg'
+            alt='dashboard2'
+            className='mx-auto w-3/4  rounded-lg '
+            width={500}
+            height={500}
+          />
+        </Carousel>
       </section>
       <section className=' min-h-screen p-3 flex  items-center flex-col md:pt-32 pt-20 '>
         <h2 className='font-bold md:text-4xl text-3xl pb-10 text-center'>
