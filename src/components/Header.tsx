@@ -3,7 +3,7 @@ import { GoHome } from 'react-icons/go';
 
 export default function Header() {
   return (
-    <header className='absolute left-0 top-0 p-6  bg-nav w-full drop-shadow-xl rounded-b-sm'>
+    <header className='absolute left-0 top-0 p-6  bg-custom-gradient1 w-full drop-shadow-xl rounded-b-sm'>
       <nav className='flex items-center gap-8  md:rounded-b-md  font-medium   justify-between'>
         <Link
           href='/'

@@ -1,37 +1,16 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import AccordionComponent from '../components/Accordion';
 import { FaQuoteRight, FaQuoteLeft } from 'react-icons/fa6';
-import { Roboto } from 'next/font/google';
-
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
-
-const roboto = Roboto({ weight: '400', subsets: ['latin'] });
+import { FaChartPie, FaChartBar, FaLock } from 'react-icons/fa';
 
 export default function Home() {
-  const responsive = {
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 1,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 1,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-    },
-  };
-
   return (
     <div className='md:pt-0 pt-24'>
       <section className=' flex justify-evenly md:flex-row md:gap-0 gap-8 flex-col items-center min-h-screen p-3'>
-        <div
-          className={` flex flex-col justify-center md:w-1/2 ${roboto.className} h-1/2`}
-        >
+        <div className={` flex flex-col justify-center md:w-1/2 `}>
           <Image
             src='/logo.png'
             alt='logo'
@@ -39,7 +18,7 @@ export default function Home() {
             width={200}
             height={200}
           />
-          <h1 className='text-center font-bold xl:text-7xl md:text-6xl text-5xl  mb-5'>
+          <h1 className='text-center font-black xl:text-7xl md:text-7xl text-6xl  mb-5'>
             SubTrack
           </h1>
           <p className='font-semibold md:text-2xl text-xl text-center'>
@@ -47,38 +26,54 @@ export default function Home() {
             la solution intelligente pour une gestion sereine de vos mensualités
             <FaQuoteRight className='inline mx-3' />
           </p>
+          <Link
+            href='/sign-up'
+            className='md:hover:bg-custom-gradient2   bg-custom-gradient1 p-2  rounded-xl text-white w-44 mx-auto text-center mt-5'
+          >
+            {' '}
+            Découvrir Subtrack
+          </Link>
         </div>
 
-        <Carousel
-          className='md:w-1/2 w-full  md:pt-0 pt-24 '
-          responsive={responsive}
-        >
-          <Image
-            src='/dashboard1.jpg'
-            alt='dashboard'
-            className='mx-auto w-3/4   rounded-lg '
-            width={500}
-            height={500}
-          />
-          <Image
-            src='/dashboard2.jpg'
-            alt='dashboard2'
-            className='mx-auto w-3/4  rounded-lg '
-            width={500}
-            height={500}
-          />
-          <Image
-            src='/dashboard3.jpg'
-            alt='dashboard2'
-            className='mx-auto w-3/4  rounded-lg '
-            width={500}
-            height={500}
-          />
-        </Carousel>
+        <Image
+          src='/dashboard1.jpg'
+          alt='dashboard'
+          className='mx-auto   rounded-lg max-w-2xl md:w-1/2 w-5/6  md:mt-0 mt-24 drop-shadow-lg '
+          width={500}
+          height={500}
+        />
+      </section>
+      <section className='flex flex-col lg:flex-row  max-w-7xl mx-auto gap-6 my-20 mt-48  '>
+        <div className='p-10 rounded-3xl bg-nav text-white flex items-center justify-center flex-col md:w-1/2 lg:w-1/4  w-3/4 gap-4 mx-auto'>
+          <FaChartPie className='md:text-8xl text-6xl ' />
+          <h3 className='text-center text-xl font-extrabold'>Analysez</h3>
+          <p className='text-center'>
+            Visualisez vos mensualités en toute simplicité grâce à des
+            graphiques détaillés et organisés par catégorie.
+          </p>
+        </div>
+        <div className='p-10 rounded-3xl bg-nav text-white flex items-center justify-center flex-col md:w-1/2 lg:w-1/4  w-3/4 gap-4 mx-auto'>
+          <FaChartBar className='md:text-8xl text-6xl ' />
+          <h3 className='text-center text-xl font-extrabold'>Comparez</h3>
+          <p className='text-center'>
+            Consultez l'historique de vos mensualités, gardez une trace de vos
+            dépenses passées et suivez l'évolution de vos finances au fil du
+            temps.
+          </p>
+        </div>
+        <div className='p-10 rounded-3xl bg-nav text-white flex items-center justify-center flex-col md:w-1/2 lg:w-1/4  w-3/4 gap-4 mx-auto'>
+          <FaLock className='md:text-8xl text-6xl ' />
+          <h3 className='text-center text-xl font-extrabold'>Limitez</h3>
+          <p className='text-center'>
+            Définissez des limites budgétaires pour chaque catégorie et
+            maîtrisez vos dépenses en restant dans les seuils que vous avez
+            fixés.
+          </p>
+        </div>
       </section>
       <section className=' min-h-screen p-3 flex  items-center flex-col md:pt-32 pt-20 '>
         <h2 className='font-bold md:text-4xl text-3xl pb-10 text-center'>
-          À propos de l&apos;application :
+          FAQ :
         </h2>
         <div className='max-w-7xl w-full flex justify-center'>
           <AccordionComponent />

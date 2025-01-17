@@ -23,8 +23,8 @@ export default {
       backgroundImage: {
         'classy-dotted':
           'radial-gradient(circle, rgba(230, 240, 255, 0.8) 1px, transparent 1px), #F9FAFB',
-
-        'modern-soft': 'linear-gradient(135deg, #F9FAFB, #E6E8F0, #CBD5E1)',
+        'custom-gradient1': 'linear-gradient(to bottom, #2f4159, #253145)',
+        'custom-gradient2': 'linear-gradient(to top, #2f4159, #253145)',
       },
     },
   },
