@@ -4,7 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import AccordionComponent from '../components/Accordion';
 import { FaQuoteRight, FaQuoteLeft } from 'react-icons/fa6';
-import { FaChartPie, FaChartBar, FaLock } from 'react-icons/fa';
+import { FaChartBar, FaLock } from 'react-icons/fa';
+import { IoBook } from 'react-icons/io5';
 
 export default function Home() {
   return (
@@ -45,7 +46,7 @@ export default function Home() {
       </section>
       <section className='flex flex-col lg:flex-row  max-w-7xl mx-auto gap-6 my-20 mt-48  '>
         <div className='p-10 rounded-3xl bg-nav text-white flex items-center justify-center flex-col md:w-1/2 lg:w-1/4  w-3/4 gap-4 mx-auto'>
-          <FaChartPie className='md:text-8xl text-6xl ' />
+          <FaChartBar className='md:text-8xl text-6xl ' />
           <h3 className='text-center text-xl font-extrabold'>Analysez</h3>
           <p className='text-center'>
             Visualisez vos mensualités en toute simplicité grâce à des
@@ -53,12 +54,12 @@ export default function Home() {
           </p>
         </div>
         <div className='p-10 rounded-3xl bg-nav text-white flex items-center justify-center flex-col md:w-1/2 lg:w-1/4  w-3/4 gap-4 mx-auto'>
-          <FaChartBar className='md:text-8xl text-6xl ' />
-          <h3 className='text-center text-xl font-extrabold'>Comparez</h3>
+          <IoBook className='md:text-8xl text-6xl ' />
+
+          <h3 className='text-center text-xl font-extrabold'>Consultez</h3>
           <p className='text-center'>
-            Consultez l&apos;historique de vos mensualités, gardez une trace de
-            vos dépenses passées et suivez l&apos;évolution de vos finances au
-            fil du temps.
+            Accédez à l&apos;historique de vos mensualités, et suivez
+            l&apos;évolution de vos finances au fil du temps.
           </p>
         </div>
         <div className='p-10 rounded-3xl bg-nav text-white flex items-center justify-center flex-col md:w-1/2 lg:w-1/4  w-3/4 gap-4 mx-auto'>
