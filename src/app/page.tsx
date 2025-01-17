@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import AccordionComponent from '../components/Accordion';
 import { FaQuoteRight, FaQuoteLeft } from 'react-icons/fa6';
-import { FaChartPie, FaChartBar, FaLock } from 'react-icons/fa';
+import { FaChartBar, FaLock } from 'react-icons/fa';
 import { IoBook } from 'react-icons/io5';
 
 export default function Home() {
