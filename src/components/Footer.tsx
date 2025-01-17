@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className='md:min-h-32   pb-10  flex items-center justify-evenly flex-col md:flex-row text-colorone md:gap-0 gap-6'>
+    <footer className='md:min-h-28   pb-10  flex items-center justify-evenly flex-col md:flex-row text-colorone md:gap-0 gap-6'>
       {' '}
       <Link
         href='mailto:p.lesouchu@gmail.com'

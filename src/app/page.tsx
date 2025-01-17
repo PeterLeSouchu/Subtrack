@@ -56,9 +56,9 @@ export default function Home() {
           <FaChartBar className='md:text-8xl text-6xl ' />
           <h3 className='text-center text-xl font-extrabold'>Comparez</h3>
           <p className='text-center'>
-            Consultez l'historique de vos mensualités, gardez une trace de vos
-            dépenses passées et suivez l'évolution de vos finances au fil du
-            temps.
+            Consultez l&apos;historique de vos mensualités, gardez une trace de
+            vos dépenses passées et suivez l&apos;évolution de vos finances au
+            fil du temps.
           </p>
         </div>
         <div className='p-10 rounded-3xl bg-nav text-white flex items-center justify-center flex-col md:w-1/2 lg:w-1/4  w-3/4 gap-4 mx-auto'>
