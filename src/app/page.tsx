@@ -44,7 +44,7 @@ export default function Home() {
           height={500}
         />
       </section>
-      <section className='flex flex-col lg:flex-row  max-w-7xl mx-auto gap-6 my-20 mt-48  '>
+      <section className='flex flex-col lg:flex-row  max-w-7xl mx-auto gap-6  my-20 mt-48   '>
         <div className='p-10 rounded-3xl bg-nav text-white flex items-center justify-center flex-col md:w-1/2 lg:w-1/4  w-3/4 gap-4 mx-auto'>
           <FaChartBar className='md:text-8xl text-6xl ' />
           <h3 className='text-center text-xl font-extrabold'>Analysez</h3>
@@ -72,7 +72,7 @@ export default function Home() {
           </p>
         </div>
       </section>
-      <section className=' min-h-screen p-3 flex  items-center flex-col md:pt-32 pt-20 '>
+      <section className=' l p-3 flex  items-center flex-col md:pt-32 pt-20 '>
         <h2 className='font-bold md:text-4xl text-3xl pb-10 text-center'>
           FAQ :
         </h2>
