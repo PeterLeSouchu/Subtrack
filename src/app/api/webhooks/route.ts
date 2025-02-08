@@ -1,6 +1,7 @@
 import { Webhook } from 'svix';
 import { headers } from 'next/headers';
 import { WebhookEvent } from '@clerk/nextjs/server';
+import prisma from '../../../../prisma/prisma-client';
 
 export async function POST(req: Request) {
   const SIGNING_SECRET = process.env.SIGNING_SECRET;
@@ -46,15 +47,26 @@ export async function POST(req: Request) {
       status: 400,
     });
   }
-
-  // Do something with payload
-  // For this guide, log payload to console
   const { id } = evt.data;
   const eventType = evt.type;
-  console.log(`Received webhook with ID ${id} and event type of ${eventType}`);
 
-  console.log('voici les data ');
-  console.log(evt.data);
+  if (eventType === 'user.created') {
+    await prisma.user.create({
+      data: {
+        clerkId: id!,
+      },
+    });
+    console.log(`utilisateur ${id} créé`);
+  } else if (eventType === 'user.deleted') {
+    await prisma.user.delete({
+      where: {
+        clerkId: id!,
+      },
+    });
+    console.log(`utilisateur ${id} supprimé`);
+  }
+
+  console.log(`Received webhook with ID ${id} and event type of ${eventType}`);
 
   return new Response('Webhook received', { status: 200 });
 }
