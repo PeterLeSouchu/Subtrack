@@ -50,23 +50,31 @@ export async function POST(req: Request) {
   const { id } = evt.data;
   const eventType = evt.type;
 
-  if (eventType === 'user.created') {
-    await prisma.user.create({
-      data: {
-        clerkId: id!,
-      },
-    });
-    console.log(`utilisateur ${id} créé`);
-  } else if (eventType === 'user.deleted') {
-    await prisma.user.delete({
-      where: {
-        clerkId: id!,
-      },
-    });
-    console.log(`utilisateur ${id} supprimé`);
+  try {
+    if (eventType === 'user.created') {
+      await prisma.user.create({
+        data: {
+          id: id!,
+        },
+      });
+      console.log(`Utilisateur ${id} inséré dans ma bdd`);
+    }
+  } catch {
+    console.log("Échec de l'insertion de l'utilisateur dans ma bdd");
   }
 
-  console.log(`Received webhook with ID ${id} and event type of ${eventType}`);
+  try {
+    if (eventType === 'user.deleted') {
+      await prisma.user.delete({
+        where: {
+          id: id!,
+        },
+      });
+      console.log(`utilisateur ${id} supprimé de ma bdd`);
+    }
+  } catch {
+    console.log("Échec de la suppression de l'utilisateur de ma bdd");
+  }
 
   return new Response('Webhook received', { status: 200 });
 }
