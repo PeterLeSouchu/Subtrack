@@ -6,17 +6,20 @@ export default function Footer() {
       {' '}
       <Link
         href='mailto:p.lesouchu@gmail.com'
-        className='underline  md:hover:text-blue-950 md:transition'
+        className='underline  md:hover:text-blue-950 font-semibold md:transition'
       >
         Contactez-nous
       </Link>
       <Link
         href='/legal-notices'
-        className=' md:hover:text-blue-950 md:transition'
+        className=' md:hover:text-blue-950 font-semibold md:transition'
       >
         Mentions légales
       </Link>
-      <Link href='/cgu' className=' md:hover:text-blue-950 md:transition'>
+      <Link
+        href='/cgu'
+        className=' md:hover:text-blue-950 font-semibold md:transition'
+      >
         Conditions générales d&apos;utilisation
       </Link>
     </footer>

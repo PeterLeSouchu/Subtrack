@@ -57,24 +57,24 @@ export async function POST(req: Request) {
           id: id!,
         },
       });
-      console.log(`Utilisateur ${id} inséré dans ma bdd`);
+      console.log(`Utilisateur ${id} inséré dans ma bdd le `, Date.now());
     }
   } catch {
     console.log("Échec de l'insertion de l'utilisateur dans ma bdd");
   }
 
-  try {
-    if (eventType === 'user.deleted') {
-      await prisma.user.delete({
-        where: {
-          id: id!,
-        },
-      });
-      console.log(`utilisateur ${id} supprimé de ma bdd`);
-    }
-  } catch {
-    console.log("Échec de la suppression de l'utilisateur de ma bdd");
-  }
+  // try {
+  //   if (eventType === 'user.deleted') {
+  //     await prisma.user.delete({
+  //       where: {
+  //         id: id!,
+  //       },
+  //     });
+  //     console.log(`utilisateur ${id} supprimé de ma bdd`);
+  //   }
+  // } catch {
+  //   console.log("Échec de la suppression de l'utilisateur de ma bdd");
+  // }
 
   return new Response('Webhook received', { status: 200 });
 }

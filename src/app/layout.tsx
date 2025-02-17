@@ -25,7 +25,7 @@ export default function RootLayout({
     <ClerkProvider localization={frFR}>
       <html lang='fr'>
         <body
-          className={`${nunitoSans.className}  antialiased bg-classy-dotted min-h-screen flex flex-col `}
+          className={`${nunitoSans.className}  antialiased bg-homepage-blue min-h-screen flex flex-col `}
         >
           <Header />
 

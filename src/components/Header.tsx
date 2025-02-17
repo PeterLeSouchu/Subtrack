@@ -1,27 +1,33 @@
 import Link from 'next/link';
-import { GoHome } from 'react-icons/go';
+import Image from 'next/image';
 
 export default function Header() {
   return (
-    <header className='absolute left-0 top-0 p-6  bg-custom-gradient1 w-full drop-shadow-xl rounded-b-sm'>
+    <header className=' px-6     w-full drop-shadow-xl rounded-b-sm'>
       <nav className='flex items-center gap-8  md:rounded-b-md  font-medium   justify-between'>
         <Link
           href='/'
-          className='text-blue-50 md:hover:text-blue-200 md:transition flex items-center gap-2 '
+          className='text-blue-950 md:text-2xl text-xl -mx-8 font-black  flex items-center gap-2 '
         >
-          <GoHome className='text-xl' />
-          Accueil
+          <Image
+            src='/logo.png'
+            alt='logo'
+            className='w-24 '
+            width={200}
+            height={200}
+          />
+          Subtrack
         </Link>
         <section className='flex gap-5'>
           <Link
             href='/sign-up'
-            className='text-blue-50 md:hover:text-blue-200 md:transition'
+            className='text-blue-950 md:text-lg  text-base font-black md:hover:text-blue-700 md:transition'
           >
             Inscription
           </Link>
           <Link
             href='/sign-in'
-            className='text-blue-50 md:hover:text-blue-200 md:transition'
+            className='text-blue-950 md:text-lg  text-base font-black md:hover:text-blue-700 md:transition'
           >
             Connexion
           </Link>

@@ -1,6 +1,6 @@
 export default function CGU() {
   return (
-    <div className='pt-36   px-5 pb-20 '>
+    <div className='pt-16   px-5 pb-20 '>
       <h1 className='sm:text-4xl text-3xl font-bold text-center mb-20 '>
         Conditions gérérales d&apos;utilisation
       </h1>

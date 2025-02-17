@@ -45,8 +45,9 @@ export default function AccordionComponent() {
             mensualité.
           </li>
           <li>
-            <em> - Limite</em> : Cette section vous permet de définir des
-            plafonds budgétaires pour différentes catégories.
+            <em> - Profil</em> : Cette section vous offre la possibilité de
+            personnaliser votre profil et de fixer des plafonds budgétaires pour
+            diverses catégories.
           </li>
         </ul>
       </AccordionItem>
