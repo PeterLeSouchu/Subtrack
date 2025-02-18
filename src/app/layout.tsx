@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import { Nunito_Sans } from 'next/font/google';
 import './globals.css';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { ClerkProvider } from '@clerk/nextjs';
-import { frFR } from '@clerk/localizations';
+import HeaderHomePage from '@/components/Header-home-page';
+import FooterHomePage from '@/components/Footer-home-page';
 
 const nunitoSans = Nunito_Sans({
   variable: '--font-nunito-sans',
@@ -22,17 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider localization={frFR}>
-      <html lang='fr'>
-        <body
-          className={`${nunitoSans.className}  antialiased bg-homepage-blue min-h-screen flex flex-col `}
-        >
-          <Header />
+    <html lang='fr'>
+      <body
+        className={`${nunitoSans.className}  antialiased bg-homepage-blue min-h-screen flex flex-col `}
+      >
+        <HeaderHomePage />
 
-          <main className=' text-colorone flex-grow '>{children}</main>
-          <Footer />
-        </body>
-      </html>
-    </ClerkProvider>
+        <main className=' text-colorone flex-grow '>{children}</main>
+        <FooterHomePage />
+      </body>
+    </html>
   );
 }

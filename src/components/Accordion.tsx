@@ -11,7 +11,7 @@ export default function AccordionComponent() {
         title="Qu'est-ce que SubTrack ?"
         className=' max-w-7xl font-bold'
       >
-        <p className='font-normal'>
+        <p className='font-semibold text-gray-500'>
           SubTrack est une application web qui vous permet de gérer vos
           mensualités. L&apos;objectif de l&apos;application est de vous aider
           au quotidien a connaitre et visualiser vos dépenses concernant vos
@@ -24,12 +24,12 @@ export default function AccordionComponent() {
         title='Comment fonctionne SubTrack ?'
         className=' max-w-7xl font-bold'
       >
-        <p className='font-normal'>
+        <p className='font-semibold text-gray-500'>
           Pour utiliser cette application, vous devrez créer un compte. Une fois
           connecté, vous aurez accès à une interface composée de quatre sections
           principales :
         </p>
-        <ul className='font-normal flex flex-col gap-2 mt-4'>
+        <ul className='font-semibold text-gray-500 flex flex-col gap-2 mt-4'>
           <li>
             <em> - Dashboard</em> : Cette page vous permet de suivre vos
             dépenses mensuelles le mois en cours.
@@ -57,7 +57,7 @@ export default function AccordionComponent() {
         title='SubTrack est-il gratuit ? '
         className='max-w-7xl font-bold'
       >
-        <p className='font-normal'>
+        <p className='font-semibold text-gray-500'>
           {' '}
           Oui bien sûr, l&apos;application SubTrack est entièrement gratuite.
         </p>
@@ -68,7 +68,7 @@ export default function AccordionComponent() {
         title='Quels types de dépenses puis-je suivre ?'
         className='max-w-7xl font-bold'
       >
-        <p className='font-normal'>
+        <p className='font-semibold text-gray-500'>
           Sur SubTrack, vous pouvez suivre vos mensualités, ou tout autre
           dépense qui se renouvelle chaque mois. L&apos;application a été conçue
           pour faciliter le suivi de vos mensualités, de sorte à ce que vous
@@ -82,7 +82,7 @@ export default function AccordionComponent() {
         title='Est-ce que SubTrack est disponible sur mobile ?'
         className='max-w-7xl font-bold'
       >
-        <p className='font-normal'>
+        <p className='font-semibold text-gray-500'>
           L&apos;application est effectivement responsive, donc utilisable sur
           tout type d&apos;appareil, allant du mobile, en passant par la
           tablette jusqu&apos;à l&apos;ordinateur.
@@ -94,7 +94,7 @@ export default function AccordionComponent() {
         title='Y a t-il une application mobile ?'
         className='max-w-7xl font-bold'
       >
-        <p className='font-normal'>
+        <p className='font-semibold text-gray-500'>
           Actuellement, aucune application mobile n&apos;existe, cependant, nous
           travaillons dessus afin de rendre SubTrack plus optimisé pour les
           mobiles.
@@ -106,7 +106,7 @@ export default function AccordionComponent() {
         title='Est-ce sécurisé ?'
         className='max-w-7xl font-bold'
       >
-        <p className='font-normal'>
+        <p className='ffont-semibold text-gray-500'>
           L&apos;application est entièrement sécurisé, vos mots de passe sont
           chiffrés ainsi vous êtes le seul à pouvoir visualiser vos dépenses. De
           plus aucune somme d&apos;argent ne transite sur notre application,

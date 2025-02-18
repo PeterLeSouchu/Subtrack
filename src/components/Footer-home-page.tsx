@@ -1,6 +1,14 @@
-import Link from 'next/link';
+'use client';
 
-export default function Footer() {
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+export default function FooterHomePage() {
+  const pathName = usePathname();
+
+  if (pathName === '/sign-in' || pathName === '/sign-up') {
+    return null;
+  }
   return (
     <footer className='md:min-h-28 pt-28   pb-10  flex items-center justify-evenly flex-col md:flex-row text-colorone md:gap-0 gap-6'>
       {' '}

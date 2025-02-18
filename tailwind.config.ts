@@ -12,6 +12,7 @@ export default {
     extend: {
       colors: {
         colorone: '#2C4A7B',
+        icon: '#A8A2E1',
       },
       borderWidth: {
         b1: '1px',
