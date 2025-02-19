@@ -1,118 +1,88 @@
 'use client';
 
-import { Accordion, AccordionItem } from '@nextui-org/react';
+// import { Accordion, AccordionItem } from '@nextui-org/react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 
 export default function AccordionComponent() {
   return (
-    <Accordion variant='splitted'>
-      <AccordionItem
-        key='1'
-        aria-label="Qu'est-ce que SubTrack ?"
-        title="Qu'est-ce que SubTrack ?"
-        className=' max-w-7xl font-bold'
-      >
-        <p className='font-semibold text-gray-500'>
+    <Accordion type='single' collapsible className='md:w-2/3 w-10/12 mb-24'>
+      <AccordionItem value='item-1'>
+        <AccordionTrigger className='font-black text-xl'>
+          Qu&apos;est-ce que SubTrack ?
+        </AccordionTrigger>
+        <AccordionContent className='text-lg'>
           SubTrack est une application web qui vous permet de gérer vos
           mensualités. L&apos;objectif de l&apos;application est de vous aider
           au quotidien a connaitre et visualiser vos dépenses concernant vos
           mensualités{' '}
-        </p>
+        </AccordionContent>
       </AccordionItem>
-      <AccordionItem
-        key='2'
-        aria-label='Comment fonctionne SubTrack ?'
-        title='Comment fonctionne SubTrack ?'
-        className=' max-w-7xl font-bold'
-      >
-        <p className='font-semibold text-gray-500'>
+      <AccordionItem value='item-2'>
+        <AccordionTrigger className='font-black text-xl'>
+          Comment fonctionne SubTrack ?
+        </AccordionTrigger>
+        <AccordionContent className='text-lg'>
           Pour utiliser cette application, vous devrez créer un compte. Une fois
           connecté, vous aurez accès à une interface composée de quatre sections
           principales :
-        </p>
-        <ul className='font-semibold text-gray-500 flex flex-col gap-2 mt-4'>
-          <li>
-            <em> - Dashboard</em> : Cette page vous permet de suivre vos
-            dépenses mensuelles le mois en cours.
-          </li>
-          <li>
-            <em> - Historique</em> : Consultez cette section pour visualiser
-            l&apos;évolution de vos dépenses au fil des mois et des années.
-          </li>
-          <li>
-            <em> - Bilan</em> : Représentée sous forme de graphique, cette page
-            vous offre un aperçu clair de vos dépenses tout au long de
-            l&apos;année avec possibilité de sélectionner des catégories de
-            mensualité.
-          </li>
-          <li>
-            <em> - Profil</em> : Cette section vous offre la possibilité de
-            personnaliser votre profil et de fixer des plafonds budgétaires pour
-            diverses catégories.
-          </li>
-        </ul>
+        </AccordionContent>
       </AccordionItem>
-      <AccordionItem
-        key='3'
-        aria-label='SubTrack est-il gratuit ? '
-        title='SubTrack est-il gratuit ? '
-        className='max-w-7xl font-bold'
-      >
-        <p className='font-semibold text-gray-500'>
-          {' '}
+      <AccordionItem value='item-3'>
+        <AccordionTrigger className='font-black text-xl'>
+          SubTrack est-il gratuit ?
+        </AccordionTrigger>
+        <AccordionContent className='text-lg'>
           Oui bien sûr, l&apos;application SubTrack est entièrement gratuite.
-        </p>
+        </AccordionContent>
       </AccordionItem>
-      <AccordionItem
-        key='4'
-        aria-label='Quels types de dépenses puis-je suivre ?'
-        title='Quels types de dépenses puis-je suivre ?'
-        className='max-w-7xl font-bold'
-      >
-        <p className='font-semibold text-gray-500'>
+      <AccordionItem value='item-4'>
+        <AccordionTrigger className='font-black text-xl'>
+          Quels types de dépenses puis-je suivre ?
+        </AccordionTrigger>
+        <AccordionContent className='text-lg'>
           Sur SubTrack, vous pouvez suivre vos mensualités, ou tout autre
           dépense qui se renouvelle chaque mois. L&apos;application a été conçue
           pour faciliter le suivi de vos mensualités, de sorte à ce que vous
           n&apos;ayez pas à réécrire chaque mois vos mensualités,
           l&apos;application renouvelle cela tous les mois.
-        </p>
+        </AccordionContent>
       </AccordionItem>
-      <AccordionItem
-        key='5'
-        aria-label='Est-ce que SubTrack est disponible sur mobile ?'
-        title='Est-ce que SubTrack est disponible sur mobile ?'
-        className='max-w-7xl font-bold'
-      >
-        <p className='font-semibold text-gray-500'>
+      <AccordionItem value='item-5'>
+        <AccordionTrigger className='font-black text-xl'>
+          Est-ce que SubTrack est disponible sur mobile ?
+        </AccordionTrigger>
+        <AccordionContent className='text-lg'>
           L&apos;application est effectivement responsive, donc utilisable sur
           tout type d&apos;appareil, allant du mobile, en passant par la
           tablette jusqu&apos;à l&apos;ordinateur.
-        </p>
+        </AccordionContent>
       </AccordionItem>
-      <AccordionItem
-        key='7'
-        aria-label='Y a t-il une application mobile ?'
-        title='Y a t-il une application mobile ?'
-        className='max-w-7xl font-bold'
-      >
-        <p className='font-semibold text-gray-500'>
+      <AccordionItem value='item-6'>
+        <AccordionTrigger className='font-black text-xl'>
+          Y a t-il une application mobile ?
+        </AccordionTrigger>
+        <AccordionContent className='text-lg'>
           Actuellement, aucune application mobile n&apos;existe, cependant, nous
           travaillons dessus afin de rendre SubTrack plus optimisé pour les
           mobiles.
-        </p>
+        </AccordionContent>
       </AccordionItem>
-      <AccordionItem
-        key='6'
-        aria-label='Est-ce sécurisé ?'
-        title='Est-ce sécurisé ?'
-        className='max-w-7xl font-bold'
-      >
-        <p className='ffont-semibold text-gray-500'>
+      <AccordionItem value='item-7'>
+        <AccordionTrigger className='font-black text-xl'>
+          Est-ce sécurisé ?
+        </AccordionTrigger>
+        <AccordionContent className='text-lg'>
           L&apos;application est entièrement sécurisé, vos mots de passe sont
           chiffrés ainsi vous êtes le seul à pouvoir visualiser vos dépenses. De
           plus aucune somme d&apos;argent ne transite sur notre application,
           l&apos;objectif est de vous aider à visualiser et gérer vos
           mensualités.
-        </p>
+        </AccordionContent>
       </AccordionItem>
     </Accordion>
   );

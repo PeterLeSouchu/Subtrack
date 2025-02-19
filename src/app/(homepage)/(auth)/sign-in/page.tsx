@@ -1,5 +1,5 @@
-import Image from 'next/image';
+import AccordionComponent from '@/components/Accordion';
 
 export default function Signin() {
-  return <h1 className='text-3xl font-black'>test ddhd,,</h1>;
+  return <AccordionComponent />;
 }

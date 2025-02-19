@@ -68,12 +68,11 @@ export default function Home() {
       </video>
 
       <section className=' l p-3 flex  items-center flex-col md:pt-32 pt-20 '>
-        <h2 className='font-bold md:text-4xl text-3xl pb-10 text-center'>
+        <h2 className='font-bold md:text-4xl text-3xl pb-10 text-center w-full mb-7'>
           Des questions ?
         </h2>
-        <div className='max-w-7xl w-full flex justify-center'>
-          <AccordionComponent />
-        </div>
+
+        <AccordionComponent />
       </section>
     </div>
   );
