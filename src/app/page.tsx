@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import AccordionComponent from '../components/Accordion';
+import AccordionHomePage from '../components/Accordion-home-page';
 
 import { BookIcon, ChartIcon, LockIcon } from '@/components/icons';
 
@@ -39,7 +39,7 @@ export default function Home() {
           </div>
           <Link
             href='/sign-up'
-            className='relative overflow-hidden bg-colorone p-2 font-extrabold rounded-xl text-white w-44 mx-auto text-center mt-5
+            className='relative overflow-hidden bg-blue p-2 font-extrabold rounded-xl text-white w-44 mx-auto text-center mt-5
     transition-all duration-300 ease-out hover:scale-105 
     hover:shadow-[0_0_20px_rgba(255,255,255,0.6)] 
     before:absolute before:top-0 before:left-[-100%] before:h-full before:w-full 
@@ -72,7 +72,7 @@ export default function Home() {
           Des questions ?
         </h2>
 
-        <AccordionComponent />
+        <AccordionHomePage />
       </section>
     </div>
   );

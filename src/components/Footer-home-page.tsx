@@ -10,7 +10,7 @@ export default function FooterHomePage() {
     return null;
   }
   return (
-    <footer className='md:min-h-28 pt-28   pb-10  flex items-center justify-evenly flex-col md:flex-row text-colorone md:gap-0 gap-6'>
+    <footer className='md:min-h-28 pt-28   pb-10  flex items-center justify-evenly flex-col md:flex-row text-blue md:gap-0 gap-6'>
       {' '}
       <Link
         href='mailto:p.lesouchu@gmail.com'

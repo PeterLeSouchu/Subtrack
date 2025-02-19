@@ -26,7 +26,7 @@ export default function RootLayout({
       >
         <HeaderHomePage />
 
-        <main className=' text-colorone flex-grow '>{children}</main>
+        <main className=' text-blue flex-grow '>{children}</main>
         <FooterHomePage />
       </body>
     </html>

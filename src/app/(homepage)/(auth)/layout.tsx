@@ -17,7 +17,12 @@ export default function AuthHomePageLayout({
         />
         <h1 className='text-6xl font-black'>Subtrack</h1>
       </section>
-      <section className='w-full min-h-screen bg-white'>{children}</section>
+      <section className='w-full min-h-screen lg:bg-white'>
+        <div className='w-full h-full  flex justify-center items-center  '>
+          {' '}
+          {children}
+        </div>
+      </section>
     </div>
   );
 }

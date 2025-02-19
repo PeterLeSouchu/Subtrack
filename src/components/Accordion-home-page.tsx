@@ -8,7 +8,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
-export default function AccordionComponent() {
+export default function AccordionHomePage() {
   return (
     <Accordion type='single' collapsible className='md:w-2/3 w-10/12 mb-24'>
       <AccordionItem value='item-1'>
