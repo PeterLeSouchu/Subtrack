@@ -142,7 +142,7 @@ export default function SignUp() {
             className=' text-center underline block my-3 lg:hover:text-icon transition  '
             href='/sign-in'
           >
-            Déjà inscrit ? Connextez-vous ici
+            Déjà inscrit ? Connectez-vous ici
           </Link>
         </div>
       </form>
