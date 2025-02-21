@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import AccordionHomePage from '../components/Accordion-home-page';
 
-import { BookIcon, ChartIcon, LockIcon } from '@/components/icons';
+import { BookIcon, ChartIcon, LockIcon } from '@/src/components/icons';
 
 export default function Home() {
   return (

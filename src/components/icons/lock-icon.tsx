@@ -1,4 +1,4 @@
-import { IconProps } from '@/types/icon-props';
+import { IconProps } from '@/src/types/icon-props';
 
 export function LockIcon({ className }: IconProps) {
   return (

@@ -1,9 +1,9 @@
 'use client';
-
+import Image from 'next/image';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Input } from '@/src/components/ui/input';
+import { Button } from '@/src/components/ui/button';
 import {
   Form,
   FormControl,
@@ -11,7 +11,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from '@/src/components/ui/form';
 
 import { z } from 'zod';
 import Link from 'next/link';
@@ -60,6 +60,13 @@ export default function SignIn() {
         onSubmit={form.handleSubmit(onSubmit)}
         className='space-y-8 bg-white p-5 w-1/2 max-w-96 min-w-72 rounded-xl shadow-2xl drop-shadow-md'
       >
+        <Image
+          src='/logo2.png'
+          width={300}
+          height={300}
+          alt='logo-subtrack'
+          className='w-14 mx-auto lg:hidden'
+        />
         <h2 className='text-center text-2xl font-extrabold'>Connexion</h2>
         <FormField
           control={form.control}
