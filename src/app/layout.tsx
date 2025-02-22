@@ -3,6 +3,7 @@ import { Nunito_Sans } from 'next/font/google';
 import './globals.css';
 import HeaderHomePage from '@/src/components/Header-home-page';
 import FooterHomePage from '@/src/components/Footer-home-page';
+import { SessionProvider } from 'next-auth/react';
 
 const nunitoSans = Nunito_Sans({
   variable: '--font-nunito-sans',
@@ -24,15 +25,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='fr'>
-      <body
-        className={`${nunitoSans.className}  antialiased bg-homepage-blue min-h-screen flex flex-col `}
-      >
-        <HeaderHomePage />
+    <SessionProvider>
+      <html lang='fr'>
+        <body
+          className={`${nunitoSans.className}  antialiased bg-homepage-blue min-h-screen flex flex-col `}
+        >
+          <HeaderHomePage />
 
-        <main className=' text-blue flex-grow '>{children}</main>
-        <FooterHomePage />
-      </body>
-    </html>
+          <main className=' text-blue flex-grow '>{children}</main>
+          <FooterHomePage />
+        </body>
+      </html>
+    </SessionProvider>
   );
 }

@@ -12,6 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/src/components/ui/form';
+// import { signinAction } from './signin-action';
 
 import { z } from 'zod';
 import Link from 'next/link';
@@ -49,9 +50,8 @@ export default function SignIn() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // signinAction();
     console.log(values);
   }
   return (
