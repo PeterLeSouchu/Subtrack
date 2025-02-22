@@ -1,84 +1,78 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
-import AccordionComponent from '../components/Accordion';
-import { FaQuoteRight, FaQuoteLeft } from 'react-icons/fa6';
-import { FaChartBar, FaLock } from 'react-icons/fa';
-import { IoBook } from 'react-icons/io5';
+import AccordionHomePage from '../components/Accordion-home-page';
+
+import { BookIcon, ChartIcon, LockIcon } from '@/src/components/icons';
 
 export default function Home() {
   return (
-    <div className='md:pt-0 pt-24'>
+    <div className='px-4 -my-12'>
       <section className=' flex justify-evenly md:flex-row md:gap-0 gap-8 flex-col items-center min-h-screen p-3'>
-        <div className={` flex flex-col justify-center md:w-1/2 `}>
-          <Image
-            src='/logo.png'
-            alt='logo'
-            className='mx-auto w-1/4 min-w-60 '
-            width={200}
-            height={200}
-          />
-          <h1 className='text-center font-black xl:text-7xl md:text-7xl text-6xl  mb-5'>
-            SubTrack
-          </h1>
-          <p className='font-semibold md:text-2xl text-xl text-center'>
-            <FaQuoteLeft className='inline mx-3' />
-            la solution intelligente pour une gestion sereine de vos mensualités
-            <FaQuoteRight className='inline mx-3' />
+        <div className={` flex flex-col gap-9 justify-center md:w-1/2  `}>
+          <p className='md:text-5xl text-4xl font-semibold text-center'>
+            La solution <span className='font-black '>intelligente</span> pour
+            une gestion sereine de vos mensualités.
           </p>
+          <div className='flex items-center justify-evenly'>
+            <div className='   text-gray-500 flex items-center justify-center gap-2  flex-col '>
+              <ChartIcon className='text-icon  md:w-20 md:h-20 h-12 w-12' />
+
+              <p className='text-center text-sm md:text-base font-extrabold '>
+                Visualisation graphique
+              </p>
+            </div>
+            <div className='rounded-3xl text-gray-500  flex items-center gap-2 justify-center flex-col '>
+              <BookIcon className='text-icon  md:w-20 md:h-20 h-12 w-12' />
+
+              <p className='text-center  text-sm md:text-base font-extrabold'>
+                historique de vos mensualités
+              </p>
+            </div>
+            <div className='rounded-3xl text-gray-500  flex items-center gap-2  justify-center flex-col'>
+              <LockIcon className='text-icon  md:w-20 md:h-20 h-12 w-12' />
+
+              <p className='text-center text-sm md:text-base font-extrabold'>
+                Limitations budgétaires
+              </p>
+            </div>
+          </div>
           <Link
             href='/sign-up'
-            className='md:hover:bg-custom-gradient2   bg-custom-gradient1 p-2  rounded-xl text-white w-44 mx-auto text-center mt-5'
+            className='relative overflow-hidden bg-blue p-2 font-extrabold rounded-xl text-white w-44 mx-auto text-center mt-5
+    transition-all duration-300 ease-out hover:scale-105 
+    hover:shadow-[0_0_20px_rgba(255,255,255,0.6)] 
+    before:absolute before:top-0 before:left-[-100%] before:h-full before:w-full 
+    before:bg-white before:opacity-0 before:skew-x-[-30deg] 
+    before:transition-all before:duration-500 hover:before:left-[120%] 
+    hover:before:opacity-30'
           >
-            {' '}
             Découvrir Subtrack
           </Link>
         </div>
-
-        <Image
-          src='/dashboard1.jpg'
-          alt='dashboard'
-          className='mx-auto   rounded-lg max-w-2xl md:w-1/2 w-5/6  md:mt-0 mt-24 drop-shadow-lg '
-          width={500}
-          height={500}
-        />
       </section>
-      <section className='flex flex-col lg:flex-row  max-w-7xl mx-auto gap-6  my-20 mt-48   '>
-        <div className='p-10 rounded-3xl bg-nav text-white flex items-center justify-center flex-col md:w-1/2 lg:w-1/4  w-3/4 gap-4 mx-auto'>
-          <FaChartBar className='md:text-8xl text-6xl ' />
-          <h3 className='text-center text-xl font-extrabold'>Analysez</h3>
-          <p className='text-center'>
-            Visualisez vos mensualités en toute simplicité grâce à des
-            graphiques détaillés et organisés par catégorie.
-          </p>
-        </div>
-        <div className='p-10 rounded-3xl bg-nav text-white flex items-center justify-center flex-col md:w-1/2 lg:w-1/4  w-3/4 gap-4 mx-auto'>
-          <IoBook className='md:text-8xl text-6xl ' />
+      <h2 className='font-bold md:text-4xl text-3xl pb-10 text-center'>
+        À quoi ça ressemble ?
+      </h2>
+      <video
+        width='320'
+        height='240'
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload='auto'
+        className='md:w-2/3 w-full  pointer-events-none rounded-md mx-auto  shadow-2xl'
+      >
+        <source src='/video/subtrack-demo.mp4' type='video/mp4' />
+      </video>
 
-          <h3 className='text-center text-xl font-extrabold'>Consultez</h3>
-          <p className='text-center'>
-            Accédez à l&apos;historique de vos mensualités, et suivez
-            l&apos;évolution de vos finances au fil du temps.
-          </p>
-        </div>
-        <div className='p-10 rounded-3xl bg-nav text-white flex items-center justify-center flex-col md:w-1/2 lg:w-1/4  w-3/4 gap-4 mx-auto'>
-          <FaLock className='md:text-8xl text-6xl ' />
-          <h3 className='text-center text-xl font-extrabold'>Limitez</h3>
-          <p className='text-center'>
-            Définissez des limites budgétaires pour chaque catégorie et
-            maîtrisez vos dépenses en restant dans les seuils que vous avez
-            fixés.
-          </p>
-        </div>
-      </section>
       <section className=' l p-3 flex  items-center flex-col md:pt-32 pt-20 '>
-        <h2 className='font-bold md:text-4xl text-3xl pb-10 text-center'>
-          FAQ :
+        <h2 className='font-bold md:text-4xl text-3xl pb-10 text-center w-full mb-7'>
+          Des questions ?
         </h2>
-        <div className='max-w-7xl w-full flex justify-center'>
-          <AccordionComponent />
-        </div>
+
+        <AccordionHomePage />
       </section>
     </div>
   );
