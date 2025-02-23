@@ -1,13 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import AccordionHomePage from '../components/Accordion-home-page';
+import AccordionHomePage from './components/Accordion-home-page';
 
 import { BookIcon, ChartIcon, LockIcon } from '@/src/components/icons';
 
 export default function Home() {
   return (
-    <div className='px-4 -my-12'>
+    <div className='px-4  min-h-screen flex flex-col'>
       <section className=' flex justify-evenly md:flex-row md:gap-0 gap-8 flex-col items-center min-h-screen p-3'>
         <div className={` flex flex-col gap-9 justify-center md:w-1/2  `}>
           <p className='md:text-5xl text-4xl font-semibold text-center'>

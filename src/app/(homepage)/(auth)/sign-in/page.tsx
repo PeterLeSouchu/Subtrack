@@ -58,7 +58,7 @@ export default function SignIn() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='space-y-8 bg-white p-5 w-1/2 max-w-96 min-w-72 rounded-xl shadow-xl drop-shadow-md'
+        className='space-y-8 bg-white p-5 w-3/4 max-w-96 min-w-72 rounded-xl shadow-xl drop-shadow-md'
       >
         <Image
           src='/logo2.png'
