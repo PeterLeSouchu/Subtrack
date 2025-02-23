@@ -15,6 +15,7 @@ import {
 
 import { z } from 'zod';
 import Link from 'next/link';
+import GoogleButton from '../../components/Google-button';
 const formSchema = z
   .object({
     email: z
@@ -97,6 +98,7 @@ export default function SignUp() {
           className='w-14 mx-auto lg:hidden'
         />
         <h2 className='text-center text-2xl font-extrabold'>Inscription</h2>
+        <GoogleButton auth="S'inscrire" />
         <FormField
           control={form.control}
           name='email'

@@ -1,5 +1,5 @@
-import FooterHomePage from './components/Footer-home-page';
-import HeaderHomePage from './components/Header-home-page';
+import FooterHomePage from './components/Footer';
+import HeaderHomePage from './components/Header';
 
 export default function RootLayout({
   children,

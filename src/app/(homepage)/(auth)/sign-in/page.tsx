@@ -15,8 +15,7 @@ import {
 
 import { z } from 'zod';
 import Link from 'next/link';
-import { GoogleIcon } from '@/src/components/icons/google-icon';
-import { signIn } from 'next-auth/react';
+import GoogleButton from '../../components/Google-button';
 
 const formSchema = z.object({
   email: z
@@ -68,13 +67,7 @@ export default function SignIn() {
           className='w-14 mx-auto lg:hidden'
         />
         <h2 className='text-center text-2xl font-extrabold'>Connexion</h2>
-        <button
-          onClick={() => signIn('google', { redirectTo: '/dashboard' })}
-          className=' bg-white py-2 px-4 w-full  text-blue hover:bg-slate-100 rounded-full flex justify-center items-center border shadow-sm mx-auto font-bold gap-2'
-        >
-          <GoogleIcon className=' ' />
-          <p className='flex-grow'> Se connecter avec Google</p>
-        </button>
+        <GoogleButton auth='Se connecter' />
         <FormField
           control={form.control}
           name='email'

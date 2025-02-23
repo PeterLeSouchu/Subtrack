@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import AccordionHomePage from './components/Accordion-home-page';
+import AccordionHomePage from './components/Accordion';
 
 import { BookIcon, ChartIcon, LockIcon } from '@/src/components/icons';
 
