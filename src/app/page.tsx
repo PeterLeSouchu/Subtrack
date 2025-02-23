@@ -16,7 +16,7 @@ export default function Home() {
           </p>
           <div className='flex items-center justify-evenly'>
             <div className='   text-gray-500 flex items-center justify-center gap-2  flex-col '>
-              <ChartIcon className='text-icon  md:w-20 md:h-20 h-12 w-12' />
+              <ChartIcon className='text-icon  md:w-20 md:h-20 h-12 w-12 ' />
 
               <p className='text-center text-sm md:text-base font-extrabold '>
                 Visualisation graphique

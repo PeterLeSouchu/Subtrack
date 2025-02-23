@@ -12,10 +12,11 @@ import {
   FormLabel,
   FormMessage,
 } from '@/src/components/ui/form';
-// import { signinAction } from './signin-action';
 
 import { z } from 'zod';
 import Link from 'next/link';
+import { GoogleIcon } from '@/src/components/icons/google-icon';
+import { signIn } from 'next-auth/react';
 
 const formSchema = z.object({
   email: z
@@ -51,14 +52,13 @@ export default function SignIn() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // signinAction();
     console.log(values);
   }
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='space-y-8 bg-white p-5 w-1/2 max-w-96 min-w-72 rounded-xl shadow-2xl drop-shadow-md'
+        className='space-y-8 bg-white p-5 w-1/2 max-w-96 min-w-72 rounded-xl shadow-xl drop-shadow-md'
       >
         <Image
           src='/logo2.png'
@@ -68,6 +68,13 @@ export default function SignIn() {
           className='w-14 mx-auto lg:hidden'
         />
         <h2 className='text-center text-2xl font-extrabold'>Connexion</h2>
+        <button
+          onClick={() => signIn('google', { redirectTo: '/dashboard' })}
+          className=' bg-white py-2 px-4 w-full  text-blue hover:bg-slate-100 rounded-full flex justify-center items-center border shadow-sm mx-auto font-bold gap-2'
+        >
+          <GoogleIcon className=' ' />
+          <p className='flex-grow'> Se connecter avec Google</p>
+        </button>
         <FormField
           control={form.control}
           name='email'
