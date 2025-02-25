@@ -125,7 +125,11 @@ export default function SignUp() {
             <FormItem>
               <FormLabel>Mot de passe</FormLabel>
               <FormControl>
-                <Input placeholder='Entrez votre mot de passe' {...field} />
+                <Input
+                  type='password'
+                  placeholder='Entrez votre mot de passe'
+                  {...field}
+                />
               </FormControl>
 
               <FormMessage />
@@ -139,7 +143,11 @@ export default function SignUp() {
             <FormItem>
               <FormLabel>Confirmation du mot de passe</FormLabel>
               <FormControl>
-                <Input placeholder='Confirmez votre mot de passe' {...field} />
+                <Input
+                  type='password'
+                  placeholder='Confirmez votre mot de passe'
+                  {...field}
+                />
               </FormControl>
 
               <FormMessage />

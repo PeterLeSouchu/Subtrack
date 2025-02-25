@@ -1,28 +1,70 @@
 'use server';
+
 import { prisma } from '@/prisma/prisma-client';
 import bcrypt from 'bcrypt';
 import { redirect } from 'next/navigation';
+import { z } from 'zod';
 
-type SignupData = {
-  email: string;
-  passwordConfirm: string;
-  password: string;
-};
+const signupSchema = z
+  .object({
+    email: z
+      .string()
+      .email({ message: 'Format invalide.' })
+      .min(5, { message: 'Format invalide.' }),
+
+    password: z
+      .string()
+      .min(8, {
+        message: 'Le mot de passe doit contenir au moins 8 caractères.',
+      })
+      .regex(/[A-Z]/, {
+        message: 'Le mot de passe doit contenir au moins une majuscule.',
+      })
+      .regex(/[a-z]/, {
+        message: 'Le mot de passe doit contenir au moins une minuscule.',
+      })
+      .regex(/[0-9]/, {
+        message: 'Le mot de passe doit contenir au moins un chiffre.',
+      })
+      .regex(/[\W_]/, {
+        message: 'Le mot de passe doit contenir au moins un caractère spécial.',
+      }),
+
+    passwordConfirm: z
+      .string()
+      .min(8, {
+        message: 'Le mot de passe doit contenir au moins 8 caractères.',
+      })
+      .regex(/[A-Z]/, {
+        message: 'Le mot de passe doit contenir au moins une majuscule.',
+      })
+      .regex(/[a-z]/, {
+        message: 'Le mot de passe doit contenir au moins une minuscule.',
+      })
+      .regex(/[0-9]/, {
+        message: 'Le mot de passe doit contenir au moins un chiffre.',
+      })
+      .regex(/[\W_]/, {
+        message: 'Le mot de passe doit contenir au moins un caractère spécial.',
+      }),
+  })
+  .refine((data) => data.password === data.passwordConfirm, {
+    path: ['password'],
+    message: 'Les mots de passe ne correspondent pas',
+  });
+
+type SignupData = z.infer<typeof signupSchema>;
 
 export async function signUpUser(data: SignupData) {
-  const { email, password, passwordConfirm } = data;
-
-  if (!email || !password) {
-    throw new Error('Tous les champs sont requis !');
+  const parsedData = signupSchema.safeParse(data);
+  if (!parsedData.success) {
+    // Only 1rst message, because there's already front validation
+    throw new Error(parsedData.error.issues[0].message);
   }
 
-  if (password !== passwordConfirm) {
-    throw new Error('Les mots de passes ne correspondent pas !');
-  }
+  const { email, password } = parsedData.data;
 
-  const existingUser = await prisma.user.findUnique({
-    where: { email },
-  });
+  const existingUser = await prisma.user.findUnique({ where: { email } });
 
   if (existingUser) {
     throw new Error('Cet email est déjà utilisé !');
