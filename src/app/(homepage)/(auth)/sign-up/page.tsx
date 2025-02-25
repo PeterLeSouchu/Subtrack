@@ -12,7 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/src/components/ui/form';
-
+import { signupSchema } from './signup-schema';
 import { z } from 'zod';
 import Link from 'next/link';
 import GoogleButton from '../../components/Google-button';
@@ -20,58 +20,10 @@ import { signUpUser } from './signup-action';
 import ErrorMessage from '@/src/components/Error-message';
 import { useState } from 'react';
 
-const formSchema = z
-  .object({
-    email: z
-      .string()
-      .email({ message: 'Format invalide.' })
-      .min(5, { message: 'Format invalide.' }),
-
-    password: z
-      .string()
-      .min(8, {
-        message: 'Le mot de passe doit contenir au moins 8 caractères.',
-      })
-      .regex(/[A-Z]/, {
-        message: 'Le mot de passe doit contenir au moins une majuscule.',
-      })
-      .regex(/[a-z]/, {
-        message: 'Le mot de passe doit contenir au moins une minuscule.',
-      })
-      .regex(/[0-9]/, {
-        message: 'Le mot de passe doit contenir au moins un chiffre.',
-      })
-      .regex(/[\W_]/, {
-        message: 'Le mot de passe doit contenir au moins un caractère spécial.',
-      }),
-
-    passwordConfirm: z
-      .string()
-      .min(8, {
-        message: 'Le mot de passe doit contenir au moins 8 caractères.',
-      })
-      .regex(/[A-Z]/, {
-        message: 'Le mot de passe doit contenir au moins une majuscule.',
-      })
-      .regex(/[a-z]/, {
-        message: 'Le mot de passe doit contenir au moins une minuscule.',
-      })
-      .regex(/[0-9]/, {
-        message: 'Le mot de passe doit contenir au moins un chiffre.',
-      })
-      .regex(/[\W_]/, {
-        message: 'Le mot de passe doit contenir au moins un caractère spécial.',
-      }),
-  })
-  .refine((data) => data.password === data.passwordConfirm, {
-    path: ['password'],
-    message: 'Les mots de passe ne correspondent pas',
-  });
-
 export default function SignUp() {
   const [error, setError] = useState<undefined | string>('');
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signupSchema>>({
+    resolver: zodResolver(signupSchema),
     defaultValues: {
       email: '',
       password: '',
@@ -79,8 +31,9 @@ export default function SignUp() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof signupSchema>) {
     try {
+      setError('');
       await signUpUser(values);
     } catch (error) {
       const errorMessage = (error as Error).message;
