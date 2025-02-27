@@ -9,6 +9,7 @@ export default function Dashboard() {
   return (
     <SessionProvider>
       <h1>Dashboard</h1>
+      <p>{session?.user?.name}</p>
       <button onClick={() => signOut()}>Se déconnecter</button>
     </SessionProvider>
   );

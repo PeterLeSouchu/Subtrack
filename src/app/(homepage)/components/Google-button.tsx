@@ -9,6 +9,7 @@ export default function GoogleButton({
 }) {
   return (
     <button
+      type='button'
       onClick={() => signIn('google', { redirectTo: '/dashboard' })}
       className=' bg-white py-2 px-4 w-full  text-blue hover:bg-slate-100 rounded-full flex justify-center items-center border shadow-sm mx-auto font-bold gap-2'
     >
