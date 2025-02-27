@@ -1,18 +1,21 @@
-import { NextRequest } from 'next/server';
-import authConfig from './auth.config';
-import NextAuth from 'next-auth';
+import { auth } from './auth';
+import { NextResponse } from 'next/server';
 
-// Use only one of the two middleware options below
-// 1. Use middleware directly
-// export const { auth: middleware } = NextAuth(authConfig)
-
-// 2. Wrapped middleware option
-const { auth } = NextAuth(authConfig);
-export default auth(async function middleware(req) {
-  // Your custom middleware logic goes here
+export default auth((req) => {
   const { nextUrl } = req;
-  console.log("voici l'url", nextUrl.pathname);
-  // if (!req.auth) {
-  //   return Response.redirect(new URL('/sign-in', nextUrl));
-  // }
+  const isLoggedIn = !!req.auth;
+
+  const publicRoutes = ['/', '/sign-in', '/sign-up', '/legal-notices', '/cgu'];
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+
+  if (!isLoggedIn && !isPublicRoute) {
+    return NextResponse.redirect(new URL('/sign-in', nextUrl.origin));
+  }
+  if (isLoggedIn && isPublicRoute) {
+    return NextResponse.redirect(new URL('/dashboard', nextUrl.origin));
+  }
 });
+
+export const config = {
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+};
