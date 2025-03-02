@@ -17,6 +17,8 @@ import { z } from 'zod';
 import Link from 'next/link';
 import GoogleButton from '../../components/Google-button';
 import { signIn } from 'next-auth/react';
+import { useState } from 'react';
+import { signInUser } from './signin-action';
 
 const formSchema = z.object({
   email: z.string(),
@@ -24,6 +26,7 @@ const formSchema = z.object({
 });
 
 export default function SignIn() {
+  const [error, setError] = useState<string>('');
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -33,7 +36,15 @@ export default function SignIn() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    signIn('credentials', values);
+    try {
+      await signInUser(values);
+      signIn('credentials', values);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      }
+      setError('Erreur incconue');
+    }
   }
   return (
     <Form {...form}>
@@ -49,6 +60,7 @@ export default function SignIn() {
           className='w-14 mx-auto lg:hidden'
         />
         <h2 className='text-center text-2xl font-extrabold'>Connexion</h2>
+        <p className='text-red-600 text-center'>{error}</p>
         <GoogleButton auth='Se connecter' />
         <FormField
           control={form.control}

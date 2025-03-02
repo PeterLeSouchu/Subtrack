@@ -15,20 +15,24 @@ export async function signUpUser(data: SignupData) {
     const existingUser = await prisma.user.findUnique({ where: { email } });
 
     if (existingUser) {
-      throw new Error('Cet email est déjà utilisé !');
+      throw new Error('Ce compte existe déjà');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await prisma.user.create({
+    await prisma.user.create({
       data: { email, password: hashedPassword },
     });
 
-    return user;
+    return;
   } catch (error) {
     if (error instanceof z.ZodError) {
       throw new Error(error.issues[0].message);
     }
-    console.log("voici l'erreur ", error);
+
+    if (error instanceof Error) {
+      console.log("voici l'erreur : ", error.message);
+      throw new Error(error.message);
+    }
 
     throw new Error('Erreur inconnue');
   }
