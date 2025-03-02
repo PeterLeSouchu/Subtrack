@@ -19,8 +19,10 @@ import GoogleButton from '../../components/Google-button';
 import { signUpUser } from './signup-action';
 import ErrorMessage from '@/src/components/Error-message';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function SignUp() {
+  const router = useRouter();
   const [error, setError] = useState<undefined | string>('');
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -35,6 +37,7 @@ export default function SignUp() {
     try {
       setError('');
       await signUpUser(values);
+      router.push('/sign-in');
     } catch (error) {
       const errorMessage = (error as Error).message;
       console.log(errorMessage);

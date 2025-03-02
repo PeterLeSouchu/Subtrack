@@ -16,31 +16,14 @@ import {
 import { z } from 'zod';
 import Link from 'next/link';
 import GoogleButton from '../../components/Google-button';
+import { signIn } from 'next-auth/react';
 
 const formSchema = z.object({
-  email: z
-    .string()
-    .email({ message: 'Format invalide.' })
-    .min(5, { message: 'Format invalide.' }),
-  password: z
-    .string()
-    .min(8, { message: 'Le mot de passe doit contenir au moins 8 caractères.' })
-    .regex(/[A-Z]/, {
-      message: 'Le mot de passe doit contneir au moins une majuscule.',
-    })
-    .regex(/[a-z]/, {
-      message: 'Le mot de passe doit contneir au moins une minuscule.',
-    })
-    .regex(/[0-9]/, {
-      message: 'Le mot de passe doit contneir au moins un chiffre',
-    })
-    .regex(/[\W_]/, {
-      message: 'Le mot de passe doit contneir au moins un caractère spécial',
-    }),
+  email: z.string(),
+  password: z.string(),
 });
 
 export default function SignIn() {
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,9 +32,8 @@ export default function SignIn() {
     },
   });
 
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    signIn('credentials', values);
   }
   return (
     <Form {...form}>
@@ -89,7 +71,11 @@ export default function SignIn() {
             <FormItem>
               <FormLabel>Mot de passe</FormLabel>
               <FormControl>
-                <Input placeholder='Entrez votre mot de passe' {...field} />
+                <Input
+                  type='password'
+                  placeholder='Entrez votre mot de passe'
+                  {...field}
+                />
               </FormControl>
 
               <FormMessage />

@@ -2,7 +2,6 @@
 
 import { prisma } from '@/prisma/prisma-client';
 import bcrypt from 'bcrypt';
-import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { signupSchema } from './signup-schema';
 
@@ -14,21 +13,23 @@ export async function signUpUser(data: SignupData) {
     const { email, password } = parsedData;
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
+
     if (existingUser) {
       throw new Error('Cet email est déjà utilisé !');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: { email, password: hashedPassword },
     });
 
-    redirect('/dashboard');
+    return user;
   } catch (error) {
     if (error instanceof z.ZodError) {
       throw new Error(error.issues[0].message);
     }
+    console.log("voici l'erreur ", error);
 
-    throw new Error('Une erreur inconnue est survenue.');
+    throw new Error('Erreur inconnue');
   }
 }
