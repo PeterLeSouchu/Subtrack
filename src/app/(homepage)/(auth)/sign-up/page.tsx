@@ -12,66 +12,20 @@ import {
   FormLabel,
   FormMessage,
 } from '@/src/components/ui/form';
-
+import { signupSchema } from './signup-schema';
 import { z } from 'zod';
 import Link from 'next/link';
-const formSchema = z
-  .object({
-    email: z
-      .string()
-      .email({ message: 'Format invalide.' })
-      .min(5, { message: 'Format invalide.' }),
-
-    password: z
-      .string()
-      .min(8, {
-        message: 'Le mot de passe doit contenir au moins 8 caractères.',
-      })
-      .regex(/[A-Z]/, {
-        message: 'Le mot de passe doit contenir au moins une majuscule.',
-      })
-      .regex(/[a-z]/, {
-        message: 'Le mot de passe doit contenir au moins une minuscule.',
-      })
-      .regex(/[0-9]/, {
-        message: 'Le mot de passe doit contenir au moins un chiffre.',
-      })
-      .regex(/[\W_]/, {
-        message: 'Le mot de passe doit contenir au moins un caractère spécial.',
-      }),
-
-    passwordConfirm: z
-      .string()
-      .min(8, {
-        message:
-          'La confirmation du mot de passe doit contenir au moins 8 caractères.',
-      })
-      .regex(/[A-Z]/, {
-        message:
-          'La confirmation du mot de passe doit contenir au moins une majuscule.',
-      })
-      .regex(/[a-z]/, {
-        message:
-          'La confirmation du mot de passe doit contenir au moins une minuscule.',
-      })
-      .regex(/[0-9]/, {
-        message:
-          'La confirmation du mot de passe doit contenir au moins un chiffre.',
-      })
-      .regex(/[\W_]/, {
-        message:
-          'La confirmation du mot de passe doit contenir au moins un caractère spécial.',
-      }),
-  })
-  .refine((data) => data.password === data.passwordConfirm, {
-    path: ['password'],
-    message: 'Les mots de passe ne correspondent pas',
-  });
+import GoogleButton from '../../components/Google-button';
+import { signUpUser } from './signup-action';
+import ErrorMessage from '@/src/components/Error-message';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function SignUp() {
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const router = useRouter();
+  const [error, setError] = useState<undefined | string>('');
+  const form = useForm<z.infer<typeof signupSchema>>({
+    resolver: zodResolver(signupSchema),
     defaultValues: {
       email: '',
       password: '',
@@ -79,11 +33,16 @@ export default function SignUp() {
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof signupSchema>) {
+    try {
+      setError('');
+      await signUpUser(values);
+      router.push('/sign-in');
+    } catch (error) {
+      const errorMessage = (error as Error).message;
+      console.log(errorMessage);
+      setError(errorMessage);
+    }
   }
   return (
     <Form {...form}>
@@ -99,6 +58,8 @@ export default function SignUp() {
           className='w-14 mx-auto lg:hidden'
         />
         <h2 className='text-center text-2xl font-extrabold'>Inscription</h2>
+        <ErrorMessage message={error} />
+        <GoogleButton auth="S'inscrire" />
         <FormField
           control={form.control}
           name='email'
@@ -120,7 +81,11 @@ export default function SignUp() {
             <FormItem>
               <FormLabel>Mot de passe</FormLabel>
               <FormControl>
-                <Input placeholder='Entrez votre mot de passe' {...field} />
+                <Input
+                  type='password'
+                  placeholder='Entrez votre mot de passe'
+                  {...field}
+                />
               </FormControl>
 
               <FormMessage />
@@ -134,7 +99,11 @@ export default function SignUp() {
             <FormItem>
               <FormLabel>Confirmation du mot de passe</FormLabel>
               <FormControl>
-                <Input placeholder='Confirmez votre mot de passe' {...field} />
+                <Input
+                  type='password'
+                  placeholder='Confirmez votre mot de passe'
+                  {...field}
+                />
               </FormControl>
 
               <FormMessage />

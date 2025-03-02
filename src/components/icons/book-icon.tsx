@@ -3,7 +3,7 @@ import { IconProps } from '@/src/types/icon-props';
 export function BookIcon({ className }: IconProps) {
   return (
     <svg
-      className={`w-20 h-20 ${className}`}
+      className={` ${className}`}
       viewBox='0 0 65 65'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'

@@ -12,35 +12,21 @@ import {
   FormLabel,
   FormMessage,
 } from '@/src/components/ui/form';
-// import { signinAction } from './signin-action';
 
 import { z } from 'zod';
 import Link from 'next/link';
+import GoogleButton from '../../components/Google-button';
+import { signIn } from 'next-auth/react';
+import { useState } from 'react';
+import { signInUser } from './signin-action';
 
 const formSchema = z.object({
-  email: z
-    .string()
-    .email({ message: 'Format invalide.' })
-    .min(5, { message: 'Format invalide.' }),
-  password: z
-    .string()
-    .min(8, { message: 'Le mot de passe doit contenir au moins 8 caractères.' })
-    .regex(/[A-Z]/, {
-      message: 'Le mot de passe doit contneir au moins une majuscule.',
-    })
-    .regex(/[a-z]/, {
-      message: 'Le mot de passe doit contneir au moins une minuscule.',
-    })
-    .regex(/[0-9]/, {
-      message: 'Le mot de passe doit contneir au moins un chiffre',
-    })
-    .regex(/[\W_]/, {
-      message: 'Le mot de passe doit contneir au moins un caractère spécial',
-    }),
+  email: z.string(),
+  password: z.string(),
 });
 
 export default function SignIn() {
-  // 1. Define your form.
+  const [error, setError] = useState<string>('');
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,16 +35,22 @@ export default function SignIn() {
     },
   });
 
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // signinAction();
-    console.log(values);
+    try {
+      await signInUser(values);
+      signIn('credentials', values);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      }
+      setError('Erreur incconue');
+    }
   }
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='space-y-8 bg-white p-5 w-1/2 max-w-96 min-w-72 rounded-xl shadow-2xl drop-shadow-md'
+        className='space-y-8 bg-white p-5 w-3/4 max-w-96 min-w-72 rounded-xl shadow-xl drop-shadow-md'
       >
         <Image
           src='/logo2.png'
@@ -68,6 +60,8 @@ export default function SignIn() {
           className='w-14 mx-auto lg:hidden'
         />
         <h2 className='text-center text-2xl font-extrabold'>Connexion</h2>
+        <p className='text-red-600 text-center'>{error}</p>
+        <GoogleButton auth='Se connecter' />
         <FormField
           control={form.control}
           name='email'
@@ -89,7 +83,11 @@ export default function SignIn() {
             <FormItem>
               <FormLabel>Mot de passe</FormLabel>
               <FormControl>
-                <Input placeholder='Entrez votre mot de passe' {...field} />
+                <Input
+                  type='password'
+                  placeholder='Entrez votre mot de passe'
+                  {...field}
+                />
               </FormControl>
 
               <FormMessage />
