@@ -34,14 +34,12 @@ export default function SignUp() {
   });
 
   async function onSubmit(values: z.infer<typeof signupSchema>) {
-    try {
-      setError('');
-      await signUpUser(values);
+    setError('');
+    const res = await signUpUser(values);
+    if (res.error) {
+      setError(res.error || 'Erreur inconnue');
+    } else {
       router.push('/sign-in');
-    } catch (error) {
-      const errorMessage = (error as Error).message;
-      console.log(errorMessage);
-      setError(errorMessage);
     }
   }
   return (

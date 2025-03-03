@@ -36,14 +36,12 @@ export default function SignIn() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      await signInUser(values);
+    setError('');
+    const res = await signInUser(values);
+    if (res.error) {
+      setError(res.error || 'Erreur inconnue');
+    } else {
       signIn('credentials', values);
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      }
-      setError('Erreur incconue');
     }
   }
   return (

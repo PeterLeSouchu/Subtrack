@@ -10,7 +10,7 @@ export async function signInUser(data: { email: string; password: string }) {
     const existingUser = await prisma.user.findUnique({ where: { email } });
 
     if (!existingUser) {
-      throw new Error('Identifiants incorrects');
+      return { error: 'Identifiants incorrects' };
     }
 
     const isMatchedPasswords = await bcrypt.compare(
@@ -19,16 +19,17 @@ export async function signInUser(data: { email: string; password: string }) {
     );
 
     if (!isMatchedPasswords) {
-      throw new Error('Identifiants incorrects');
+      return { error: 'Identifiants incorrects' };
     }
 
-    return;
+    return {
+      message: 'Authentification réussie',
+    };
   } catch (error) {
     if (error instanceof Error) {
-      console.log("voici l'erreur : ", error.message);
-      throw new Error(error.message);
+      return { error: error.message };
     }
 
-    throw new Error('Erreur inconnues');
+    return { error: 'Identifiants incorrects' };
   }
 }
