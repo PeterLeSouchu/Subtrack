@@ -5,7 +5,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { DashboardIcon, BookIcon } from '@/src/components/icons';
+import {
+  DashboardIcon,
+  BookIcon,
+  BilanIcon,
+  ProfileIcon,
+} from '@/src/components/icons';
 
 export default function LayoutDashboard({ children }: { children: ReactNode }) {
   const pathName = usePathname();
@@ -23,10 +28,18 @@ export default function LayoutDashboard({ children }: { children: ReactNode }) {
     {
       name: 'Historique',
       path: '/dashboard/historique',
-      icon: <BookIcon className='w-5' />,
+      icon: <BookIcon width='18' height='18' />,
     },
-    { name: 'Bilan', path: '/dashboard/bilan' },
-    { name: 'Profil', path: '/dashboard/profil' },
+    {
+      name: 'Bilan',
+      path: '/dashboard/bilan',
+      icon: <BilanIcon width='18' height='18' />,
+    },
+    {
+      name: 'Profil',
+      path: '/dashboard/profile',
+      icon: <ProfileIcon width='22' height='22' />,
+    },
   ];
 
   useEffect(() => {
