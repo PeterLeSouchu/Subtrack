@@ -12,8 +12,6 @@ export function ChartIcon({ className }: IconProps) {
         d='M32.5 54.1668V27.0835M48.75 54.1668V10.8335M16.25 54.1668V43.3335'
         stroke='currentColor'
         strokeWidth='6'
-        strokeLinecap='round'
-        strokeLinejoin='round'
       />
     </svg>
   );
