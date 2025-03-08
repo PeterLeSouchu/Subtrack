@@ -1,9 +1,11 @@
 import { IconProps } from '@/src/types/icon-props';
 
-export function ChartIcon({ className }: IconProps) {
+export function ChartIcon({ className, width, height }: IconProps) {
   return (
     <svg
       className={` ${className}`}
+      width={width}
+      height={height}
       viewBox='0 0 65 65'
       fill='currentColor'
       xmlns='http://www.w3.org/2000/svg'
