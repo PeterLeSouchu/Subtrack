@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import logo from '@/public/logo.png';
 
 export default function HeaderHomePage() {
   const pathName = usePathname();
@@ -19,7 +20,7 @@ export default function HeaderHomePage() {
           className='text-blue-950 -mx-8 font-black  flex items-center gap-2 '
         >
           <Image
-            src='/logo.png'
+            src={logo}
             alt='logo'
             className='w-24 '
             width={200}

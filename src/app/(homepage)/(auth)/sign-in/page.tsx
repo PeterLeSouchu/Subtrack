@@ -4,6 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
+
+import logo from '@/public/logo.png';
 import {
   Form,
   FormControl,
@@ -51,7 +53,7 @@ export default function SignIn() {
         className='space-y-8 bg-white p-5 w-3/4 max-w-96 min-w-72 rounded-xl shadow-xl drop-shadow-md'
       >
         <Image
-          src='/logo2.png'
+          src={logo}
           width={300}
           height={300}
           alt='logo-subtrack'
