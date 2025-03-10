@@ -39,7 +39,7 @@ const menuItems = [
 
 export default function LayoutDashboard({ children }: { children: ReactNode }) {
   return (
-    <div className='p-3 w-full flex flex-col gap-5 h-screen '>
+    <div className='p-3 w-full flex flex-col  h-screen bg-dashboardbg '>
       <header className='w-full rounded-xl bg-navbar text-white font-semibold '>
         <NavBar />
       </header>

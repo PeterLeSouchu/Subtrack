@@ -13,6 +13,8 @@ export default {
   theme: {
     extend: {
       colors: {
+        dashboardbg: '#F8F8FB',
+        stattext: '#A0A1BD',
         navbar: '#4670DB',
         blue: '#2C4A7B',
         icon: '#A8A2E1',
