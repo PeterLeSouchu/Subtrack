@@ -8,3 +8,5 @@ export * from './menu-mobile-icon';
 export * from './close-icon';
 export * from './balance-icon';
 export * from './up-icon';
+export * from './search-icon';
+export * from './add-icon';
