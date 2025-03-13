@@ -51,44 +51,47 @@ export default function Dashboard() {
   console.log(session);
   return (
     <div className='flex   h-full  overflow-hidden  '>
-      <div className='xl:w-2/3 w-full h-full flex flex-col'>
-        <section className='flex justify-start items-center  w-full overflow-x-scroll gap-3 p-3'>
-          <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 h-20  text-nowrap '>
-            <span className='text-[#D6A514] font-black lg:text-4xl text-2xl'>
-              1300 €
-            </span>
-            <h3 className='text-stattext font-bold text-left text-sm'>
-              Montant total
-            </h3>
-          </article>
-          <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 h-20  text-nowrap'>
-            <span className='text-[#2C4A7B] font-black lg:text-4xl text-2xl'>
-              # 23
-            </span>
-            <h3 className='text-stattext font-bold text-left text-sm'>
-              Nombre de mensualités
-            </h3>
-          </article>
-          <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 h-20  text-nowrap'>
-            <span className='text-[#43669D] font-black lg:text-4xl text-2xl flex gap-1 items-center'>
-              <BalanceIcon width='30' height='30' /> 23
-            </span>
-            <h3 className='text-stattext font-bold text-left text-sm'>
-              Moyenne
-            </h3>
-          </article>
-          <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 h-20  w-auto text-nowrap'>
-            <span className='text-[#17C058] font-black lg:text-4xl text-2xl flex gap-1 items-center'>
-              <UpIcon width='30' height='30' className='mr-3' /> + 13%
-            </span>
-            <h3 className='text-stattext font-bold text-left text-sm'>
-              de bénéfice par rapport au mois précédent
-            </h3>
-          </article>
-        </section>
+      <div className='xl:w-2/3 w-full h-full flex  flex-col'>
+        <div className='px-3'>
+          {' '}
+          <section className='flex  justify-start items-center  w-full overflow-x-scroll gap-3 '>
+            <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 h-20  text-nowrap '>
+              <span className='text-[#D6A514] font-black lg:text-4xl text-2xl'>
+                1300 €
+              </span>
+              <h3 className='text-stattext font-bold text-left text-sm'>
+                Montant total
+              </h3>
+            </article>
+            <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 h-20  text-nowrap'>
+              <span className='text-[#2C4A7B] font-black lg:text-4xl text-2xl'>
+                # 23
+              </span>
+              <h3 className='text-stattext font-bold text-left text-sm'>
+                Nombre de mensualités
+              </h3>
+            </article>
+            <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 h-20  text-nowrap'>
+              <span className='text-[#43669D] font-black lg:text-4xl text-2xl flex gap-1 items-center'>
+                <BalanceIcon width='30' height='30' /> 23
+              </span>
+              <h3 className='text-stattext font-bold text-left text-sm'>
+                Moyenne
+              </h3>
+            </article>
+            <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 h-20  w-auto text-nowrap'>
+              <span className='text-[#17C058] font-black lg:text-4xl text-2xl flex gap-1 items-center'>
+                <UpIcon width='30' height='30' className='mr-3' /> + 13%
+              </span>
+              <h3 className='text-stattext font-bold text-left text-sm'>
+                de bénéfice par rapport au mois précédent
+              </h3>
+            </article>
+          </section>
+        </div>
 
-        <section className='flex-1 p-3 w-full overflow-hidden'>
-          <div className='bg-white drop-shadow-md w-full h-full p-2  flex flex-col gap-4 rounded-md overflow-hidden'>
+        <section className='flex-1 p-3 w-full overflow-hidden '>
+          <div className='bg-white drop-shadow-md w-full h-full p-4  flex flex-col gap-4 rounded-md overflow-hidden'>
             <div className='flex gap-2 w-full'>
               {' '}
               <InputSearch />
@@ -104,31 +107,34 @@ export default function Dashboard() {
               </Select>
               <NewMensualityBtn />
             </div>
-            <Table className='w-full  rounded-lg overflow-y-scroll'>
+            <Table className='w-full  rounded-lg overflow-y-scroll '>
               <TableHeader>
-                <TableRow className='bg-gray-100'>
-                  <TableHead className='text-left p-4 font-extrabold text-black'>
+                <TableRow>
+                  <TableHead className='text-left   p-4 font-extrabold text-[#253145]'>
                     Catégorie
                   </TableHead>
-                  <TableHead className='text-left p-4 font-extrabold  text-black'>
+                  <TableHead className='text-left   p-4 font-extrabold  text-[#253145]'>
                     Nom
                   </TableHead>
-                  <TableHead className='text-left p-4 font-extrabold  text-black'>
+                  <TableHead className='text-left   p-4 font-extrabold  text-[#253145]'>
                     Prix
                   </TableHead>
-                  <TableHead className='text-left p-4 font-extrabold   '></TableHead>
+                  <TableHead className='text-left  p-4 font-extrabold   '></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {data.map((item, index) => (
-                  <TableRow key={index} className='border-t border-gray-200'>
+                  <TableRow
+                    key={index}
+                    className='border-t p-0 border-gray-200'
+                  >
                     <TableCell className='p-4 flex items-center gap-2'>
-                      <span className='text-xl'>{item.icon}</span>
-                      <span className='bg-gray-100 text-gray-800 font-semibold py-1 px-2 rounded-lg'>
-                        {item.category}
+                      <span className='bg-[#E8E5FF] text-blue  font-semibold py-1 px-2 flex gap-2 items-center rounded-xl'>
+                        <span className='text-xl'>{item.icon}</span>
+                        <p className='font-extrabold'> {item.category}</p>
                       </span>
                     </TableCell>
-                    <TableCell className='p-4 text-gray-700'>
+                    <TableCell className='p-4 text-gray-700 font-semibold'>
                       {item.name}
                     </TableCell>
                     <TableCell className='p-4 text-gray-700 font-medium'>
