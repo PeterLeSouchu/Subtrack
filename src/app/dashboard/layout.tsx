@@ -42,7 +42,7 @@ export default function LayoutDashboard({ children }: { children: ReactNode }) {
     <div className=' w-full flex flex-col  h-screen bg-dashboardbg '>
       <NavBar />
 
-      <main className='flex-1  h-full '> {children}</main>
+      <main className='flex-1  h-full overflow-hidden '> {children}</main>
     </div>
   );
 }
