@@ -26,6 +26,8 @@ import {
   TableCell,
 } from '@/src/components/ui/table';
 import { useState } from 'react';
+import { Switch } from '@/src/components/ui/switch';
+import { Label } from '@/src/components/ui/label';
 
 const data = [
   {
@@ -47,6 +49,8 @@ const data = [
     name: 'Abonnement Netflix 4 personnes',
     price: '18€',
   },
+  { category: 'Sécurité', icon: '❤️‍🩹', name: 'Gaz', price: '450€' },
+  { category: 'Sécurité', icon: '❤️‍🩹', name: 'Gaz', price: '450€' },
   { category: 'Sécurité', icon: '❤️‍🩹', name: 'Gaz', price: '450€' },
   { category: 'Sécurité', icon: '❤️‍🩹', name: 'Gaz', price: '450€' },
   { category: 'Sécurité', icon: '❤️‍🩹', name: 'Gaz', price: '450€' },
@@ -97,22 +101,20 @@ export default function Dashboard() {
             </article>
           </section>
         </div>
-
-        <button
-          onClick={() => setShowGraphic((value) => !value)}
-          className='xl:hidden'
-        >
-          {showGraphic ? 'afficher graphic' : 'masquer graphic'}
-        </button>
-
+        <div className='flex items-center justify-center space-x-2 xl:hidden pt-4 '>
+          <Switch
+            onCheckedChange={() => setShowGraphic((value) => !value)}
+            id='airplane-mode'
+          />
+          <Label htmlFor='airplane-mode'>Voir graphique</Label>
+        </div>{' '}
         <section
           className={`xl:flex-1 md:p-3 px-3 pt-3 pb-0 w-full overflow-hidden ${
             showGraphic ? 'hidden' : 'flex'
           } xl:block`}
         >
-          <div className='md:bg-white md:drop-shadow-md w-full h-full p-4  flex flex-col gap-4 rounded-md md:overflow-hidden overflow-y-scroll'>
+          <div className='xl:bg-white xl:drop-shadow-md w-full h-full p-4  flex flex-col gap-4 rounded-md md:overflow-hidden overflow-y-scroll'>
             <div className='flex gap-2 w-full'>
-              {' '}
               <InputSearch />
               <Select>
                 <SelectTrigger className='w-auto'>
@@ -237,7 +239,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className='w-1/3 hidden  bg-red-600 h-full    xl:block'>
+      <div className='w-1/3 hidden   h-full    xl:block'>
         <section className='py-3 px-3 h-full rounded-md '>
           <div className='bg-white h-full w-full drop-shadow-md rounded-md '>
             <div>
