@@ -10,3 +10,5 @@ export * from './balance-icon';
 export * from './up-icon';
 export * from './search-icon';
 export * from './add-icon';
+export * from './trash-icon';
+export * from './edit-icon';
