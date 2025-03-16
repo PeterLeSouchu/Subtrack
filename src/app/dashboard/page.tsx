@@ -63,8 +63,8 @@ export default function Dashboard() {
   const { data: session } = useSession();
   console.log(session);
   return (
-    <div className='flex   h-full  overflow-hidden  '>
-      <div className='xl:w-2/3 w-full h-full flex  flex-col'>
+    <div className='flex   h-full    '>
+      <div className='xl:w-2/3 w-full h-full flex overflow-y-scroll  flex-col'>
         <div className=''>
           {' '}
           <StatsHeader />
@@ -230,7 +230,7 @@ function TableMobile({ showGraphic }: { showGraphic: boolean }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: showGraphic ? 0 : 1 }}
       transition={{ duration: 0.5 }}
-      className={`xl:flex-1 md:p-3 px-3 pt-3 pb-0 w-full overflow-hidden ${
+      className={`xl:flex-1 md:p-3 px-3 pt-3 pb-0 w-full md:overflow-hidden ${
         showGraphic ? 'hidden' : 'flex'
       } xl:hidden `}
     >
