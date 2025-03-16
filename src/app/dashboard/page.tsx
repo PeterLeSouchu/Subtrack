@@ -59,9 +59,21 @@ const data = [
 ];
 
 export default function Dashboard() {
-  const [showGraphic, setShowGraphic] = useState(false);
   const { data: session } = useSession();
-  console.log(session);
+  console.log('on est dans le dashboard et voial la session: ', session);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('/api/mensuality', { method: 'GET' });
+      const result = await response.json();
+
+      console.log('Réponse API :', result);
+    } catch (error) {
+      console.error('Erreur lors de la requête API :', error);
+    }
+  };
+  const [showGraphic, setShowGraphic] = useState(false);
+
   return (
     <div className='flex   h-full    '>
       <div className='xl:w-2/3 w-full h-full flex overflow-y-scroll  flex-col'>
@@ -74,6 +86,10 @@ export default function Dashboard() {
             onCheckedChange={() => setShowGraphic((value) => !value)}
             id='airplane-mode'
           />
+          <button className='bg-red-500 p-3' onClick={fetchData}>
+            {' '}
+            test api route
+          </button>
           <Label htmlFor='airplane-mode'>Voir graphique</Label>
         </div>{' '}
         <TableMobile showGraphic={showGraphic} />

@@ -24,6 +24,8 @@ export async function signInUser(data: { email: string; password: string }) {
 
     return {
       message: 'Authentification réussie',
+      userId: existingUser.id,
+      email,
     };
   } catch (error) {
     if (error instanceof Error) {

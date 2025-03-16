@@ -43,7 +43,7 @@ export default function SignIn() {
     if (res.error) {
       setError(res.error || 'Erreur inconnue');
     } else {
-      signIn('credentials', values);
+      signIn('credentials', { userId: res.userId, email: res.email });
     }
   }
   return (

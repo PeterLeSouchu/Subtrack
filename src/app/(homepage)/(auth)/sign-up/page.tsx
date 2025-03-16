@@ -21,8 +21,11 @@ import { signUpUser } from './signup-action';
 import ErrorMessage from '@/src/components/Error-message';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+// import { useSession } from 'next-auth/react';
 
 export default function SignUp() {
+  // const { data: session } = useSession();
+
   const router = useRouter();
   const [error, setError] = useState<undefined | string>('');
   const form = useForm<z.infer<typeof signupSchema>>({
