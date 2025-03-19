@@ -1,6 +1,7 @@
 'use client';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { CloseIcon } from '@/src/components/icons';
 
 type ToastType = {
   message: string;
@@ -9,6 +10,7 @@ type ToastType = {
 
 type ToastContextType = {
   showToast: (message: string, type: 'success' | 'error') => void;
+  closeToast: () => void;
   toast: ToastType | null;
 };
 
@@ -25,43 +27,57 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
     setTimeout(() => setToast(null), 5000);
   };
 
+  const closeToast = () => {
+    setToast(null);
+  };
+
   return (
-    <ToastContext.Provider value={{ showToast, toast }}>
+    <ToastContext.Provider value={{ showToast, closeToast, toast }}>
       {children}
     </ToastContext.Provider>
   );
 };
 
 export function Toast() {
-  const { toast } = useToast();
+  const { toast, closeToast } = useToast();
 
   return (
     <AnimatePresence>
       {toast && (
         <motion.div
           className={`
-              fixed top-2 right-2
-              px-5 py-2
-              rounded-lg
-              ${toast.type === 'success' ? 'bg-green-500' : 'bg-red-500'}
-              text-white font-bold
-              z-50
-              shadow-lg
-            `}
-          initial={{ opacity: 0, x: 100 }} // Commence à droite, invisible
-          animate={{ opacity: 1, x: 0 }} // Devient visible et se place au centre
-          exit={{ opacity: 0, x: 100 }} // Disparaît en se déplaçant vers la droite
+            fixed top-2 right-2
+            px-5 py-2
+            rounded-lg
+            ${toast.type === 'success' ? 'bg-green-500' : 'bg-red-500'}
+            text-white font-bold
+            z-50
+            shadow-lg
+          `}
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 100 }}
           transition={{
-            duration: 0.5, // Durée de l'animation
+            duration: 0.5,
             ease: 'easeInOut',
           }}
         >
-          {toast.message}
+          <div className='flex justify-between items-center'>
+            <div>{toast.message}</div>
+
+            <button
+              onClick={closeToast}
+              className='text-white font-bold  rounded-full p-1 border border-white ml-3 transition  hover:opacity-70'
+            >
+              <CloseIcon width='20' height='20' />
+            </button>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
   );
 }
+
 export const useToast = () => {
   const context = useContext(ToastContext);
   if (!context) {
