@@ -6,7 +6,7 @@ import {
   UpIcon,
   EditIcon,
 } from '@/src/components/icons';
-import { useSession } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
 import InputSearch from '@/src/components/Input-search';
 import {
   Select,
@@ -29,6 +29,8 @@ import { useState } from 'react';
 import { Switch } from '@/src/components/ui/switch';
 import { Label } from '@/src/components/ui/label';
 import { motion } from 'framer-motion';
+import { usePostMensuality } from './dashboard.service';
+import { useToast } from '../providers/Toast-provider';
 
 const data = [
   {
@@ -59,19 +61,33 @@ const data = [
 ];
 
 export default function Dashboard() {
-  const { data: session } = useSession();
-  console.log('on est dans le dashboard et voial la session: ', session);
+  const { showToast } = useToast();
+  // const { data: session } = useSession();
+  // console.log('on est dans le dashboard et voial la session: ', session);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch('/api/mensuality', { method: 'GET' });
-      const result = await response.json();
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await fetch('/api/mensuality', { method: 'GET' });
+  //     const result = await response.json();
 
-      console.log('Réponse API :', result);
-    } catch (error) {
-      console.error('Erreur lors de la requête API :', error);
-    }
-  };
+  //     console.log('Réponse API :', result);
+  //   } catch (error) {
+  //     console.error('Erreur lors de la requête API :', error);
+  //   }
+  // };
+
+  // showToast('voici la notif', 'success')
+  function handleTestApi() {
+    mutate(
+      { name: 'hello', price: 3, category: 'dd' },
+      {
+        onSuccess: () => showToast('voici la notif', 'success'),
+        onError: () => console.log("C'est une erreur."),
+      }
+    );
+  }
+
+  const { mutate } = usePostMensuality();
   const [showGraphic, setShowGraphic] = useState(false);
 
   return (
@@ -86,7 +102,7 @@ export default function Dashboard() {
             onCheckedChange={() => setShowGraphic((value) => !value)}
             id='airplane-mode'
           />
-          <button className='bg-red-500 p-3' onClick={fetchData}>
+          <button className='bg-red-500 p-3' onClick={handleTestApi}>
             {' '}
             test api route
           </button>

@@ -34,7 +34,7 @@ export default {
   },
   callbacks: {
     jwt({ token, user }) {
-      console.log('voila le user', user);
+      // console.log('voila le user', user);
       if (user) {
         token.id = user.id;
       }

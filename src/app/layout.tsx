@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Nunito_Sans } from 'next/font/google';
 import './globals.css';
 import { SessionProvider } from 'next-auth/react';
+import QueryProvider from './providers/Query-provider';
+import { Toast, ToastProvider } from './providers/Toast-provider';
 
 const nunitoSans = Nunito_Sans({
   variable: '--font-nunito-sans',
@@ -24,11 +26,18 @@ export default function RootLayout({
 }>) {
   return (
     <SessionProvider>
-      <html lang='fr'>
-        <body className={`${nunitoSans.className} antialiased `}>
-          <main>{children}</main>
-        </body>
-      </html>
+      <ToastProvider>
+        <QueryProvider>
+          <html lang='fr'>
+            <body className={`${nunitoSans.className} antialiased `}>
+              <main>
+                {children}
+                <Toast />
+              </main>
+            </body>
+          </html>
+        </QueryProvider>
+      </ToastProvider>
     </SessionProvider>
   );
 }
