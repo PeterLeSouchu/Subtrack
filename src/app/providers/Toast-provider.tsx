@@ -46,6 +46,7 @@ export function Toast() {
       {toast && (
         <motion.div
           className={`
+            max-w-96
             fixed top-2 right-2
             px-5 py-2
             rounded-lg

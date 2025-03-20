@@ -31,7 +31,8 @@ import { Label } from '@/src/components/ui/label';
 import { motion } from 'framer-motion';
 import { usePostMensuality } from './dashboard.service';
 import { useToast } from '../providers/Toast-provider';
-
+import { useConfirm } from '../providers/Confirm-provider';
+// import ConfirmModal from '@/src/components/Confirm-modal';
 const data = [
   {
     category: 'Divertissement',
@@ -62,29 +63,23 @@ const data = [
 
 export default function Dashboard() {
   const { showToast } = useToast();
-  // const { data: session } = useSession();
-  // console.log('on est dans le dashboard et voial la session: ', session);
+  const { confirm } = useConfirm();
 
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await fetch('/api/mensuality', { method: 'GET' });
-  //     const result = await response.json();
-
-  //     console.log('Réponse API :', result);
-  //   } catch (error) {
-  //     console.error('Erreur lors de la requête API :', error);
-  //   }
-  // };
-
-  // showToast('voici la notif', 'success')
   function handleTestApi() {
     mutate(
       { name: 'hello', price: 3, category: 'dd' },
       {
-        onSuccess: () => showToast('voici la notif', 'success'),
-        onError: () => console.log("C'est une erreur."),
+        onSuccess: () => showToast("tout s'est tres  bien passé", 'success'),
+        onError: () => showToast('voici la notif', 'error'),
       }
     );
+  }
+
+  async function handleDelete() {
+    console.log('teststs');
+    if (await confirm({ title: 'hello world' })) {
+      console.log('la confirm modal fonctionne');
+    }
   }
 
   const { mutate } = usePostMensuality();
@@ -108,8 +103,8 @@ export default function Dashboard() {
           </button>
           <Label htmlFor='airplane-mode'>Voir graphique</Label>
         </div>{' '}
-        <TableMobile showGraphic={showGraphic} />
-        <TableDesktop />
+        <TableMobile showGraphic={showGraphic} handleDelete={handleDelete} />
+        <TableDesktop handleDelete={handleDelete} />
         <GraphicMobile showGraphic={showGraphic} />
       </div>
 
@@ -155,10 +150,10 @@ function StatsHeader() {
   );
 }
 
-function TableDesktop() {
+function TableDesktop({ handleDelete }: { handleDelete: () => void }) {
   return (
     <section
-      className={`flex-1 p-3 px-3 pt-3 pb-0 w-full overflow-hidden  xl:block hidden `}
+      className={`flex-1 p-3 px-3 pt-3 pb-0 w-full overflow-hidden   xl:block hidden `}
     >
       <div className='xl:bg-white xl:drop-shadow-md w-full h-full p-4  flex flex-col gap-4 rounded-md md:overflow-hidden overflow-y-scroll'>
         <div className='flex gap-2 w-full'>
@@ -206,7 +201,10 @@ function TableDesktop() {
                   {item.price}
                 </TableCell>
                 <TableCell className='p-4 flex justify-center gap-3'>
-                  <button className=' hover:bg-red-200 transition p-1 rounded-full'>
+                  <button
+                    className=' hover:bg-red-200 transition p-1 rounded-full'
+                    onClick={handleDelete}
+                  >
                     <TrashIcon width='18' />
                   </button>
                   <button className=' hover:bg-amber-100 transition p-1 rounded-full'>
@@ -217,7 +215,7 @@ function TableDesktop() {
             ))}
           </TableBody>
         </Table>
-        {data.map((mensuality) => (
+        {/* {data.map((mensuality) => (
           <article
             className=' md:hidden drop-shadow-md flex  bg-white rounded-2xl px-6 gap-2 py-3'
             key={Math.random()}
@@ -241,7 +239,7 @@ function TableDesktop() {
                 {mensuality.price}
               </p>
               <div>
-                <button className=' p-1'>
+                <button className=' p-1' onClick={() => console.log('dddd')}>
                   <TrashIcon width='20' />
                 </button>
                 <button className=' p-1'>
@@ -250,13 +248,19 @@ function TableDesktop() {
               </div>
             </div>
           </article>
-        ))}
+        ))} */}
       </div>
     </section>
   );
 }
 
-function TableMobile({ showGraphic }: { showGraphic: boolean }) {
+function TableMobile({
+  showGraphic,
+  handleDelete,
+}: {
+  showGraphic: boolean;
+  handleDelete: () => void;
+}) {
   return (
     <motion.section
       initial={{ opacity: 0 }}
@@ -347,7 +351,7 @@ function TableMobile({ showGraphic }: { showGraphic: boolean }) {
                 {mensuality.price}
               </p>
               <div>
-                <button className=' p-1'>
+                <button className=' p-1' onClick={handleDelete}>
                   <TrashIcon width='20' />
                 </button>
                 <button className=' p-1'>
