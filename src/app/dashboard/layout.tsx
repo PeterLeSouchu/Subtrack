@@ -14,6 +14,7 @@ import {
   CloseIcon,
 } from '@/src/components/icons';
 import { ConfirmProvider } from '../providers/Confirm-provider';
+import { ToastProvider } from '../providers/Toast-provider';
 
 const menuItems = [
   {
@@ -40,13 +41,15 @@ const menuItems = [
 
 export default function LayoutDashboard({ children }: { children: ReactNode }) {
   return (
-    <ConfirmProvider>
-      <div className=' w-full flex flex-col  h-screen bg-dashboardbg '>
-        <NavBar />
+    <ToastProvider>
+      <ConfirmProvider>
+        <div className=' w-full flex flex-col  h-screen bg-dashboardbg '>
+          <NavBar />
 
-        <main className='flex-1  h-full overflow-hidden '> {children}</main>
-      </div>
-    </ConfirmProvider>
+          <main className='flex-1  h-full overflow-hidden '> {children}</main>
+        </div>
+      </ConfirmProvider>
+    </ToastProvider>
   );
 }
 
