@@ -64,7 +64,7 @@ export function ConfirmDialogWithContext() {
     <AnimatePresence>
       {open && (
         <motion.div
-          className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'
+          className='fixed  inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50'
           onClick={onCancel} // Ferme la modale en cliquant sur le fond sombre
           initial={{ opacity: 0 }} // Animation de l'opacité au départ
           animate={{ opacity: 1 }} // Animation vers opacité 1 pour apparaître
@@ -81,7 +81,9 @@ export function ConfirmDialogWithContext() {
             transition={{ duration: 0.3 }} // Durée de la transition
             key='modal-content' // Clé unique pour AnimatePresence
           >
-            <p className='mb-4 text-center font-medium'>{props?.title}</p>
+            <p className='mb-4 text-center font-medium text-gray-600'>
+              {props?.title}
+            </p>
             <div className='flex justify-end space-x-4'>
               <button
                 type='button'

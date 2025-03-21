@@ -5,9 +5,10 @@ import {
   TrashIcon,
   UpIcon,
   EditIcon,
+  SearchIcon,
+  AddIcon,
 } from '@/src/components/icons';
-// import { useSession } from 'next-auth/react';
-import InputSearch from '@/src/components/Input-search';
+
 import {
   Select,
   SelectContent,
@@ -15,7 +16,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/src/components/ui/select';
-import NewMensualityBtn from '@/src/components/New-mensuality';
 
 import {
   Table,
@@ -25,14 +25,16 @@ import {
   TableBody,
   TableCell,
 } from '@/src/components/ui/table';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Switch } from '@/src/components/ui/switch';
 import { Label } from '@/src/components/ui/label';
 import { motion } from 'framer-motion';
 import { usePostMensuality } from './dashboard.service';
 import { useToast } from '../providers/Toast-provider';
 import { useConfirm } from '../providers/Confirm-provider';
-// import ConfirmModal from '@/src/components/Confirm-modal';
+import ModalCreateMensuality from './components/Modal-create-mensuality';
+import ModalEditMensuality from './components/Modal-edit-mensuality';
+
 const data = [
   {
     category: 'Divertissement',
@@ -62,18 +64,12 @@ const data = [
 ];
 
 export default function Dashboard() {
+  const [showGraphic, setShowGraphic] = useState(false);
+  const [openCreateModal, setOpenCreateModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
   const { showToast } = useToast();
   const { confirm } = useConfirm();
-
-  function handleTestApi() {
-    mutate(
-      { name: 'hello', price: 3, category: 'dd' },
-      {
-        onSuccess: () => showToast("tout s'est tres  bien passé", 'success'),
-        onError: () => showToast('voici la notif', 'error'),
-      }
-    );
-  }
+  const { mutate } = usePostMensuality();
 
   async function handleDelete() {
     console.log('teststs');
@@ -88,8 +84,15 @@ export default function Dashboard() {
     }
   }
 
-  const { mutate } = usePostMensuality();
-  const [showGraphic, setShowGraphic] = useState(false);
+  function handleTestApi() {
+    mutate(
+      { name: 'hello', price: 3, category: 'dd' },
+      {
+        onSuccess: () => showToast("tout s'est tres  bien passé", 'success'),
+        onError: () => showToast('voici la notif', 'error'),
+      }
+    );
+  }
 
   return (
     <div className='flex   h-full    '>
@@ -109,12 +112,29 @@ export default function Dashboard() {
           </button>
           <Label htmlFor='airplane-mode'>Voir graphique</Label>
         </div>{' '}
-        <TableMobile showGraphic={showGraphic} handleDelete={handleDelete} />
-        <TableDesktop handleDelete={handleDelete} />
+        <TableMobile
+          showGraphic={showGraphic}
+          handleDelete={handleDelete}
+          setOpenCreateModal={setOpenCreateModal}
+          setOpenEditModal={setOpenEditModal}
+        />
+        <TableDesktop
+          handleDelete={handleDelete}
+          setOpenCreateModal={setOpenCreateModal}
+          setOpenEditModal={setOpenEditModal}
+        />
         <GraphicMobile showGraphic={showGraphic} />
       </div>
 
       <GraphicDesktop />
+      <ModalCreateMensuality
+        open={openCreateModal}
+        onClose={() => setOpenCreateModal(false)}
+      />
+      <ModalEditMensuality
+        open={openEditModal}
+        onClose={() => setOpenEditModal(false)}
+      />
     </div>
   );
 }
@@ -156,14 +176,33 @@ function StatsHeader() {
   );
 }
 
-function TableDesktop({ handleDelete }: { handleDelete: () => void }) {
+function TableDesktop({
+  handleDelete,
+  setOpenCreateModal,
+  setOpenEditModal,
+}: {
+  handleDelete: () => void;
+  setOpenCreateModal: Dispatch<SetStateAction<boolean>>;
+  setOpenEditModal: Dispatch<SetStateAction<boolean>>;
+}) {
   return (
     <section
       className={`flex-1 p-3 px-3 pt-3 pb-0 w-full overflow-hidden   xl:block hidden `}
     >
       <div className='xl:bg-white xl:drop-shadow-md w-full h-full p-4  flex flex-col gap-4 rounded-md md:overflow-hidden overflow-y-scroll'>
         <div className='flex gap-2 w-full'>
-          <InputSearch />
+          <div className='flex flex-1 bg-white border items-center rounded-full  w-full  p-1'>
+            <input
+              id='search'
+              placeholder='Cherchez une mensualité'
+              type='text'
+              className='rounded-full bg-transparent flex-1 outline-none px-3 w-full min-w-[120px]'
+            />
+            <label htmlFor='search'>
+              {' '}
+              <SearchIcon width='20' height='20' />
+            </label>
+          </div>
           <Select>
             <SelectTrigger className='w-auto'>
               <SelectValue placeholder='Theme' />
@@ -174,7 +213,14 @@ function TableDesktop({ handleDelete }: { handleDelete: () => void }) {
               <SelectItem value='system'>System</SelectItem>
             </SelectContent>
           </Select>
-          <NewMensualityBtn />
+          <button
+            onClick={() => setOpenCreateModal(true)}
+            type='button'
+            className='flex gap-3 p-2 lg:w-auto lg:h-auto  w-10 h-10 justify-center bg-navbar items-center transition lg:hover:bg-blue rounded-full lg:rounded-md font-bold text-white'
+          >
+            <AddIcon width='16' height='16' />
+            <p className='lg:block hidden'> Nouvelle mensualité</p>
+          </button>
         </div>
         <Table className='w-full  rounded-lg overflow-y-scroll md:table hidden  '>
           <TableHeader>
@@ -213,7 +259,10 @@ function TableDesktop({ handleDelete }: { handleDelete: () => void }) {
                   >
                     <TrashIcon width='18' />
                   </button>
-                  <button className=' hover:bg-amber-100 transition p-1 rounded-full'>
+                  <button
+                    onClick={() => setOpenEditModal(true)}
+                    className=' hover:bg-amber-100 transition p-1 rounded-full'
+                  >
                     <EditIcon width='16' />
                   </button>
                 </TableCell>
@@ -263,9 +312,13 @@ function TableDesktop({ handleDelete }: { handleDelete: () => void }) {
 function TableMobile({
   showGraphic,
   handleDelete,
+  setOpenCreateModal,
+  setOpenEditModal,
 }: {
   showGraphic: boolean;
   handleDelete: () => void;
+  setOpenCreateModal: Dispatch<SetStateAction<boolean>>;
+  setOpenEditModal: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
     <motion.section
@@ -278,7 +331,18 @@ function TableMobile({
     >
       <div className='xl:bg-white xl:drop-shadow-md w-full h-full p-4  flex flex-col gap-4 rounded-md md:overflow-hidden overflow-y-scroll'>
         <div className='flex gap-2 w-full'>
-          <InputSearch />
+          <div className='flex flex-1 bg-white border items-center rounded-full  w-full  p-1'>
+            <input
+              id='search'
+              placeholder='Cherchez une mensualité'
+              type='text'
+              className='rounded-full bg-transparent flex-1 outline-none px-3 w-full min-w-[120px]'
+            />
+            <label htmlFor='search'>
+              {' '}
+              <SearchIcon width='20' height='20' />
+            </label>
+          </div>
           <Select>
             <SelectTrigger className='w-auto'>
               <SelectValue placeholder='Theme' />
@@ -289,7 +353,14 @@ function TableMobile({
               <SelectItem value='system'>System</SelectItem>
             </SelectContent>
           </Select>
-          <NewMensualityBtn />
+          <button
+            onClick={() => setOpenCreateModal(true)}
+            type='button'
+            className='flex gap-3 p-2 lg:w-auto lg:h-auto  w-10 h-10 justify-center bg-navbar items-center transition lg:hover:bg-blue rounded-full lg:rounded-md font-bold text-white'
+          >
+            <AddIcon width='16' height='16' />
+            <p className='lg:block hidden'> Nouvelle mensualité</p>
+          </button>
         </div>
         <Table className='w-full  rounded-lg overflow-y-scroll md:table hidden  '>
           <TableHeader>
@@ -360,7 +431,7 @@ function TableMobile({
                 <button className=' p-1' onClick={handleDelete}>
                   <TrashIcon width='20' />
                 </button>
-                <button className=' p-1'>
+                <button onClick={() => setOpenEditModal(true)} className=' p-1'>
                   <EditIcon width='18' />
                 </button>
               </div>
