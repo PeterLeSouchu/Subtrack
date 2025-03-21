@@ -12,6 +12,7 @@ import {
 
 type Params = {
   title: string;
+  confirmBtn: string;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -72,7 +73,7 @@ export function ConfirmDialogWithContext() {
           key='modal-background' // Clé unique pour AnimatePresence
         >
           <motion.div
-            className='w-3/5 bg-white rounded-lg text-xl p-6 shadow-lg relative'
+            className=' bg-white rounded-lg max-w-2xl min-w-64 w-1/3  p-6 shadow-lg relative'
             onClick={(e) => e.stopPropagation()} // Empêche la propagation du clic
             initial={{ scale: 0.9 }} // Début avec une taille légèrement réduite
             animate={{ scale: 1 }} // Agrandissement à la taille normale
@@ -80,21 +81,21 @@ export function ConfirmDialogWithContext() {
             transition={{ duration: 0.3 }} // Durée de la transition
             key='modal-content' // Clé unique pour AnimatePresence
           >
-            <p className='mb-4'>{props?.title}</p>
+            <p className='mb-4 text-center font-medium'>{props?.title}</p>
             <div className='flex justify-end space-x-4'>
               <button
                 type='button'
-                className='px-4 py-2 bg-gray-300 rounded hover:bg-gray-400'
+                className='px-4 py-2 bg-red-500  rounded hover:bg-red-600 transition'
                 onClick={onCancel}
               >
                 Annuler
               </button>
               <button
                 type='button'
-                className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700'
+                className='px-4 py-2 bg-blue-600 bg-green-500 hover:bg-green-600 transition  rounded '
                 onClick={onConfirm}
               >
-                Confirmer
+                {props?.confirmBtn}
               </button>
             </div>
           </motion.div>

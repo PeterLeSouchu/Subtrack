@@ -77,7 +77,13 @@ export default function Dashboard() {
 
   async function handleDelete() {
     console.log('teststs');
-    if (await confirm({ title: 'hello world' })) {
+    if (
+      await confirm({
+        title:
+          'Etes-vous sur de vouloir supprimer cette mensualité Etes-vous sur de vouloir supprimer cette mensualité Etes-vous sur de vouloir supprimer cette mensualité Etes-vous sur de vouloir supprimer cette mensualité Etes-vous sur de vouloir supprimer cette mensualité v ',
+        confirmBtn: 'Supprimer',
+      })
+    ) {
       console.log('la confirm modal fonctionne');
     }
   }
