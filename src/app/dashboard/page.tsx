@@ -8,6 +8,7 @@ import {
   SearchIcon,
   AddIcon,
 } from '@/src/components/icons';
+import Image from 'next/image';
 
 import {
   Select,
@@ -32,49 +33,22 @@ import { motion } from 'framer-motion';
 import { useConfirm } from '../providers/Confirm-provider';
 import ModalCreateMensuality from './components/Modal-create-mensuality';
 import ModalEditMensuality from './components/Modal-edit-mensuality';
-
-const data = [
-  {
-    category: 'Divertissement',
-    icon: '🎮',
-    name: 'Abonnement Netflix 4 personnes  ',
-    price: '18000€',
-  },
-  { category: 'Sécurité', icon: '❤️‍🩹', name: 'Gaz', price: '450€' },
-  {
-    category: 'Autres',
-    icon: '📖',
-    name: 'Abonnement Spotify 4 personnes',
-    price: '20€',
-  },
-  {
-    category: 'Divertissement',
-    icon: '🎮',
-    name: 'Abonnement Netflix 4 personnes',
-    price: '18€',
-  },
-  { category: 'Sécurité', icon: '❤️‍🩹', name: 'Gaz', price: '450€' },
-  { category: 'Sécurité', icon: '❤️‍🩹', name: 'Gaz', price: '450€' },
-  { category: 'Sécurité', icon: '❤️‍🩹', name: 'Gaz', price: '450€' },
-  { category: 'Sécurité', icon: '❤️‍🩹', name: 'Gaz', price: '450€' },
-  { category: 'Sécurité', icon: '❤️‍🩹', name: 'Gaz', price: '450€' },
-  { category: 'Sécurité', icon: '❤️‍🩹', name: 'Gaz', price: '450€' },
-];
+import { useGetMensuality } from './dashboard.service';
+import { MensualityGetType } from '@/src/types/mensuality';
 
 const categoryOptions = [
   { name: 'Toutes', id: '0' },
   { name: 'Logement', id: '1' },
   { name: 'Transport', id: '2' },
   { name: 'Assurances', id: '3' },
-  { name: 'Énergie', id: '4' },
-  { name: 'Alimentation', id: '5' },
-  { name: 'Loisirs', id: '6' },
-  { name: 'Crédits', id: '7' },
-  { name: 'Épargne', id: '8' },
-  { name: 'Santé', id: '9' },
-  { name: 'Éducation', id: '10' },
-  { name: 'Services', id: '11' },
-  { name: 'Autres', id: '12' },
+  { name: 'Alimentation', id: '4' },
+  { name: 'Loisirs', id: '5' },
+  { name: 'Crédits', id: '6' },
+  { name: 'Épargne', id: '7' },
+  { name: 'Santé', id: '8' },
+  { name: 'Éducation', id: '9' },
+  { name: 'Services', id: '10' },
+  { name: 'Autres', id: '11' },
 ];
 
 export default function Dashboard() {
@@ -82,6 +56,12 @@ export default function Dashboard() {
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const { confirm } = useConfirm();
+
+  const { data: mensualities, isLoading } = useGetMensuality();
+
+  console.log('voila les mensualités', mensualities);
+
+  if (isLoading) return <p>Chargement des mensualités...</p>;
 
   async function handleDelete() {
     console.log('teststs');
@@ -116,11 +96,13 @@ export default function Dashboard() {
           handleDelete={handleDelete}
           setOpenCreateModal={setOpenCreateModal}
           setOpenEditModal={setOpenEditModal}
+          mensualitiesData={mensualities?.mensualities}
         />
         <TableDesktop
           handleDelete={handleDelete}
           setOpenCreateModal={setOpenCreateModal}
           setOpenEditModal={setOpenEditModal}
+          mensualitiesData={mensualities?.mensualities}
         />
         <GraphicMobile showGraphic={showGraphic} />
       </div>
@@ -179,10 +161,12 @@ function TableDesktop({
   handleDelete,
   setOpenCreateModal,
   setOpenEditModal,
+  mensualitiesData,
 }: {
   handleDelete: () => void;
   setOpenCreateModal: Dispatch<SetStateAction<boolean>>;
   setOpenEditModal: Dispatch<SetStateAction<boolean>>;
+  mensualitiesData: MensualityGetType[] | undefined;
 }) {
   return (
     <section className={`flex-1 p-3 w-full overflow-hidden   xl:block hidden `}>
@@ -237,19 +221,28 @@ function TableDesktop({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((item, index) => (
+            {mensualitiesData?.map((mensuality, index) => (
               <TableRow key={index} className='border-t p-0 border-gray-200'>
                 <TableCell className='p-4 flex items-center gap-2'>
                   <span className='bg-[#E8E5FF] text-blue  font-semibold py-1 px-2 flex gap-2 items-center rounded-xl'>
-                    <span className='text-xl'>{item.icon}</span>
-                    <p className='font-extrabold'> {item.category}</p>
+                    <Image
+                      width={450}
+                      height={450}
+                      className='w-7'
+                      src={mensuality.category.image}
+                      alt={'Icone catégorie '}
+                    />
+                    <p className='font-extrabold'>
+                      {' '}
+                      {mensuality.category.name}
+                    </p>
                   </span>
                 </TableCell>
                 <TableCell className='p-4 text-gray-700 font-semibold'>
-                  {item.name}
+                  {mensuality.name}
                 </TableCell>
                 <TableCell className='p-4 text-gray-700 font-medium'>
-                  {item.price}
+                  {mensuality.price} €
                 </TableCell>
                 <TableCell className='p-4 flex justify-center gap-3'>
                   <button
@@ -279,11 +272,13 @@ function TableMobile({
   handleDelete,
   setOpenCreateModal,
   setOpenEditModal,
+  mensualitiesData,
 }: {
   showGraphic: boolean;
   handleDelete: () => void;
   setOpenCreateModal: Dispatch<SetStateAction<boolean>>;
   setOpenEditModal: Dispatch<SetStateAction<boolean>>;
+  mensualitiesData: MensualityGetType[] | undefined;
 }) {
   return (
     <motion.section
@@ -345,24 +340,33 @@ function TableMobile({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((item, index) => (
+            {mensualitiesData?.map((mensuality, index) => (
               <TableRow key={index} className='border-t p-0 border-gray-200'>
                 <TableCell className='p-4 flex items-center gap-2'>
                   <span className='bg-[#E8E5FF] text-blue  font-semibold py-1 px-2 flex gap-2 items-center rounded-xl'>
-                    <span className='text-xl'>{item.icon}</span>
-                    <p className='font-extrabold'> {item.category}</p>
+                    <Image
+                      width={450}
+                      height={450}
+                      className='w-7'
+                      src={mensuality.category.image}
+                      alt={'Icone catégorie '}
+                    />
+                    <p className='font-extrabold'>
+                      {' '}
+                      {mensuality.category.name}
+                    </p>
                   </span>
                 </TableCell>
                 <TableCell className='p-4 text-gray-700 font-semibold'>
-                  {item.name}
+                  {mensuality.name}
                 </TableCell>
                 <TableCell className='p-4 text-gray-700 font-medium'>
-                  {item.price}
+                  {mensuality.price} €
                 </TableCell>
                 <TableCell className='p-4 flex justify-center gap-3'>
                   <button
-                    onClick={handleDelete}
                     className=' hover:bg-red-200 transition p-1 rounded-full'
+                    onClick={handleDelete}
                   >
                     <TrashIcon width='18' />
                   </button>
@@ -377,7 +381,7 @@ function TableMobile({
             ))}
           </TableBody>
         </Table>
-        {data.map((mensuality) => (
+        {mensualitiesData?.map((mensuality) => (
           <article
             className=' md:hidden drop-shadow-md flex  bg-white rounded-2xl px-6 gap-2 py-3'
             key={Math.random()}
@@ -385,20 +389,26 @@ function TableMobile({
             <div className='w-4/5 flex flex-col gap-4 justify-center'>
               <p className='font-bold text-sm sm:text-base '>
                 {' '}
-                {mensuality.name}
+                {mensuality.category.name}
               </p>
               <span className='bg-[#E8E5FF] text-blue font-semibold py-1 px-2 inline-flex w-fit gap-2 items-center rounded-xl'>
-                <span className='text-xl'>{mensuality.icon}</span>
+                <Image
+                  width={450}
+                  height={450}
+                  className='w-7'
+                  src={mensuality.category.image}
+                  alt={'Icone catégorie '}
+                />
                 <p className='font-extrabold text-sm sm:text-base'>
                   {' '}
-                  {mensuality.category}
+                  {mensuality.category.name}
                 </p>
               </span>
             </div>
             <div className='w-1/5 flex flex-col items-center gap-4'>
               <p className='sm:text-xl text-lg text-center font-bold break-words w-full '>
                 {' '}
-                {mensuality.price}
+                {mensuality.price} €
               </p>
               <div>
                 <button className=' p-1' onClick={handleDelete}>

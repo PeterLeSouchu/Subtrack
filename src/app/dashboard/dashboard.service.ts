@@ -1,19 +1,37 @@
 import api from '@/src/lib/axios.config';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ErrorType } from '@/src/types/error-response';
-import { MensualityType } from '@/src/types/mensuality';
+import { MensualityPostType, MensualityGetType } from '@/src/types/mensuality';
 
-interface MensualityResponse {
+interface MensualityResponsePost {
   data: {
     message: string;
-    mensuality: MensualityType;
+    mensuality: MensualityGetType;
   };
 }
 
+interface MensualityResponseGet {
+  message: string;
+  mensualities: MensualityGetType[];
+}
+
 export function usePostMensuality() {
-  return useMutation<MensualityResponse, ErrorType, MensualityType>({
+  const queryClient = useQueryClient();
+  return useMutation<MensualityResponsePost, ErrorType, MensualityPostType>({
     mutationFn: (mensuality) => {
       return api.post('/mensuality', mensuality);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['mensuality'] });
+    },
+  });
+}
+
+export function useGetMensuality() {
+  return useQuery<MensualityResponseGet, ErrorType>({
+    queryKey: ['mensuality'],
+    queryFn: async () => {
+      return api.get('/mensuality').then((response) => response.data);
     },
   });
 }

@@ -67,6 +67,7 @@ CREATE TABLE "Authenticator" (
 CREATE TABLE "Category" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -148,17 +149,15 @@ ALTER TABLE "History" ADD CONSTRAINT "History_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "History" ADD CONSTRAINT "History_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 
-INSERT INTO "Category" ("name") VALUES
-('Logement'),
-('Transport'),
-('Assurances'),
-('Énergie'),
-('Alimentation'),
-('Loisirs'),
-('Crédits'),
-('Épargne'),
-('Santé'),
-('Éducation'),
-('Services'),
-('Autres');
-
+INSERT INTO "Category" ("name", "image") VALUES
+('Logement', 'https://res.cloudinary.com/dix2wzs7n/image/upload/v1742665873/pztdckqoch294dxnumh8.webp'),
+('Transport', 'https://res.cloudinary.com/dix2wzs7n/image/upload/v1742666126/b6vviejbe0qw3a9vhavs.png'),
+('Assurances', 'https://res.cloudinary.com/dix2wzs7n/image/upload/v1742666164/mwgevfytwuesfwyrfwlt.png'),
+('Alimentation', 'https://res.cloudinary.com/dix2wzs7n/image/upload/v1742666594/nosbioky8mwvoy4h5fdj.png'),
+('Loisirs', 'https://res.cloudinary.com/dix2wzs7n/image/upload/v1742666628/eags7wgdmoxjcgwadyuj.png'),
+('Crédits', 'https://res.cloudinary.com/dix2wzs7n/image/upload/v1742666665/toj6prfhgjuioivfgxla.png'),
+('Épargne', 'https://res.cloudinary.com/dix2wzs7n/image/upload/v1742666728/apxkfbux5j6druw0wefl.png'),
+('Santé', 'https://res.cloudinary.com/dix2wzs7n/image/upload/v1742666766/vby5o8olmdbf4coeqvhc.png'),
+('Éducation', 'https://res.cloudinary.com/dix2wzs7n/image/upload/v1742667001/kh6lcdarxw3xw9avaynz.png'),
+('Services', 'https://res.cloudinary.com/dix2wzs7n/image/upload/v1742669730/gt93ijd8pwhhtnq5rxcc.webp'),
+('Autres', 'https://res.cloudinary.com/dix2wzs7n/image/upload/v1742666970/itsenqt2lawkbpznzpl3.png');

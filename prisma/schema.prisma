@@ -82,6 +82,7 @@ model Authenticator {
 model Category {
   id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name       String
+  image      String
   Limit      Limit[]
   Mensuality Mensuality[]
   History    History[]

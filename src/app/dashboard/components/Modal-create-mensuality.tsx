@@ -31,15 +31,14 @@ const categoryOptions = [
   { name: 'Logement', id: '1' },
   { name: 'Transport', id: '2' },
   { name: 'Assurances', id: '3' },
-  { name: 'Énergie', id: '4' },
-  { name: 'Alimentation', id: '5' },
-  { name: 'Loisirs', id: '6' },
-  { name: 'Crédits', id: '7' },
-  { name: 'Épargne', id: '8' },
-  { name: 'Santé', id: '9' },
-  { name: 'Éducation', id: '10' },
-  { name: 'Services', id: '11' },
-  { name: 'Autres', id: '12' },
+  { name: 'Alimentation', id: '4' },
+  { name: 'Loisirs', id: '5' },
+  { name: 'Crédits', id: '6' },
+  { name: 'Épargne', id: '7' },
+  { name: 'Santé', id: '8' },
+  { name: 'Éducation', id: '9' },
+  { name: 'Services', id: '10' },
+  { name: 'Autres', id: '11' },
 ];
 
 export default function ModalCreateMensuality({
