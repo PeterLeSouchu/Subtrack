@@ -52,7 +52,8 @@ export default function Dashboard() {
   const filteredMensualities = mensualities?.mensualities.filter(
     (mensuality) =>
       mensuality.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-      mensuality.price.toString().includes(searchValue)
+      mensuality.price.toString().includes(searchValue) ||
+      mensuality.category.name.toLowerCase().includes(searchValue)
   );
 
   console.log('voila les categories', categories);
