@@ -36,20 +36,28 @@ import ModalEditMensuality from './components/Modal-edit-mensuality';
 import { useGetCategory, useGetMensuality } from './dashboard.service';
 import { MensualityGetType } from '@/src/types/mensuality';
 import { CategoryType } from '@/src/types/category';
+import Spinner from '@/src/components/Spinner';
 
 export default function Dashboard() {
   const [showGraphic, setShowGraphic] = useState(false);
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
   const { confirm } = useConfirm();
 
   const { data: mensualities, isLoading: mensualitiesLoading } =
     useGetMensuality();
-  const { data: categories } = useGetCategory();
+  const { data: categories, isLoading: categoriesLoading } = useGetCategory();
+
+  const filteredMensualities = mensualities?.mensualities.filter(
+    (mensuality) =>
+      mensuality.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+      mensuality.price.toString().includes(searchValue)
+  );
 
   console.log('voila les categories', categories);
 
-  if (mensualitiesLoading) return <p>Chargement des mensualités...</p>;
+  if (mensualitiesLoading || categoriesLoading) return <Spinner />;
 
   async function handleDelete() {
     console.log('teststs');
@@ -84,15 +92,19 @@ export default function Dashboard() {
           handleDelete={handleDelete}
           setOpenCreateModal={setOpenCreateModal}
           setOpenEditModal={setOpenEditModal}
-          mensualitiesData={mensualities?.mensualities}
+          mensualitiesData={filteredMensualities}
           categoriesData={categories?.categories}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
         />
         <TableDesktop
           handleDelete={handleDelete}
           setOpenCreateModal={setOpenCreateModal}
           setOpenEditModal={setOpenEditModal}
-          mensualitiesData={mensualities?.mensualities}
+          mensualitiesData={filteredMensualities}
           categoriesData={categories?.categories}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
         />
         <GraphicMobile showGraphic={showGraphic} />
       </div>
@@ -153,12 +165,16 @@ function TableDesktop({
   setOpenEditModal,
   mensualitiesData,
   categoriesData,
+  searchValue,
+  setSearchValue,
 }: {
   handleDelete: () => void;
   setOpenCreateModal: Dispatch<SetStateAction<boolean>>;
   setOpenEditModal: Dispatch<SetStateAction<boolean>>;
   mensualitiesData: MensualityGetType[] | undefined;
   categoriesData: CategoryType[] | undefined;
+  searchValue: string;
+  setSearchValue: Dispatch<SetStateAction<string>>;
 }) {
   return (
     <section className={`flex-1 p-3 w-full overflow-hidden   xl:block hidden `}>
@@ -170,6 +186,8 @@ function TableDesktop({
               placeholder='Cherchez une mensualité'
               type='text'
               className='rounded-full bg-transparent flex-1 outline-none px-3 w-full min-w-[120px]'
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
             <label htmlFor='search'>
               {' '}
@@ -181,8 +199,15 @@ function TableDesktop({
               <SelectValue placeholder='Catégorie' />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value={'all'} className='cursor-pointer'>
+                <p>Toutes</p>
+              </SelectItem>
               {categoriesData?.map((category) => (
-                <SelectItem key={category.id} value={category.id}>
+                <SelectItem
+                  key={category.id}
+                  value={category.id}
+                  className='cursor-pointer'
+                >
                   <div className='flex  flex-row items-center justify-start gap-1'>
                     <Image
                       height={20}
@@ -275,6 +300,8 @@ function TableMobile({
   setOpenEditModal,
   mensualitiesData,
   categoriesData,
+  searchValue,
+  setSearchValue,
 }: {
   showGraphic: boolean;
   handleDelete: () => void;
@@ -282,6 +309,8 @@ function TableMobile({
   setOpenEditModal: Dispatch<SetStateAction<boolean>>;
   mensualitiesData: MensualityGetType[] | undefined;
   categoriesData: CategoryType[] | undefined;
+  searchValue: string;
+  setSearchValue: Dispatch<SetStateAction<string>>;
 }) {
   return (
     <motion.section
@@ -300,6 +329,8 @@ function TableMobile({
               placeholder='Cherchez une mensualité'
               type='text'
               className='rounded-full bg-transparent flex-1 outline-none px-3 w-full min-w-[120px]'
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
             <label htmlFor='search'>
               {' '}
@@ -311,8 +342,15 @@ function TableMobile({
               <SelectValue placeholder='Catégorie' />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value={'all'} className='cursor-pointer'>
+                <p>Toutes</p>
+              </SelectItem>
               {categoriesData?.map((category) => (
-                <SelectItem key={category.id} value={category.id}>
+                <SelectItem
+                  key={category.id}
+                  value={category.id}
+                  className='cursor-pointer'
+                >
                   <div className='flex  flex-row items-center justify-start gap-1'>
                     <Image
                       height={20}

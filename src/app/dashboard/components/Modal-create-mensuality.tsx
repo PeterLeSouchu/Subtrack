@@ -21,6 +21,7 @@ import { useGetCategory, usePostMensuality } from '../dashboard.service';
 import { useToast } from '../../providers/Toast-provider';
 import { ErrorType } from '@/src/types/error-response';
 import Image from 'next/image';
+import Spinner from '@/src/components/Spinner';
 
 const schema = z.object({
   name: z.string().min(1, 'Veuillez attribuer un nom'),
@@ -37,7 +38,7 @@ export default function ModalCreateMensuality({
 }) {
   const { mutate } = usePostMensuality();
   const { showToast } = useToast();
-  const { data: categories } = useGetCategory();
+  const { data: categories, isLoading: categoriesLoading } = useGetCategory();
   const {
     register,
     handleSubmit,
@@ -63,6 +64,8 @@ export default function ModalCreateMensuality({
     onClose();
     reset();
   }
+
+  if (categoriesLoading) return <Spinner />;
 
   return (
     <Dialog open={open} onOpenChange={closeModal}>
@@ -107,7 +110,11 @@ export default function ModalCreateMensuality({
                   </SelectTrigger>
                   <SelectContent>
                     {categories?.categories.map((category) => (
-                      <SelectItem key={category.id} value={category.id}>
+                      <SelectItem
+                        key={category.id}
+                        value={category.id}
+                        className='cursor-pointer'
+                      >
                         <div className='flex  flex-row items-center justify-start gap-1'>
                           <Image
                             height={20}
