@@ -109,7 +109,7 @@ export function ConfirmDialogWithContext() {
 
 export function useConfirm() {
   const { confirmRef } = useContext(ConfirmContext);
-  console.log('confirmRef.current:', confirmRef.current); // Debug
+
   return {
     confirm: useCallback((p: Params) => {
       return confirmRef.current(p);

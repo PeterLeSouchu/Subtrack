@@ -186,9 +186,7 @@ function TableDesktop({
   setOpenEditModal: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
-    <section
-      className={`flex-1 p-3 px-3 pt-3 pb-0 w-full overflow-hidden   xl:block hidden `}
-    >
+    <section className={`flex-1 p-3 w-full overflow-hidden   xl:block hidden `}>
       <div className='xl:bg-white xl:drop-shadow-md w-full h-full p-4  flex flex-col gap-4 rounded-md md:overflow-hidden overflow-y-scroll'>
         <div className='flex gap-2 w-full'>
           <div className='flex flex-1 bg-white border items-center rounded-full  w-full  p-1'>
@@ -270,40 +268,6 @@ function TableDesktop({
             ))}
           </TableBody>
         </Table>
-        {/* {data.map((mensuality) => (
-          <article
-            className=' md:hidden drop-shadow-md flex  bg-white rounded-2xl px-6 gap-2 py-3'
-            key={Math.random()}
-          >
-            <div className='w-4/5 flex flex-col gap-4 justify-center'>
-              <p className='font-bold text-sm sm:text-base '>
-                {' '}
-                {mensuality.name}
-              </p>
-              <span className='bg-[#E8E5FF] text-blue font-semibold py-1 px-2 inline-flex w-fit gap-2 items-center rounded-xl'>
-                <span className='text-xl'>{mensuality.icon}</span>
-                <p className='font-extrabold text-sm sm:text-base'>
-                  {' '}
-                  {mensuality.category}
-                </p>
-              </span>
-            </div>
-            <div className='w-1/5 flex flex-col items-center gap-4'>
-              <p className='sm:text-xl text-lg text-center font-bold break-words w-full '>
-                {' '}
-                {mensuality.price}
-              </p>
-              <div>
-                <button className=' p-1' onClick={() => console.log('dddd')}>
-                  <TrashIcon width='20' />
-                </button>
-                <button className=' p-1'>
-                  <EditIcon width='18' />
-                </button>
-              </div>
-            </div>
-          </article>
-        ))} */}
       </div>
     </section>
   );

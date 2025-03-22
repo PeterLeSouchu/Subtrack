@@ -102,12 +102,17 @@ function NavBar() {
           {menuItems.map((item) => (
             <li
               key={item.path}
-              className={`relative flex justify-center items-center gap-1 text-lg ${
+              className={`relative  text-lg ${
                 pathName === item.path ? 'active-link' : ''
               }`}
             >
-              {item.icon}
-              <Link href={item.path}>{item.name}</Link>
+              <Link
+                className='flex justify-center items-center gap-1'
+                href={item.path}
+              >
+                {' '}
+                {item.icon} {item.name}
+              </Link>
             </li>
           ))}
           {activeDimensions && (
