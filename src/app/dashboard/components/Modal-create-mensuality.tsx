@@ -17,29 +17,16 @@ import {
   SelectValue,
 } from '@/src/components/ui/select';
 import { Label } from '@/src/components/ui/label';
-import { usePostMensuality } from '../dashboard.service';
+import { useGetCategory, usePostMensuality } from '../dashboard.service';
 import { useToast } from '../../providers/Toast-provider';
 import { ErrorType } from '@/src/types/error-response';
+import Image from 'next/image';
 
 const schema = z.object({
   name: z.string().min(1, 'Veuillez attribuer un nom'),
   price: z.string().min(1, 'Veuillez attribuer un prix'),
   category: z.string({ required_error: 'Veuillez sélectionner une catégorie' }),
 });
-
-const categoryOptions = [
-  { name: 'Logement', id: '1' },
-  { name: 'Transport', id: '2' },
-  { name: 'Assurances', id: '3' },
-  { name: 'Alimentation', id: '4' },
-  { name: 'Loisirs', id: '5' },
-  { name: 'Crédits', id: '6' },
-  { name: 'Épargne', id: '7' },
-  { name: 'Santé', id: '8' },
-  { name: 'Éducation', id: '9' },
-  { name: 'Services', id: '10' },
-  { name: 'Autres', id: '11' },
-];
 
 export default function ModalCreateMensuality({
   open,
@@ -50,6 +37,7 @@ export default function ModalCreateMensuality({
 }) {
   const { mutate } = usePostMensuality();
   const { showToast } = useToast();
+  const { data: categories } = useGetCategory();
   const {
     register,
     handleSubmit,
@@ -118,9 +106,18 @@ export default function ModalCreateMensuality({
                     <SelectValue placeholder='Catégorie' />
                   </SelectTrigger>
                   <SelectContent>
-                    {categoryOptions.map((category) => (
-                      <SelectItem key={category.id} value={category.name}>
-                        {category.name}
+                    {categories?.categories.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        <div className='flex  flex-row items-center justify-start gap-1'>
+                          <Image
+                            height={20}
+                            width={20}
+                            className='w-5 h-5 object-contain'
+                            src={category.image}
+                            alt='icone categorie'
+                          />
+                          <p>{category.name}</p>
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectContent>

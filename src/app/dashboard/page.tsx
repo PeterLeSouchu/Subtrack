@@ -33,23 +33,9 @@ import { motion } from 'framer-motion';
 import { useConfirm } from '../providers/Confirm-provider';
 import ModalCreateMensuality from './components/Modal-create-mensuality';
 import ModalEditMensuality from './components/Modal-edit-mensuality';
-import { useGetMensuality } from './dashboard.service';
+import { useGetCategory, useGetMensuality } from './dashboard.service';
 import { MensualityGetType } from '@/src/types/mensuality';
-
-const categoryOptions = [
-  { name: 'Toutes', id: '0' },
-  { name: 'Logement', id: '1' },
-  { name: 'Transport', id: '2' },
-  { name: 'Assurances', id: '3' },
-  { name: 'Alimentation', id: '4' },
-  { name: 'Loisirs', id: '5' },
-  { name: 'Crédits', id: '6' },
-  { name: 'Épargne', id: '7' },
-  { name: 'Santé', id: '8' },
-  { name: 'Éducation', id: '9' },
-  { name: 'Services', id: '10' },
-  { name: 'Autres', id: '11' },
-];
+import { CategoryType } from '@/src/types/category';
 
 export default function Dashboard() {
   const [showGraphic, setShowGraphic] = useState(false);
@@ -57,11 +43,13 @@ export default function Dashboard() {
   const [openEditModal, setOpenEditModal] = useState(false);
   const { confirm } = useConfirm();
 
-  const { data: mensualities, isLoading } = useGetMensuality();
+  const { data: mensualities, isLoading: mensualitiesLoading } =
+    useGetMensuality();
+  const { data: categories } = useGetCategory();
 
-  console.log('voila les mensualités', mensualities);
+  console.log('voila les categories', categories);
 
-  if (isLoading) return <p>Chargement des mensualités...</p>;
+  if (mensualitiesLoading) return <p>Chargement des mensualités...</p>;
 
   async function handleDelete() {
     console.log('teststs');
@@ -97,12 +85,14 @@ export default function Dashboard() {
           setOpenCreateModal={setOpenCreateModal}
           setOpenEditModal={setOpenEditModal}
           mensualitiesData={mensualities?.mensualities}
+          categoriesData={categories?.categories}
         />
         <TableDesktop
           handleDelete={handleDelete}
           setOpenCreateModal={setOpenCreateModal}
           setOpenEditModal={setOpenEditModal}
           mensualitiesData={mensualities?.mensualities}
+          categoriesData={categories?.categories}
         />
         <GraphicMobile showGraphic={showGraphic} />
       </div>
@@ -162,11 +152,13 @@ function TableDesktop({
   setOpenCreateModal,
   setOpenEditModal,
   mensualitiesData,
+  categoriesData,
 }: {
   handleDelete: () => void;
   setOpenCreateModal: Dispatch<SetStateAction<boolean>>;
   setOpenEditModal: Dispatch<SetStateAction<boolean>>;
   mensualitiesData: MensualityGetType[] | undefined;
+  categoriesData: CategoryType[] | undefined;
 }) {
   return (
     <section className={`flex-1 p-3 w-full overflow-hidden   xl:block hidden `}>
@@ -189,9 +181,18 @@ function TableDesktop({
               <SelectValue placeholder='Catégorie' />
             </SelectTrigger>
             <SelectContent>
-              {categoryOptions.map((category) => (
-                <SelectItem key={category.id} value={category.name}>
-                  {category.name}
+              {categoriesData?.map((category) => (
+                <SelectItem key={category.id} value={category.id}>
+                  <div className='flex  flex-row items-center justify-start gap-1'>
+                    <Image
+                      height={20}
+                      width={20}
+                      className='w-5 h-5 object-contain'
+                      src={category.image}
+                      alt='icone categorie'
+                    />
+                    <p>{category.name}</p>
+                  </div>
                 </SelectItem>
               ))}
             </SelectContent>
@@ -273,12 +274,14 @@ function TableMobile({
   setOpenCreateModal,
   setOpenEditModal,
   mensualitiesData,
+  categoriesData,
 }: {
   showGraphic: boolean;
   handleDelete: () => void;
   setOpenCreateModal: Dispatch<SetStateAction<boolean>>;
   setOpenEditModal: Dispatch<SetStateAction<boolean>>;
   mensualitiesData: MensualityGetType[] | undefined;
+  categoriesData: CategoryType[] | undefined;
 }) {
   return (
     <motion.section
@@ -308,9 +311,18 @@ function TableMobile({
               <SelectValue placeholder='Catégorie' />
             </SelectTrigger>
             <SelectContent>
-              {categoryOptions.map((category) => (
-                <SelectItem key={category.id} value={category.name}>
-                  {category.name}
+              {categoriesData?.map((category) => (
+                <SelectItem key={category.id} value={category.id}>
+                  <div className='flex  flex-row items-center justify-start gap-1'>
+                    <Image
+                      height={20}
+                      width={20}
+                      className='w-5 h-5 object-contain'
+                      src={category.image}
+                      alt='icone categorie'
+                    />
+                    <p>{category.name}</p>
+                  </div>
                 </SelectItem>
               ))}
             </SelectContent>

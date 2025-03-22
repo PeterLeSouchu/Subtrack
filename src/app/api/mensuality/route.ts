@@ -62,8 +62,8 @@ export const POST = auth(async function POST(req) {
 
       console.log('donnée parsée', parsedData.data);
 
-      const existingCategory = await prisma.category.findFirst({
-        where: { name: parsedData.data.category },
+      const existingCategory = await prisma.category.findUnique({
+        where: { id: parsedData.data.category },
       });
 
       if (!existingCategory) {
