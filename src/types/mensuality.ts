@@ -7,5 +7,5 @@ export interface MensualityPostType {
 export interface MensualityGetType {
   name: string;
   price: string;
-  category: { image: string; name: string };
+  category: { image: string; name: string; id: string };
 }

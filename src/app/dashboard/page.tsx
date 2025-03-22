@@ -43,20 +43,23 @@ export default function Dashboard() {
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const { confirm } = useConfirm();
 
   const { data: mensualities, isLoading: mensualitiesLoading } =
     useGetMensuality();
   const { data: categories, isLoading: categoriesLoading } = useGetCategory();
+  console.log('selectedCategory', selectedCategory);
+  console.log('mensualities', mensualities?.mensualities);
 
   const filteredMensualities = mensualities?.mensualities.filter(
     (mensuality) =>
-      mensuality.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-      mensuality.price.toString().includes(searchValue) ||
-      mensuality.category.name.toLowerCase().includes(searchValue)
+      (selectedCategory === 'all' ||
+        mensuality.category.id === selectedCategory) &&
+      (mensuality.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        mensuality.price.toString().includes(searchValue) ||
+        mensuality.category.name.toLowerCase().includes(searchValue))
   );
-
-  console.log('voila les categories', categories);
 
   if (mensualitiesLoading || categoriesLoading) return <Spinner />;
 
@@ -64,8 +67,7 @@ export default function Dashboard() {
     console.log('teststs');
     if (
       await confirm({
-        title:
-          'Etes-vous sur de vouloir supprimer cette mensualité Etes-vous sur de vouloir supprimer cette mensualité Etes-vous sur de vouloir supprimer cette mensualité Etes-vous sur de vouloir supprimer cette mensualité Etes-vous sur de vouloir supprimer cette mensualité v ',
+        title: 'Etes-vous sur de vouloir supprimer cette mensualité  ',
         confirmBtn: 'Supprimer',
       })
     ) {
@@ -97,6 +99,7 @@ export default function Dashboard() {
           categoriesData={categories?.categories}
           searchValue={searchValue}
           setSearchValue={setSearchValue}
+          setSelectedCategory={setSelectedCategory}
         />
         <TableDesktop
           handleDelete={handleDelete}
@@ -106,6 +109,7 @@ export default function Dashboard() {
           categoriesData={categories?.categories}
           searchValue={searchValue}
           setSearchValue={setSearchValue}
+          setSelectedCategory={setSelectedCategory}
         />
         <GraphicMobile showGraphic={showGraphic} />
       </div>
@@ -168,6 +172,7 @@ function TableDesktop({
   categoriesData,
   searchValue,
   setSearchValue,
+  setSelectedCategory,
 }: {
   handleDelete: () => void;
   setOpenCreateModal: Dispatch<SetStateAction<boolean>>;
@@ -176,6 +181,7 @@ function TableDesktop({
   categoriesData: CategoryType[] | undefined;
   searchValue: string;
   setSearchValue: Dispatch<SetStateAction<string>>;
+  setSelectedCategory: Dispatch<SetStateAction<string>>;
 }) {
   return (
     <section className={`flex-1 p-3 w-full overflow-hidden   xl:block hidden `}>
@@ -195,7 +201,7 @@ function TableDesktop({
               <SearchIcon width='20' height='20' />
             </label>
           </div>
-          <Select>
+          <Select onValueChange={setSelectedCategory}>
             <SelectTrigger className='w-auto'>
               <SelectValue placeholder='Catégorie' />
             </SelectTrigger>
@@ -248,45 +254,55 @@ function TableDesktop({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {mensualitiesData?.map((mensuality, index) => (
-              <TableRow key={index} className='border-t p-0 border-gray-200'>
-                <TableCell className='p-4 flex items-center gap-2'>
-                  <span className='bg-[#E8E5FF] text-blue  font-semibold py-1 px-2 flex gap-2 items-center rounded-xl'>
-                    <Image
-                      width={450}
-                      height={450}
-                      className='w-7'
-                      src={mensuality.category.image}
-                      alt={'Icone catégorie '}
-                    />
-                    <p className='font-extrabold'>
-                      {' '}
-                      {mensuality.category.name}
-                    </p>
-                  </span>
-                </TableCell>
-                <TableCell className='p-4 text-gray-700 font-semibold'>
-                  {mensuality.name}
-                </TableCell>
-                <TableCell className='p-4 text-gray-700 font-medium'>
-                  {mensuality.price} €
-                </TableCell>
-                <TableCell className='p-4 flex justify-center gap-3'>
-                  <button
-                    className=' hover:bg-red-200 transition p-1 rounded-full'
-                    onClick={handleDelete}
-                  >
-                    <TrashIcon width='18' />
-                  </button>
-                  <button
-                    onClick={() => setOpenEditModal(true)}
-                    className=' hover:bg-amber-100 transition p-1 rounded-full'
-                  >
-                    <EditIcon width='16' />
-                  </button>
+            {mensualitiesData && mensualitiesData?.length > 0 ? (
+              mensualitiesData.map((mensuality, index) => (
+                <TableRow key={index} className='border-t p-0 border-gray-200'>
+                  <TableCell className='p-4 flex items-center gap-2'>
+                    <span className='bg-[#E8E5FF] text-blue font-semibold py-1 px-2 flex gap-2 items-center rounded-xl'>
+                      <Image
+                        width={450}
+                        height={450}
+                        className='w-7'
+                        src={mensuality.category.image}
+                        alt='Icone catégorie'
+                      />
+                      <p className='font-extrabold'>
+                        {mensuality.category.name}
+                      </p>
+                    </span>
+                  </TableCell>
+                  <TableCell className='p-4 text-gray-700 font-semibold'>
+                    {mensuality.name}
+                  </TableCell>
+                  <TableCell className='p-4 text-gray-700 font-medium'>
+                    {mensuality.price} €
+                  </TableCell>
+                  <TableCell className='p-4 flex justify-center gap-3'>
+                    <button
+                      className='hover:bg-red-200 transition p-1 rounded-full'
+                      onClick={handleDelete}
+                    >
+                      <TrashIcon width='18' />
+                    </button>
+                    <button
+                      onClick={() => setOpenEditModal(true)}
+                      className='hover:bg-amber-100 transition p-1 rounded-full'
+                    >
+                      <EditIcon width='16' />
+                    </button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={4}
+                  className='text-center p-4 text-gray-500'
+                >
+                  Aucune mensualité trouvée.
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </div>
@@ -303,6 +319,7 @@ function TableMobile({
   categoriesData,
   searchValue,
   setSearchValue,
+  setSelectedCategory,
 }: {
   showGraphic: boolean;
   handleDelete: () => void;
@@ -312,6 +329,7 @@ function TableMobile({
   categoriesData: CategoryType[] | undefined;
   searchValue: string;
   setSearchValue: Dispatch<SetStateAction<string>>;
+  setSelectedCategory: Dispatch<SetStateAction<string>>;
 }) {
   return (
     <motion.section
@@ -338,7 +356,7 @@ function TableMobile({
               <SearchIcon width='20' height='20' />
             </label>
           </div>
-          <Select>
+          <Select onValueChange={setSelectedCategory}>
             <SelectTrigger className='w-auto'>
               <SelectValue placeholder='Catégorie' />
             </SelectTrigger>
@@ -391,87 +409,104 @@ function TableMobile({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {mensualitiesData?.map((mensuality, index) => (
-              <TableRow key={index} className='border-t p-0 border-gray-200'>
-                <TableCell className='p-4 flex items-center gap-2'>
-                  <span className='bg-[#E8E5FF] text-blue  font-semibold py-1 px-2 flex gap-2 items-center rounded-xl'>
-                    <Image
-                      width={450}
-                      height={450}
-                      className='w-7'
-                      src={mensuality.category.image}
-                      alt={'Icone catégorie '}
-                    />
-                    <p className='font-extrabold'>
-                      {' '}
-                      {mensuality.category.name}
-                    </p>
-                  </span>
-                </TableCell>
-                <TableCell className='p-4 text-gray-700 font-semibold'>
-                  {mensuality.name}
-                </TableCell>
-                <TableCell className='p-4 text-gray-700 font-medium'>
-                  {mensuality.price} €
-                </TableCell>
-                <TableCell className='p-4 flex justify-center gap-3'>
-                  <button
-                    className=' hover:bg-red-200 transition p-1 rounded-full'
-                    onClick={handleDelete}
-                  >
-                    <TrashIcon width='18' />
-                  </button>
-                  <button
-                    onClick={() => setOpenEditModal(true)}
-                    className=' hover:bg-amber-100 transition p-1 rounded-full'
-                  >
-                    <EditIcon width='16' />
-                  </button>
+            {mensualitiesData && mensualitiesData?.length > 0 ? (
+              mensualitiesData.map((mensuality, index) => (
+                <TableRow key={index} className='border-t p-0 border-gray-200'>
+                  <TableCell className='p-4 flex items-center gap-2'>
+                    <span className='bg-[#E8E5FF] text-blue font-semibold py-1 px-2 flex gap-2 items-center rounded-xl'>
+                      <Image
+                        width={450}
+                        height={450}
+                        className='w-7'
+                        src={mensuality.category.image}
+                        alt='Icone catégorie'
+                      />
+                      <p className='font-extrabold'>
+                        {mensuality.category.name}
+                      </p>
+                    </span>
+                  </TableCell>
+                  <TableCell className='p-4 text-gray-700 font-semibold'>
+                    {mensuality.name}
+                  </TableCell>
+                  <TableCell className='p-4 text-gray-700 font-medium'>
+                    {mensuality.price} €
+                  </TableCell>
+                  <TableCell className='p-4 flex justify-center gap-3'>
+                    <button
+                      className='hover:bg-red-200 transition p-1 rounded-full'
+                      onClick={handleDelete}
+                    >
+                      <TrashIcon width='18' />
+                    </button>
+                    <button
+                      onClick={() => setOpenEditModal(true)}
+                      className='hover:bg-amber-100 transition p-1 rounded-full'
+                    >
+                      <EditIcon width='16' />
+                    </button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={4}
+                  className='text-center p-4 text-gray-500'
+                >
+                  Aucune mensualité trouvée.
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
-        {mensualitiesData?.map((mensuality) => (
-          <article
-            className=' md:hidden drop-shadow-md flex  bg-white rounded-2xl px-6 gap-2 py-3'
-            key={Math.random()}
-          >
-            <div className='w-4/5 flex flex-col gap-4 justify-center'>
-              <p className='font-bold text-sm sm:text-base '>
-                {' '}
-                {mensuality.category.name}
-              </p>
-              <span className='bg-[#E8E5FF] text-blue font-semibold py-1 px-2 inline-flex w-fit gap-2 items-center rounded-xl'>
-                <Image
-                  width={450}
-                  height={450}
-                  className='w-7'
-                  src={mensuality.category.image}
-                  alt={'Icone catégorie '}
-                />
-                <p className='font-extrabold text-sm sm:text-base'>
+        {mensualitiesData && mensualitiesData.length > 0 ? (
+          mensualitiesData?.map((mensuality) => (
+            <article
+              className=' md:hidden drop-shadow-md flex  bg-white rounded-2xl px-6 gap-2 py-3'
+              key={Math.random()}
+            >
+              <div className='w-4/5 flex flex-col gap-4 justify-center'>
+                <p className='font-bold text-sm sm:text-base '>
                   {' '}
                   {mensuality.category.name}
                 </p>
-              </span>
-            </div>
-            <div className='w-1/5 flex flex-col items-center gap-4'>
-              <p className='sm:text-xl text-lg text-center font-bold break-words w-full '>
-                {' '}
-                {mensuality.price} €
-              </p>
-              <div>
-                <button className=' p-1' onClick={handleDelete}>
-                  <TrashIcon width='20' />
-                </button>
-                <button onClick={() => setOpenEditModal(true)} className=' p-1'>
-                  <EditIcon width='18' />
-                </button>
+                <span className='bg-[#E8E5FF] text-blue font-semibold py-1 px-2 inline-flex w-fit gap-2 items-center rounded-xl'>
+                  <Image
+                    width={450}
+                    height={450}
+                    className='w-7'
+                    src={mensuality.category.image}
+                    alt={'Icone catégorie '}
+                  />
+                  <p className='font-extrabold text-sm sm:text-base'>
+                    {' '}
+                    {mensuality.category.name}
+                  </p>
+                </span>
               </div>
-            </div>
-          </article>
-        ))}
+              <div className='w-1/5 flex flex-col items-center gap-4'>
+                <p className='sm:text-xl text-lg text-center font-bold break-words w-full '>
+                  {' '}
+                  {mensuality.price} €
+                </p>
+                <div>
+                  <button className=' p-1' onClick={handleDelete}>
+                    <TrashIcon width='20' />
+                  </button>
+                  <button
+                    onClick={() => setOpenEditModal(true)}
+                    className=' p-1'
+                  >
+                    <EditIcon width='18' />
+                  </button>
+                </div>
+              </div>
+            </article>
+          ))
+        ) : (
+          <p className='text-center text-gray-500'>Aucune mensaulité trouvée</p>
+        )}
       </div>
     </motion.section>
   );
