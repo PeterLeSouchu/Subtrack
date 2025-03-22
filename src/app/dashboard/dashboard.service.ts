@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ErrorType } from '@/src/types/error-response';
 import { MensualityPostType, MensualityGetType } from '@/src/types/mensuality';
 import { CategoryType } from '@/src/types/category';
+import { StatsType } from '@/src/types/stats';
 
 interface MensualityResponsePost {
   data: {
@@ -19,6 +20,12 @@ interface MensualityResponseGet {
 interface CategoryResponse {
   message: string;
   categories: CategoryType[];
+}
+
+interface StatsResponse {
+  message: string;
+  isStats: boolean;
+  stats: StatsType;
 }
 
 export function usePostMensuality() {
@@ -47,6 +54,15 @@ export function useGetCategory() {
     queryKey: ['category'],
     queryFn: async () => {
       return api.get('/category').then((response) => response.data);
+    },
+  });
+}
+
+export function useGetStats() {
+  return useQuery<StatsResponse, ErrorType>({
+    queryKey: ['stats'],
+    queryFn: async () => {
+      return api.get('/stats').then((response) => response.data);
     },
   });
 }

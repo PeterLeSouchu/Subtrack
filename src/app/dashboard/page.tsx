@@ -33,10 +33,15 @@ import { motion } from 'framer-motion';
 import { useConfirm } from '../providers/Confirm-provider';
 import ModalCreateMensuality from './components/Modal-create-mensuality';
 import ModalEditMensuality from './components/Modal-edit-mensuality';
-import { useGetCategory, useGetMensuality } from './dashboard.service';
+import {
+  useGetCategory,
+  useGetMensuality,
+  useGetStats,
+} from './dashboard.service';
 import { MensualityGetType } from '@/src/types/mensuality';
 import { CategoryType } from '@/src/types/category';
 import Spinner from '@/src/components/Spinner';
+import { StatsType } from '@/src/types/stats';
 
 export default function Dashboard() {
   const [showGraphic, setShowGraphic] = useState(false);
@@ -49,8 +54,7 @@ export default function Dashboard() {
   const { data: mensualities, isLoading: mensualitiesLoading } =
     useGetMensuality();
   const { data: categories, isLoading: categoriesLoading } = useGetCategory();
-  console.log('selectedCategory', selectedCategory);
-  console.log('mensualities', mensualities?.mensualities);
+  const { data: stats, isLoading: statsLoading } = useGetStats();
 
   const filteredMensualities = mensualities?.mensualities.filter(
     (mensuality) =>
@@ -61,7 +65,8 @@ export default function Dashboard() {
         mensuality.category.name.toLowerCase().includes(searchValue))
   );
 
-  if (mensualitiesLoading || categoriesLoading) return <Spinner />;
+  if (mensualitiesLoading || categoriesLoading || statsLoading)
+    return <Spinner />;
 
   async function handleDelete() {
     console.log('teststs');
@@ -75,12 +80,14 @@ export default function Dashboard() {
     }
   }
 
+  console.log('voila les stats', stats);
+
   return (
     <div className='flex   h-full    '>
       <div className='xl:w-2/3 w-full h-full flex overflow-y-scroll  flex-col'>
         <div className=''>
           {' '}
-          <StatsHeader />
+          <StatsHeader statsData={stats?.stats} />
         </div>
         <div className='flex items-center justify-center space-x-2 xl:hidden pt-4 '>
           <Switch
@@ -127,12 +134,12 @@ export default function Dashboard() {
   );
 }
 
-function StatsHeader() {
+function StatsHeader({ statsData }: { statsData: StatsType | undefined }) {
   return (
     <section className='flex py-3 px-3  justify-start items-center  w-full overflow-x-scroll gap-3 '>
       <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20  text-nowrap '>
         <span className='text-[#D6A514] font-black lg:text-4xl text-lg'>
-          1300 €
+          {statsData?.totalPrice} €
         </span>
         <h3 className='text-stattext font-bold text-left text-sm'>
           Montant total
@@ -140,7 +147,7 @@ function StatsHeader() {
       </article>
       <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20  text-nowrap'>
         <span className='text-[#2C4A7B] font-black lg:text-4xl text-lg'>
-          # 23
+          # {statsData?.totalMensuality}
         </span>
         <h3 className='text-stattext font-bold text-left text-sm'>
           Nombre de mensualités
@@ -148,7 +155,7 @@ function StatsHeader() {
       </article>
       <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20  text-nowrap'>
         <span className='text-[#43669D] font-black lg:text-4xl text-lg flex gap-1 items-center'>
-          <BalanceIcon width='30' height='30' /> 23
+          <BalanceIcon width='30' height='30' /> {statsData?.averagePrice} €
         </span>
         <h3 className='text-stattext font-bold text-left text-sm'>Moyenne</h3>
       </article>
