@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  BalanceIcon,
   TrashIcon,
   UpIcon,
   EditIcon,
@@ -69,7 +68,6 @@ export default function Dashboard() {
     return <Spinner />;
 
   async function handleDelete() {
-    console.log('teststs');
     if (
       await confirm({
         title: 'Etes-vous sur de vouloir supprimer cette mensualité  ',
@@ -79,8 +77,6 @@ export default function Dashboard() {
       console.log('la confirm modal fonctionne');
     }
   }
-
-  console.log('voila les stats', stats);
 
   return (
     <div className='flex   h-full    '>
@@ -135,11 +131,12 @@ export default function Dashboard() {
 }
 
 function StatsHeader({ statsData }: { statsData: StatsType | undefined }) {
+  console.log('data du header', statsData);
   return (
     <section className='flex py-3 px-3  justify-start items-center  w-full overflow-x-scroll gap-3 '>
       <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20  text-nowrap '>
         <span className='text-[#D6A514] font-black lg:text-4xl text-lg'>
-          {statsData?.totalPrice} €
+          {statsData?.totalPrice || 0} €
         </span>
         <h3 className='text-stattext font-bold text-left text-sm'>
           Montant total
@@ -147,7 +144,7 @@ function StatsHeader({ statsData }: { statsData: StatsType | undefined }) {
       </article>
       <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20  text-nowrap'>
         <span className='text-[#2C4A7B] font-black lg:text-4xl text-lg'>
-          # {statsData?.totalMensuality}
+          # {statsData?.totalMensuality || 0}
         </span>
         <h3 className='text-stattext font-bold text-left text-sm'>
           Nombre de mensualités
@@ -155,7 +152,7 @@ function StatsHeader({ statsData }: { statsData: StatsType | undefined }) {
       </article>
       <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20  text-nowrap'>
         <span className='text-[#43669D] font-black lg:text-4xl text-lg flex gap-1 items-center'>
-          <BalanceIcon width='30' height='30' /> {statsData?.averagePrice} €
+          {statsData?.averagePrice || 0} €
         </span>
         <h3 className='text-stattext font-bold text-left text-sm'>Moyenne</h3>
       </article>
@@ -306,7 +303,7 @@ function TableDesktop({
                   colSpan={4}
                   className='text-center p-4 text-gray-500'
                 >
-                  Aucune mensualité trouvée.
+                  Aucune mensualité.
                 </TableCell>
               </TableRow>
             )}
@@ -461,7 +458,7 @@ function TableMobile({
                   colSpan={4}
                   className='text-center p-4 text-gray-500'
                 >
-                  Aucune mensualité trouvée.
+                  Aucune mensualité.
                 </TableCell>
               </TableRow>
             )}
@@ -512,7 +509,7 @@ function TableMobile({
             </article>
           ))
         ) : (
-          <p className='text-center text-gray-500'>Aucune mensaulité trouvée</p>
+          <p className='text-center text-gray-500'>Aucune mensualité.</p>
         )}
       </div>
     </motion.section>

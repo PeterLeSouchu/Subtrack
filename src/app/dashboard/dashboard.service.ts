@@ -24,7 +24,6 @@ interface CategoryResponse {
 
 interface StatsResponse {
   message: string;
-  isStats: boolean;
   stats: StatsType;
 }
 

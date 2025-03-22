@@ -12,11 +12,12 @@ export const GET = auth(async function GET(req) {
         include: { category: true },
       });
 
-      if (!mensualities) {
+      console.log('voial les mensualités', mensualities);
+
+      if (mensualities.length < 1) {
         return NextResponse.json(
           {
             message: 'Mensualités récupérées avec succès',
-            isStats: false,
           },
           { status: 200 }
         );
@@ -34,7 +35,6 @@ export const GET = auth(async function GET(req) {
       return NextResponse.json(
         {
           message: 'Mensualités récupérées avec succès',
-          isStats: true,
           stats: {
             totalPrice,
             totalMensuality,
