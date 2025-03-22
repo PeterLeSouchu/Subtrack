@@ -29,8 +29,6 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { Switch } from '@/src/components/ui/switch';
 import { Label } from '@/src/components/ui/label';
 import { motion } from 'framer-motion';
-import { usePostMensuality } from './dashboard.service';
-import { useToast } from '../providers/Toast-provider';
 import { useConfirm } from '../providers/Confirm-provider';
 import ModalCreateMensuality from './components/Modal-create-mensuality';
 import ModalEditMensuality from './components/Modal-edit-mensuality';
@@ -63,13 +61,27 @@ const data = [
   { category: 'Sécurité', icon: '❤️‍🩹', name: 'Gaz', price: '450€' },
 ];
 
+const categoryOptions = [
+  { name: 'Toutes', id: '0' },
+  { name: 'Logement', id: '1' },
+  { name: 'Transport', id: '2' },
+  { name: 'Assurances', id: '3' },
+  { name: 'Énergie', id: '4' },
+  { name: 'Alimentation', id: '5' },
+  { name: 'Loisirs', id: '6' },
+  { name: 'Crédits', id: '7' },
+  { name: 'Épargne', id: '8' },
+  { name: 'Santé', id: '9' },
+  { name: 'Éducation', id: '10' },
+  { name: 'Services', id: '11' },
+  { name: 'Autres', id: '12' },
+];
+
 export default function Dashboard() {
   const [showGraphic, setShowGraphic] = useState(false);
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
-  const { showToast } = useToast();
   const { confirm } = useConfirm();
-  const { mutate } = usePostMensuality();
 
   async function handleDelete() {
     console.log('teststs');
@@ -84,16 +96,6 @@ export default function Dashboard() {
     }
   }
 
-  function handleTestApi() {
-    mutate(
-      { name: 'hello', price: 3, category: 'dd' },
-      {
-        onSuccess: () => showToast("tout s'est tres  bien passé", 'success'),
-        onError: () => showToast('voici la notif', 'error'),
-      }
-    );
-  }
-
   return (
     <div className='flex   h-full    '>
       <div className='xl:w-2/3 w-full h-full flex overflow-y-scroll  flex-col'>
@@ -106,10 +108,7 @@ export default function Dashboard() {
             onCheckedChange={() => setShowGraphic((value) => !value)}
             id='airplane-mode'
           />
-          <button className='bg-red-500 p-3' onClick={handleTestApi}>
-            {' '}
-            test api route
-          </button>
+
           <Label htmlFor='airplane-mode'>Voir graphique</Label>
         </div>{' '}
         <TableMobile
@@ -203,12 +202,14 @@ function TableDesktop({
           </div>
           <Select>
             <SelectTrigger className='w-auto'>
-              <SelectValue placeholder='Theme' />
+              <SelectValue placeholder='Catégorie' />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value='light'>Light</SelectItem>
-              <SelectItem value='dark'>Dark</SelectItem>
-              <SelectItem value='system'>System</SelectItem>
+              {categoryOptions.map((category) => (
+                <SelectItem key={category.id} value={category.name}>
+                  {category.name}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
           <button
@@ -309,12 +310,14 @@ function TableMobile({
           </div>
           <Select>
             <SelectTrigger className='w-auto'>
-              <SelectValue placeholder='Theme' />
+              <SelectValue placeholder='Catégorie' />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value='light'>Light</SelectItem>
-              <SelectItem value='dark'>Dark</SelectItem>
-              <SelectItem value='system'>System</SelectItem>
+              {categoryOptions.map((category) => (
+                <SelectItem key={category.id} value={category.name}>
+                  {category.name}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
           <button
@@ -357,10 +360,16 @@ function TableMobile({
                   {item.price}
                 </TableCell>
                 <TableCell className='p-4 flex justify-center gap-3'>
-                  <button className=' hover:bg-red-200 transition p-1 rounded-full'>
+                  <button
+                    onClick={handleDelete}
+                    className=' hover:bg-red-200 transition p-1 rounded-full'
+                  >
                     <TrashIcon width='18' />
                   </button>
-                  <button className=' hover:bg-amber-100 transition p-1 rounded-full'>
+                  <button
+                    onClick={() => setOpenEditModal(true)}
+                    className=' hover:bg-amber-100 transition p-1 rounded-full'
+                  >
                     <EditIcon width='16' />
                   </button>
                 </TableCell>

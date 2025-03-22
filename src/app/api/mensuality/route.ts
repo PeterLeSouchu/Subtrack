@@ -1,32 +1,79 @@
+import { prisma } from '@/prisma/prisma-client';
 import { auth } from '@/src/lib/auth';
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
-export const GET = auth(function GET(req) {
-  console.log('on est dans la route  et voila req.auth', req.auth);
-  if (req.auth) return NextResponse.json(req.auth);
-  return NextResponse.json({ message: 'Not authenticated' }, { status: 401 });
+const mensualitySchema = z.object({
+  name: z.string().min(1),
+  price: z.string().min(1),
+  category: z.string().min(1),
 });
 
 export const POST = auth(async function POST(req) {
-  try {
-    const body = await req.json();
-    const { name, category, price } = body;
+  if (req.auth?.user) {
+    try {
+      const body = await req.json();
+      const { name, category, price } = body;
+      if (!name || !category || !price) {
+        return NextResponse.json(
+          { message: 'Tous les champs sont requis.' },
+          { status: 400 }
+        );
+      }
+      const parsedData = mensualitySchema.safeParse(body);
+      if (!parsedData.success) {
+        console.log('voila les erreurs', parsedData.error);
+        return NextResponse.json(
+          {
+            message: 'Les informations fournies ne sont pas correctes',
+          },
+          { status: 400 }
+        );
+      }
 
-    if (!name || !category || !price) {
+      console.log('donnée parsée', parsedData.data);
+
+      const existingCategory = await prisma.category.findFirst({
+        where: { name: parsedData.data.category },
+      });
+
+      if (!existingCategory) {
+        return NextResponse.json(
+          { message: 'Catégorie non trouvée' },
+          { status: 400 }
+        );
+      }
+
+      console.log('la categorie', existingCategory);
+
+      const newMensuality = await prisma.mensuality.create({
+        data: {
+          name,
+          price: price.toString(),
+          user: {
+            connect: { id: req.auth.user.id },
+          },
+          category: {
+            connect: { id: existingCategory.id },
+          },
+        },
+      });
+
       return NextResponse.json(
-        { message: 'Tous les champs sont requis.' },
-        { status: 400 }
+        {
+          message: 'Mensualité ajoutée avec succès',
+          mensuality: newMensuality,
+        },
+        { status: 201 }
       );
+    } catch {
+      return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
     }
-
-    const newProduct = { name, category, price };
-
-    console.log('new produit', newProduct);
+  } else {
+    console.log('non autoriser à faire cette requête');
     return NextResponse.json(
-      { message: 'Produit ajouté avec succès', product: newProduct },
-      { status: 201 }
+      { message: "Vous n'êtes pas autoriser à faire cette action" },
+      { status: 401 }
     );
-  } catch {
-    return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
   }
 });

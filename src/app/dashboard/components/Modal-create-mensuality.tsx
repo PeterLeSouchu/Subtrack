@@ -17,12 +17,30 @@ import {
   SelectValue,
 } from '@/src/components/ui/select';
 import { Label } from '@/src/components/ui/label';
+import { usePostMensuality } from '../dashboard.service';
+import { useToast } from '../../providers/Toast-provider';
+import { ErrorType } from '@/src/types/error-response';
 
 const schema = z.object({
   name: z.string().min(1, 'Veuillez attribuer un nom'),
   price: z.string().min(1, 'Veuillez attribuer un prix'),
   category: z.string({ required_error: 'Veuillez sélectionner une catégorie' }),
 });
+
+const categoryOptions = [
+  { name: 'Logement', id: '1' },
+  { name: 'Transport', id: '2' },
+  { name: 'Assurances', id: '3' },
+  { name: 'Énergie', id: '4' },
+  { name: 'Alimentation', id: '5' },
+  { name: 'Loisirs', id: '6' },
+  { name: 'Crédits', id: '7' },
+  { name: 'Épargne', id: '8' },
+  { name: 'Santé', id: '9' },
+  { name: 'Éducation', id: '10' },
+  { name: 'Services', id: '11' },
+  { name: 'Autres', id: '12' },
+];
 
 export default function ModalCreateMensuality({
   open,
@@ -31,19 +49,27 @@ export default function ModalCreateMensuality({
   open: boolean;
   onClose: () => void;
 }) {
+  const { mutate } = usePostMensuality();
+  const { showToast } = useToast();
   const {
     register,
     handleSubmit,
-    formState: { errors },
     control,
+    formState: { errors },
     reset,
   } = useForm({
     resolver: zodResolver(schema),
   });
 
   const onSubmit = (data: z.infer<typeof schema>) => {
-    console.log('Form Data:', data);
+    console.log('Data:', data);
+    mutate(data, {
+      onSuccess: () => showToast('Mensualité ajoutée', 'success'),
+      onError: (error: ErrorType) =>
+        showToast(error?.response?.data?.message, 'error'),
+    });
     onClose();
+    reset();
   };
 
   function closeModal() {
@@ -93,9 +119,11 @@ export default function ModalCreateMensuality({
                     <SelectValue placeholder='Catégorie' />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value='category1'>Category 1</SelectItem>
-                    <SelectItem value='category2'>Category 2</SelectItem>
-                    <SelectItem value='category3'>Category 3</SelectItem>
+                    {categoryOptions.map((category) => (
+                      <SelectItem key={category.id} value={category.name}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 {errors.category && (
