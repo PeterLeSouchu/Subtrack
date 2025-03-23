@@ -6,6 +6,7 @@ interface CategoryStats {
   name: string;
   price: number;
   percentage: number;
+  color: string;
 }
 
 export const GET = auth(async function GET(req) {
@@ -15,7 +16,9 @@ export const GET = auth(async function GET(req) {
 
       const mensualities = await prisma.mensuality.findMany({
         where: { userId },
-        include: { category: true },
+        include: {
+          category: true,
+        },
       });
 
       if (mensualities.length < 1) {
@@ -40,6 +43,7 @@ export const GET = auth(async function GET(req) {
         (acc: CategoryStats[], mensuality) => {
           const categoryName = mensuality.category.name;
           const categoryPrice = Number(mensuality.price);
+          const categoryColor = mensuality.category.color;
 
           const existingCategory = acc.find(
             (category) => category.name === categoryName
@@ -52,6 +56,7 @@ export const GET = auth(async function GET(req) {
               name: categoryName,
               price: categoryPrice,
               percentage: 0,
+              color: categoryColor,
             });
           }
 
