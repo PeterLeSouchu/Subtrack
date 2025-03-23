@@ -78,7 +78,10 @@ export default function ModalEditMensuality({
 
   return (
     <Dialog open={open} onOpenChange={closeModal}>
-      <DialogContent className='w-2/3'>
+      <DialogContent
+        className='w-2/3'
+        onOpenAutoFocus={(event) => event.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle>Nouvelle mensualité</DialogTitle>
         </DialogHeader>
