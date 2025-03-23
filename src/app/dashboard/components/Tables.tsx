@@ -42,6 +42,7 @@ export function TableMensuality({
   editMensuality: (mensuality: MensualityGetType) => void;
   showGraphic: boolean;
 }) {
+  console.log('voila les data dans table :', mensualitiesData);
   return (
     <section className={`flex-1 p-3 w-full overflow-hidden block `}>
       <div className='xl:bg-white xl:drop-shadow-md w-full h-full p-4 flex flex-col gap-4 rounded-md md:overflow-hidden overflow-y-scroll'>

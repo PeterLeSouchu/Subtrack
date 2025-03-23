@@ -32,7 +32,10 @@ export function ChartMobile({
     datasets: [
       {
         data: statsCategories?.map((item) => item.price) ?? [],
-        backgroundColor,
+        backgroundColor:
+          statsCategories?.map(
+            (_, index) => backgroundColor[index % backgroundColor.length]
+          ) ?? [],
       },
     ],
   };

@@ -17,7 +17,12 @@ export const GET = auth(async function GET(req) {
       const mensualities = await prisma.mensuality.findMany({
         where: { userId },
         include: { category: true },
+        orderBy: {
+          price: 'asc',
+        },
       });
+
+      console.log('voila les mensualités', mensualities);
 
       return NextResponse.json(
         {
@@ -72,7 +77,7 @@ export const POST = auth(async function POST(req) {
       const newMensuality = await prisma.mensuality.create({
         data: {
           name,
-          price,
+          price: Number(price),
           user: {
             connect: { id: req.auth.user.id },
           },
@@ -89,7 +94,8 @@ export const POST = auth(async function POST(req) {
         },
         { status: 201 }
       );
-    } catch {
+    } catch (e) {
+      console.log(e);
       return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
     }
   } else {
@@ -149,7 +155,7 @@ export const PATCH = auth(async function PATCH(req) {
         where: { id },
         data: {
           name,
-          price,
+          price: Number(price),
           user: {
             connect: { id: req.auth.user.id },
           },

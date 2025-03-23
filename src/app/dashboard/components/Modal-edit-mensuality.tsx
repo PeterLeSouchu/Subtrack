@@ -55,7 +55,7 @@ export default function ModalEditMensuality({
     resolver: zodResolver(schema),
     defaultValues: {
       name: mensualityToEdit.name,
-      price: mensualityToEdit.price,
+      price: mensualityToEdit.price.toString(),
       category: mensualityToEdit.category.id,
     },
   });
