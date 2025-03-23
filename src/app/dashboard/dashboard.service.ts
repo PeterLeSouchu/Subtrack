@@ -35,6 +35,7 @@ export function usePostMensuality() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['mensuality'] });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
     },
   });
 }
@@ -46,6 +47,7 @@ export function useDeleteMensuality() {
     mutationFn: (id) => api.delete(`/mensuality/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['mensuality'] });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
     },
   });
 }
