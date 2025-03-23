@@ -94,7 +94,7 @@ export function ChartMobile({
     <Chart
       statsCategories={statsCategories}
       showGraphic={showGraphic}
-      isMobile
+      isMobile={true}
     />
   );
 }
@@ -104,5 +104,5 @@ export function ChartDesktop({
 }: {
   statsCategories: StatsCategoryType[] | undefined;
 }) {
-  return <Chart statsCategories={statsCategories} isMobile={false} />;
+  return <Chart statsCategories={statsCategories} />;
 }
