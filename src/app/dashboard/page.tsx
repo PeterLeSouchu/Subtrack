@@ -70,12 +70,7 @@ export default function Dashboard() {
   async function handleDelete(mensuality: MensualityGetType) {
     if (
       await confirm({
-        title: (
-          <p>
-            Etes-vous sur de vouloir supprimer la mensualité suivante :{' '}
-            <span className='font-bold'>{mensuality.name}</span> ?{' '}
-          </p>
-        ),
+        title: mensuality.name,
         confirmBtn: 'Supprimer',
       })
     ) {
