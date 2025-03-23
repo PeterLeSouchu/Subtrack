@@ -18,7 +18,7 @@ import Spinner from '@/src/components/Spinner';
 import { useToast } from '../providers/Toast-provider';
 import { StatsHeader } from './components/Stats-header';
 import { ChartDesktop, ChartMobile } from './components/Charts';
-import { TableDesktop, TableMobile } from './components/Tables';
+import { TableMensuality } from './components/Tables';
 
 export default function Dashboard() {
   const [showGraphic, setShowGraphic] = useState(false);
@@ -83,26 +83,16 @@ export default function Dashboard() {
 
           <Label htmlFor='airplane-mode'>Voir graphique</Label>
         </div>{' '}
-        <TableMobile
+        <TableMensuality
+          handleDelete={handleDelete}
+          setOpenCreateModal={setOpenCreateModal}
+          editMensuality={handleEditMensuality}
+          mensualitiesData={filteredMensualities}
+          categoriesData={categories?.categories}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          setSelectedCategory={setSelectedCategory}
           showGraphic={showGraphic}
-          handleDelete={handleDelete}
-          setOpenCreateModal={setOpenCreateModal}
-          editMensuality={handleEditMensuality}
-          mensualitiesData={filteredMensualities}
-          categoriesData={categories?.categories}
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
-          setSelectedCategory={setSelectedCategory}
-        />
-        <TableDesktop
-          handleDelete={handleDelete}
-          setOpenCreateModal={setOpenCreateModal}
-          editMensuality={handleEditMensuality}
-          mensualitiesData={filteredMensualities}
-          categoriesData={categories?.categories}
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
-          setSelectedCategory={setSelectedCategory}
         />
         <ChartMobile
           showGraphic={showGraphic}

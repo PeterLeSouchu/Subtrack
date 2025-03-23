@@ -63,7 +63,7 @@ export function ChartMobile({
       } xl:hidden   `}
     >
       <section className='py-3 px-3 h-full rounded-md '>
-        <div className='bg-white h-full w-full p-3 drop-shadow-md flex items-center justify-center rounded-md '>
+        <div className=' h-full w-full p-3 drop-shadow-md flex items-center justify-center rounded-md '>
           {statsCategories && statsCategories?.length > 0 ? (
             <Doughnut data={data} options={options} />
           ) : (
