@@ -12,8 +12,6 @@ export const GET = auth(async function GET(req) {
         include: { category: true },
       });
 
-      console.log('voial les mensualités', mensualities);
-
       if (mensualities.length < 1) {
         return NextResponse.json(
           {

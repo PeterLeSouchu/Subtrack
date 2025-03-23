@@ -39,6 +39,17 @@ export function usePostMensuality() {
   });
 }
 
+export function useDeleteMensuality() {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, ErrorType, string>({
+    mutationFn: (id) => api.delete(`/mensuality/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['mensuality'] });
+    },
+  });
+}
+
 export function useGetMensuality() {
   return useQuery<MensualityResponseGet, ErrorType>({
     queryKey: ['mensuality'],

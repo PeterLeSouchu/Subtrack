@@ -109,11 +109,15 @@ export default function ModalCreateMensuality({
                     <SelectValue placeholder='Catégorie' />
                   </SelectTrigger>
                   <SelectContent>
-                    {categories?.categories.map((category) => (
+                    {categories?.categories.map((category, categoryIndex) => (
                       <SelectItem
                         key={category.id}
                         value={category.id}
-                        className='cursor-pointer'
+                        className={`cursor-pointer ${
+                          categoryIndex === categories.categories.length - 1
+                            ? 'border-none'
+                            : 'border-b'
+                        }`}
                       >
                         <div className='flex  flex-row items-center justify-start gap-1'>
                           <Image

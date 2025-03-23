@@ -33,6 +33,7 @@ import { useConfirm } from '../providers/Confirm-provider';
 import ModalCreateMensuality from './components/Modal-create-mensuality';
 import ModalEditMensuality from './components/Modal-edit-mensuality';
 import {
+  useDeleteMensuality,
   useGetCategory,
   useGetMensuality,
   useGetStats,
@@ -41,6 +42,7 @@ import { MensualityGetType } from '@/src/types/mensuality';
 import { CategoryType } from '@/src/types/category';
 import Spinner from '@/src/components/Spinner';
 import { StatsType } from '@/src/types/stats';
+import { useToast } from '../providers/Toast-provider';
 
 export default function Dashboard() {
   const [showGraphic, setShowGraphic] = useState(false);
@@ -49,11 +51,12 @@ export default function Dashboard() {
   const [searchValue, setSearchValue] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const { confirm } = useConfirm();
-
+  const { showToast } = useToast();
   const { data: mensualities, isLoading: mensualitiesLoading } =
     useGetMensuality();
   const { data: categories, isLoading: categoriesLoading } = useGetCategory();
   const { data: stats, isLoading: statsLoading } = useGetStats();
+  const { mutate } = useDeleteMensuality();
 
   const filteredMensualities = mensualities?.mensualities.filter(
     (mensuality) =>
@@ -67,14 +70,17 @@ export default function Dashboard() {
   if (mensualitiesLoading || categoriesLoading || statsLoading)
     return <Spinner />;
 
-  async function handleDelete() {
+  async function handleDelete(id: string) {
     if (
       await confirm({
         title: 'Etes-vous sur de vouloir supprimer cette mensualité  ',
         confirmBtn: 'Supprimer',
       })
     ) {
-      console.log('la confirm modal fonctionne');
+      mutate(id, {
+        onSuccess: () => showToast('Mensualité supprimée', 'success'),
+        onError: (error) => showToast(error?.response?.data?.message, 'error'),
+      });
     }
   }
 
@@ -178,7 +184,7 @@ function TableDesktop({
   setSearchValue,
   setSelectedCategory,
 }: {
-  handleDelete: () => void;
+  handleDelete: (id: string) => void;
   setOpenCreateModal: Dispatch<SetStateAction<boolean>>;
   setOpenEditModal: Dispatch<SetStateAction<boolean>>;
   mensualitiesData: MensualityGetType[] | undefined;
@@ -210,14 +216,18 @@ function TableDesktop({
               <SelectValue placeholder='Catégorie' />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={'all'} className='cursor-pointer'>
+              <SelectItem value={'all'} className='cursor-pointer border-b'>
                 <p>Toutes</p>
               </SelectItem>
-              {categoriesData?.map((category) => (
+              {categoriesData?.map((category, categoryIndex) => (
                 <SelectItem
                   key={category.id}
                   value={category.id}
-                  className='cursor-pointer'
+                  className={`cursor-pointer ${
+                    categoryIndex === categoriesData.length - 1
+                      ? 'border-none'
+                      : 'border-b'
+                  }`}
                 >
                   <div className='flex  flex-row items-center justify-start gap-1'>
                     <Image
@@ -284,7 +294,7 @@ function TableDesktop({
                   <TableCell className='p-4 flex justify-center gap-3'>
                     <button
                       className='hover:bg-red-200 transition p-1 rounded-full'
-                      onClick={handleDelete}
+                      onClick={() => handleDelete(mensuality.id)}
                     >
                       <TrashIcon width='18' />
                     </button>
@@ -326,7 +336,7 @@ function TableMobile({
   setSelectedCategory,
 }: {
   showGraphic: boolean;
-  handleDelete: () => void;
+  handleDelete: (id: string) => void;
   setOpenCreateModal: Dispatch<SetStateAction<boolean>>;
   setOpenEditModal: Dispatch<SetStateAction<boolean>>;
   mensualitiesData: MensualityGetType[] | undefined;
@@ -365,14 +375,18 @@ function TableMobile({
               <SelectValue placeholder='Catégorie' />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={'all'} className='cursor-pointer'>
+              <SelectItem value={'all'} className='cursor-pointer border-b'>
                 <p>Toutes</p>
               </SelectItem>
-              {categoriesData?.map((category) => (
+              {categoriesData?.map((category, categoryIndex) => (
                 <SelectItem
                   key={category.id}
                   value={category.id}
-                  className='cursor-pointer'
+                  className={`cursor-pointer ${
+                    categoryIndex === categoriesData.length - 1
+                      ? 'border-none'
+                      : 'border-b'
+                  }`}
                 >
                   <div className='flex  flex-row items-center justify-start gap-1'>
                     <Image
@@ -439,7 +453,7 @@ function TableMobile({
                   <TableCell className='p-4 flex justify-center gap-3'>
                     <button
                       className='hover:bg-red-200 transition p-1 rounded-full'
-                      onClick={handleDelete}
+                      onClick={() => handleDelete(mensuality.id)}
                     >
                       <TrashIcon width='18' />
                     </button>
@@ -495,7 +509,10 @@ function TableMobile({
                   {mensuality.price} €
                 </p>
                 <div>
-                  <button className=' p-1' onClick={handleDelete}>
+                  <button
+                    className=' p-1'
+                    onClick={() => handleDelete(mensuality.id)}
+                  >
                     <TrashIcon width='20' />
                   </button>
                   <button
