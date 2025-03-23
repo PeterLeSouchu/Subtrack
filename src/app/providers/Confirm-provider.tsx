@@ -65,23 +65,23 @@ export function ConfirmDialogWithContext() {
       {open && (
         <motion.div
           className='fixed  inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50'
-          onClick={onCancel} // Ferme la modale en cliquant sur le fond sombre
-          initial={{ opacity: 0 }} // Animation de l'opacité au départ
-          animate={{ opacity: 1 }} // Animation vers opacité 1 pour apparaître
-          exit={{ opacity: 0 }} // Animation vers opacité 0 pour disparaître
-          transition={{ duration: 0.3 }} // Durée de la transition
-          key='modal-background' // Clé unique pour AnimatePresence
+          onClick={onCancel}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          key='modal-background'
         >
           <motion.div
             className=' bg-white rounded-lg max-w-2xl min-w-64 w-1/3  p-6 shadow-lg relative'
-            onClick={(e) => e.stopPropagation()} // Empêche la propagation du clic
-            initial={{ scale: 0.9 }} // Début avec une taille légèrement réduite
-            animate={{ scale: 1 }} // Agrandissement à la taille normale
-            exit={{ scale: 0.9 }} // Réduction lors de la fermeture
-            transition={{ duration: 0.3 }} // Durée de la transition
-            key='modal-content' // Clé unique pour AnimatePresence
+            onClick={(e) => e.stopPropagation()}
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0.9 }}
+            transition={{ duration: 0.3 }}
+            key='modal-content'
           >
-            <p className='mb-4 text-center font-medium text-gray-600'>
+            <p className='mb-4 text-center font-medium text-lg text-gray-600'>
               {props?.title}
             </p>
             <div className='flex justify-end space-x-4'>

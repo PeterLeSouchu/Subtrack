@@ -50,6 +50,9 @@ export default function Dashboard() {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [mensualityToEdit, setMensualityToEdit] = useState<
+    MensualityGetType | undefined
+  >();
   const { confirm } = useConfirm();
   const { showToast } = useToast();
   const { data: mensualities, isLoading: mensualitiesLoading } =
@@ -73,7 +76,7 @@ export default function Dashboard() {
   async function handleDelete(id: string) {
     if (
       await confirm({
-        title: 'Etes-vous sur de vouloir supprimer cette mensualité  ',
+        title: 'Etes-vous sur de vouloir supprimer cette mensualité ?  ',
         confirmBtn: 'Supprimer',
       })
     ) {
@@ -82,6 +85,11 @@ export default function Dashboard() {
         onError: (error) => showToast(error?.response?.data?.message, 'error'),
       });
     }
+  }
+
+  function handleEditMensuality(mensuality: MensualityGetType) {
+    setMensualityToEdit(mensuality);
+    setOpenEditModal(true);
   }
 
   return (
@@ -103,7 +111,7 @@ export default function Dashboard() {
           showGraphic={showGraphic}
           handleDelete={handleDelete}
           setOpenCreateModal={setOpenCreateModal}
-          setOpenEditModal={setOpenEditModal}
+          editMensuality={handleEditMensuality}
           mensualitiesData={filteredMensualities}
           categoriesData={categories?.categories}
           searchValue={searchValue}
@@ -113,7 +121,7 @@ export default function Dashboard() {
         <TableDesktop
           handleDelete={handleDelete}
           setOpenCreateModal={setOpenCreateModal}
-          setOpenEditModal={setOpenEditModal}
+          editMensuality={handleEditMensuality}
           mensualitiesData={filteredMensualities}
           categoriesData={categories?.categories}
           searchValue={searchValue}
@@ -128,16 +136,18 @@ export default function Dashboard() {
         open={openCreateModal}
         onClose={() => setOpenCreateModal(false)}
       />
-      <ModalEditMensuality
-        open={openEditModal}
-        onClose={() => setOpenEditModal(false)}
-      />
+      {mensualityToEdit && (
+        <ModalEditMensuality
+          open={openEditModal}
+          onClose={() => setOpenEditModal(false)}
+          mensualityToEdit={mensualityToEdit}
+        />
+      )}
     </div>
   );
 }
 
 function StatsHeader({ statsData }: { statsData: StatsType | undefined }) {
-  console.log('data du header', statsData);
   return (
     <section className='flex py-3 px-3  justify-start items-center  w-full overflow-x-scroll gap-3 '>
       <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20  text-nowrap '>
@@ -177,21 +187,21 @@ function StatsHeader({ statsData }: { statsData: StatsType | undefined }) {
 function TableDesktop({
   handleDelete,
   setOpenCreateModal,
-  setOpenEditModal,
   mensualitiesData,
   categoriesData,
   searchValue,
   setSearchValue,
   setSelectedCategory,
+  editMensuality,
 }: {
   handleDelete: (id: string) => void;
   setOpenCreateModal: Dispatch<SetStateAction<boolean>>;
-  setOpenEditModal: Dispatch<SetStateAction<boolean>>;
   mensualitiesData: MensualityGetType[] | undefined;
   categoriesData: CategoryType[] | undefined;
   searchValue: string;
   setSearchValue: Dispatch<SetStateAction<string>>;
   setSelectedCategory: Dispatch<SetStateAction<string>>;
+  editMensuality: (mensuality: MensualityGetType) => void;
 }) {
   return (
     <section className={`flex-1 p-3 w-full overflow-hidden   xl:block hidden `}>
@@ -299,7 +309,7 @@ function TableDesktop({
                       <TrashIcon width='18' />
                     </button>
                     <button
-                      onClick={() => setOpenEditModal(true)}
+                      onClick={() => editMensuality(mensuality)}
                       className='hover:bg-amber-100 transition p-1 rounded-full'
                     >
                       <EditIcon width='16' />
@@ -328,22 +338,22 @@ function TableMobile({
   showGraphic,
   handleDelete,
   setOpenCreateModal,
-  setOpenEditModal,
   mensualitiesData,
   categoriesData,
   searchValue,
   setSearchValue,
   setSelectedCategory,
+  editMensuality,
 }: {
   showGraphic: boolean;
   handleDelete: (id: string) => void;
   setOpenCreateModal: Dispatch<SetStateAction<boolean>>;
-  setOpenEditModal: Dispatch<SetStateAction<boolean>>;
   mensualitiesData: MensualityGetType[] | undefined;
   categoriesData: CategoryType[] | undefined;
   searchValue: string;
   setSearchValue: Dispatch<SetStateAction<string>>;
   setSelectedCategory: Dispatch<SetStateAction<string>>;
+  editMensuality: (mensuality: MensualityGetType) => void;
 }) {
   return (
     <motion.section
@@ -458,7 +468,7 @@ function TableMobile({
                       <TrashIcon width='18' />
                     </button>
                     <button
-                      onClick={() => setOpenEditModal(true)}
+                      onClick={() => editMensuality(mensuality)}
                       className='hover:bg-amber-100 transition p-1 rounded-full'
                     >
                       <EditIcon width='16' />
@@ -516,7 +526,7 @@ function TableMobile({
                     <TrashIcon width='20' />
                   </button>
                   <button
-                    onClick={() => setOpenEditModal(true)}
+                    onClick={() => editMensuality(mensuality)}
                     className=' p-1'
                   >
                     <EditIcon width='18' />
