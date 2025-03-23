@@ -92,8 +92,8 @@ export function GraphicDesktop({
     },
   };
   return (
-    <div className='w-1/3 hidden h-full xl:block'>
-      <div className='p-3 h-full rounded-md bg-white flex items-center justify-center drop-shadow-md'>
+    <div className='w-1/3 hidden h-full p-3 xl:block'>
+      <div className=' h-full rounded-md bg-white flex items-center justify-center drop-shadow-md'>
         <Doughnut data={data} options={options} />
       </div>
     </div>
