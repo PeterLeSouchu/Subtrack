@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
+import logo from '@/public/logo.png';
 import {
   Form,
   FormControl,
@@ -20,8 +21,11 @@ import { signUpUser } from './signup-action';
 import ErrorMessage from '@/src/components/Error-message';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+// import { useSession } from 'next-auth/react';
 
 export default function SignUp() {
+  // const { data: session } = useSession();
+
   const router = useRouter();
   const [error, setError] = useState<undefined | string>('');
   const form = useForm<z.infer<typeof signupSchema>>({
@@ -49,7 +53,7 @@ export default function SignUp() {
         className='space-y-8 bg-white w-1/2 max-w-96 min-w-72  p-5 rounded-xl shadow-2xl drop-shadow-md'
       >
         <Image
-          src='/logo2.png'
+          src={logo}
           width={300}
           height={300}
           alt='logo-subtrack'

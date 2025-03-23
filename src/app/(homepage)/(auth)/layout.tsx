@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import logo from '@/public/logo.png';
 
 export default function AuthHomePageLayout({
   children,
@@ -10,7 +11,7 @@ export default function AuthHomePageLayout({
     <div className='w-full min-h-screen  flex'>
       <section className=' hidden lg:flex justify-center items-center flex-col w-full min-h-screen '>
         <Image
-          src='/logo.png'
+          src={logo}
           width={300}
           height={300}
           alt='logo-subtrack'

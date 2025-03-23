@@ -1,9 +1,11 @@
 import { IconProps } from '@/src/types/icon-props';
 
-export function LockIcon({ className }: IconProps) {
+export function LockIcon({ className, width, height }: IconProps) {
   return (
     <svg
       className={`${className}`}
+      width={width}
+      height={height}
       viewBox='0 0 65 65'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
