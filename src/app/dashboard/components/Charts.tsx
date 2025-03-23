@@ -6,6 +6,20 @@ import Image from 'next/image';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+const backgroundColor = [
+  'rgba(255, 99, 132, 0.8)',
+  'rgba(54, 162, 235, 0.8)',
+  'rgba(255, 205, 86, 0.8)',
+  'rgba(75, 192, 192, 0.8)',
+  'rgba(153, 102, 255, 0.8)',
+  'rgba(255, 159, 64, 0.8)',
+  'rgba(0, 255, 0, 0.8)',
+  'rgba(255, 69, 0, 0.8)',
+  'rgba(0, 0, 255, 0.8)',
+  'rgba(255, 20, 147, 0.8)',
+  'rgba(255, 215, 0, 0.8)',
+];
+
 export function ChartMobile({
   showGraphic,
   statsCategories,
@@ -18,19 +32,7 @@ export function ChartMobile({
     datasets: [
       {
         data: statsCategories?.map((item) => item.price) ?? [],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.8)',
-          'rgba(54, 162, 235, 0.8)',
-          'rgba(255, 205, 86, 0.8)',
-          'rgba(75, 192, 192, 0.8)',
-          'rgba(153, 102, 255, 0.8)',
-          'rgba(255, 159, 64, 0.8)',
-          'rgba(0, 255, 0, 0.8)',
-          'rgba(255, 69, 0, 0.8)',
-          'rgba(0, 0, 255, 0.8)',
-          'rgba(255, 20, 147, 0.8)',
-          'rgba(255, 215, 0, 0.8)',
-        ],
+        backgroundColor,
       },
     ],
   };
@@ -94,19 +96,7 @@ export function ChartDesktop({
     datasets: [
       {
         data: statsCategories?.map((item) => item.price) ?? [],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.8)',
-          'rgba(54, 162, 235, 0.8)',
-          'rgba(255, 205, 86, 0.8)',
-          'rgba(75, 192, 192, 0.8)',
-          'rgba(153, 102, 255, 0.8)',
-          'rgba(255, 159, 64, 0.8)',
-          'rgba(0, 255, 0, 0.8)',
-          'rgba(255, 69, 0, 0.8)',
-          'rgba(0, 0, 255, 0.8)',
-          'rgba(255, 20, 147, 0.8)',
-          'rgba(255, 215, 0, 0.8)',
-        ],
+        backgroundColor,
       },
     ],
   };
