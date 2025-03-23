@@ -32,7 +32,7 @@ export function TableMensuality({
   editMensuality,
   showGraphic,
 }: {
-  handleDelete: (id: string) => void;
+  handleDelete: (mensuality: MensualityGetType) => void;
   setOpenCreateModal: Dispatch<SetStateAction<boolean>>;
   mensualitiesData: MensualityGetType[] | undefined;
   categoriesData: CategoryType[] | undefined;
@@ -95,7 +95,7 @@ export function TableMensuality({
                   <TableCell className='p-4 flex justify-center gap-3'>
                     <button
                       className='hover:bg-red-200 transition p-1 rounded-full'
-                      onClick={() => handleDelete(mensuality.id)}
+                      onClick={() => handleDelete(mensuality)}
                     >
                       <TrashIcon width='18' />
                     </button>
@@ -156,7 +156,7 @@ export function TableMensuality({
                 <div>
                   <button
                     className=' p-1'
-                    onClick={() => handleDelete(mensuality.id)}
+                    onClick={() => handleDelete(mensuality)}
                   >
                     <TrashIcon width='20' />
                   </button>

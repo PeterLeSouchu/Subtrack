@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   PropsWithChildren,
+  ReactNode,
   createContext,
   useCallback,
   useContext,
@@ -11,7 +12,7 @@ import {
 } from 'react';
 
 type Params = {
-  title: string;
+  title: string | ReactNode;
   confirmBtn: string;
 };
 

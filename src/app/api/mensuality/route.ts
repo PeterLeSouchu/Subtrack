@@ -22,8 +22,6 @@ export const GET = auth(async function GET(req) {
         },
       });
 
-      console.log('voila les mensualités', mensualities);
-
       return NextResponse.json(
         {
           message: 'Mensualités récupérées avec succès',
@@ -94,8 +92,7 @@ export const POST = auth(async function POST(req) {
         },
         { status: 201 }
       );
-    } catch (e) {
-      console.log(e);
+    } catch {
       return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
     }
   } else {

@@ -67,14 +67,19 @@ export default function Dashboard() {
   if (mensualitiesLoading || categoriesLoading || statsLoading)
     return <Spinner />;
 
-  async function handleDelete(id: string) {
+  async function handleDelete(mensuality: MensualityGetType) {
     if (
       await confirm({
-        title: 'Etes-vous sur de vouloir supprimer cette mensualité ?  ',
+        title: (
+          <p>
+            Etes-vous sur de vouloir supprimer la mensualité suivante :{' '}
+            <span className='font-bold'>{mensuality.name}</span> ?{' '}
+          </p>
+        ),
         confirmBtn: 'Supprimer',
       })
     ) {
-      mutate(id, {
+      mutate(mensuality.id, {
         onSuccess: () => showToast('Mensualité supprimée', 'success'),
         onError: (error) => showToast(error?.response?.data?.message, 'error'),
       });

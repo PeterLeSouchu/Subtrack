@@ -83,8 +83,7 @@ export const GET = auth(async function GET(req) {
         },
         { status: 200 }
       );
-    } catch (error) {
-      console.error('Erreur lors de la récupération des mensualités :', error);
+    } catch {
       return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
     }
   } else {
