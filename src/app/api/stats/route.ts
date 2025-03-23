@@ -2,6 +2,12 @@ import { prisma } from '@/prisma/prisma-client';
 import { auth } from '@/src/lib/auth';
 import { NextResponse } from 'next/server';
 
+interface CategoryStats {
+  name: string;
+  price: number;
+  percentage: number;
+}
+
 export const GET = auth(async function GET(req) {
   if (req.auth?.user) {
     try {
@@ -30,6 +36,36 @@ export const GET = auth(async function GET(req) {
 
       const averagePrice = (totalPrice / totalMensuality).toFixed(2);
 
+      const categoryStats: CategoryStats[] = mensualities.reduce(
+        (acc: CategoryStats[], mensuality) => {
+          const categoryName = mensuality.category.name;
+          const categoryPrice = Number(mensuality.price);
+
+          const existingCategory = acc.find(
+            (category) => category.name === categoryName
+          );
+
+          if (existingCategory) {
+            existingCategory.price += categoryPrice;
+          } else {
+            acc.push({
+              name: categoryName,
+              price: categoryPrice,
+              percentage: 0,
+            });
+          }
+
+          return acc;
+        },
+        []
+      );
+
+      categoryStats.forEach((category) => {
+        category.percentage = Number(
+          ((category.price / totalPrice) * 100).toFixed(2)
+        );
+      });
+
       return NextResponse.json(
         {
           message: 'Mensualités récupérées avec succès',
@@ -38,6 +74,7 @@ export const GET = auth(async function GET(req) {
             totalMensuality,
             averagePrice,
           },
+          statsCategory: categoryStats,
         },
         { status: 200 }
       );

@@ -7,7 +7,7 @@ import {
   MensualityPatchType,
 } from '@/src/types/mensuality';
 import { CategoryType } from '@/src/types/category';
-import { StatsType } from '@/src/types/stats';
+import { StatsCategoryType, StatsType } from '@/src/types/stats';
 
 interface MensualityResponsePostPatch {
   data: {
@@ -29,6 +29,7 @@ interface CategoryResponse {
 interface StatsResponse {
   message: string;
   stats: StatsType;
+  statsCategory: StatsCategoryType[];
 }
 
 export function usePostMensuality() {

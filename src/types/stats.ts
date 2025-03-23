@@ -3,3 +3,8 @@ export interface StatsType {
   totalMensuality: number;
   averagePrice: number;
 }
+export interface StatsCategoryType {
+  name: string;
+  price: number;
+  percentage: number;
+}

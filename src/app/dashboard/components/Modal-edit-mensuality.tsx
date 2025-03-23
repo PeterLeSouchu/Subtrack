@@ -23,7 +23,6 @@ import { ErrorType } from '@/src/types/error-response';
 import Image from 'next/image';
 import Spinner from '@/src/components/Spinner';
 import { MensualityGetType } from '@/src/types/mensuality';
-import { useQueryClient } from '@tanstack/react-query';
 
 const schema = z.object({
   name: z.string().min(1, 'Veuillez attribuer un nom'),
@@ -45,7 +44,7 @@ export default function ModalEditMensuality({
   const { mutate } = usePatchMensuality();
   const { showToast } = useToast();
   const { data: categories, isLoading: categoriesLoading } = useGetCategory();
-  const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
@@ -66,10 +65,8 @@ export default function ModalEditMensuality({
       { ...data, id: mensualityToEdit!.id },
       {
         onSuccess: () => {
-          console.log('notif good');
           showToast('Mensualité ajoutée', 'success');
-          queryClient.invalidateQueries({ queryKey: ['mensuality'] });
-          queryClient.invalidateQueries({ queryKey: ['stats'] });
+
           setMensualityToEdit(undefined);
           reset();
           onClose();
