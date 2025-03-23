@@ -53,20 +53,11 @@ export function GraphicDesktop({
 }: {
   statsCategories: StatsCategoryType[] | undefined;
 }) {
-  console.log('voila les stats catégories', statsCategories);
-  const graphData = [
-    { name: 'categorie 1', price: 12, percentage: 17 },
-    { name: 'categorie 2', price: 20, percentage: 33 },
-    { name: 'categorie 3', price: 30, percentage: 50 },
-    { name: 'categorie 4', price: 40, percentage: 67 },
-    { name: 'categorie 5', price: 50, percentage: 83 },
-  ];
-
   const data = {
-    labels: graphData.map((item) => item.name),
+    labels: statsCategories?.map((item) => item.name),
     datasets: [
       {
-        data: graphData.map((item) => item.price),
+        data: statsCategories?.map((item) => item.price),
         backgroundColor: [
           'rgba(255, 99, 132, 0.8)',
           'rgba(54, 162, 235, 0.8)',
@@ -90,8 +81,11 @@ export function GraphicDesktop({
       tooltip: {
         callbacks: {
           label: ({ dataIndex }: { dataIndex: number }) => {
-            const { price, percentage } = graphData[dataIndex];
-            return `Prix: ${price}€ - Pourcentage: ${percentage}%`;
+            const category = statsCategories?.[dataIndex];
+            if (category) {
+              return `Prix: ${category.price}€ - Pourcentage: ${category.percentage}%`;
+            }
+            return 'Données indisponibles';
           },
         },
       },
@@ -103,6 +97,69 @@ export function GraphicDesktop({
         <Doughnut data={data} options={options} />
       </div>
     </div>
+  );
+}
+
+function GraphicMobile({
+  showGraphic,
+  statsCategories,
+}: {
+  showGraphic: boolean;
+  statsCategories: StatsCategoryType[] | undefined;
+}) {
+  const data = {
+    labels: statsCategories?.map((item) => item.name),
+    datasets: [
+      {
+        data: statsCategories?.map((item) => item.price),
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.8)',
+          'rgba(54, 162, 235, 0.8)',
+          'rgba(255, 205, 86, 0.8)',
+          'rgba(75, 192, 192, 0.8)',
+          'rgba(153, 102, 255, 0.8)',
+          'rgba(255, 159, 64, 0.8)',
+          'rgba(0, 255, 0, 0.8)',
+          'rgba(255, 69, 0, 0.8)',
+          'rgba(0, 0, 255, 0.8)',
+          'rgba(255, 20, 147, 0.8)',
+          'rgba(255, 215, 0, 0.8)',
+        ],
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: ({ dataIndex }: { dataIndex: number }) => {
+            const category = statsCategories?.[dataIndex];
+            if (category) {
+              return `Prix: ${category.price}€ - Pourcentage: ${category.percentage}%`;
+            }
+            return 'Données indisponibles';
+          },
+        },
+      },
+    },
+  };
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: showGraphic ? 1 : 0 }}
+      transition={{ duration: 0.5 }}
+      className={`    h-full w-full ${
+        showGraphic ? 'block' : 'hidden'
+      } xl:hidden   `}
+    >
+      <section className='py-3 px-3 h-full rounded-md '>
+        <div className='bg-white h-full w-full p-3 drop-shadow-md flex items-center justify-center rounded-md '>
+          <Doughnut data={data} options={options} />
+        </div>
+      </section>
+    </motion.div>
   );
 }
 
@@ -190,7 +247,10 @@ export default function Dashboard() {
           setSearchValue={setSearchValue}
           setSelectedCategory={setSelectedCategory}
         />
-        <GraphicMobile showGraphic={showGraphic} />
+        <GraphicMobile
+          showGraphic={showGraphic}
+          statsCategories={stats?.statsCategory}
+        />
       </div>
 
       <GraphicDesktop statsCategories={stats?.statsCategory} />
@@ -566,68 +626,6 @@ function TableMobile({
         )}
       </div>
     </motion.section>
-  );
-}
-
-function GraphicMobile({ showGraphic }: { showGraphic: boolean }) {
-  const graphData = [
-    { name: 'categorie 1', price: 12, percentage: 17 },
-    { name: 'categorie 2', price: 20, percentage: 33 },
-    { name: 'categorie 3', price: 30, percentage: 50 },
-    { name: 'categorie 4', price: 40, percentage: 67 },
-    { name: 'categorie 5', price: 50, percentage: 83 },
-  ];
-
-  const data = {
-    labels: graphData.map((item) => item.name),
-    datasets: [
-      {
-        data: graphData.map((item) => item.price),
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.8)',
-          'rgba(54, 162, 235, 0.8)',
-          'rgba(255, 205, 86, 0.8)',
-          'rgba(75, 192, 192, 0.8)',
-          'rgba(153, 102, 255, 0.8)',
-          'rgba(255, 159, 64, 0.8)',
-          'rgba(0, 255, 0, 0.8)',
-          'rgba(255, 69, 0, 0.8)',
-          'rgba(0, 0, 255, 0.8)',
-          'rgba(255, 20, 147, 0.8)',
-          'rgba(255, 215, 0, 0.8)',
-        ],
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: ({ dataIndex }: { dataIndex: number }) => {
-            const { price, percentage } = graphData[dataIndex];
-            return `Prix: ${price}€ - Pourcentage: ${percentage}%`;
-          },
-        },
-      },
-    },
-  };
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: showGraphic ? 1 : 0 }}
-      transition={{ duration: 0.5 }}
-      className={`    h-full w-full ${
-        showGraphic ? 'block' : 'hidden'
-      } xl:hidden   `}
-    >
-      <section className='py-3 px-3 h-full rounded-md '>
-        <div className='bg-white h-full w-full p-3 drop-shadow-md flex items-center justify-center rounded-md '>
-          <Doughnut data={data} options={options} />
-        </div>
-      </section>
-    </motion.div>
   );
 }
 
