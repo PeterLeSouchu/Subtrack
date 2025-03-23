@@ -65,7 +65,7 @@ export default function ModalEditMensuality({
       { ...data, id: mensualityToEdit!.id },
       {
         onSuccess: () => {
-          showToast('Mensualité ajoutée', 'success');
+          showToast('Mensualité modifiée', 'success');
 
           setMensualityToEdit(undefined);
           reset();

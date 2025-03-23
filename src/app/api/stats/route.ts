@@ -62,7 +62,7 @@ export const GET = auth(async function GET(req) {
 
       categoryStats.forEach((category) => {
         category.percentage = Number(
-          ((category.price / totalPrice) * 100).toFixed(2)
+          ((category.price / totalPrice) * 100).toFixed(0)
         );
       });
 

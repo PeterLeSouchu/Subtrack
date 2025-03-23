@@ -198,7 +198,7 @@ function NavBar({
       <div className='flex flex-1 bg-white border items-center rounded-full w-full p-1'>
         <input
           id='search'
-          placeholder='Cherchez une mensualité'
+          placeholder='Cherchez une mensualité par nom , par catégorie ou par prix ... '
           type='text'
           className='rounded-full bg-transparent flex-1 outline-none px-3 w-full min-w-[120px]'
           value={searchValue}

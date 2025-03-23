@@ -41,9 +41,27 @@ export default function Dashboard() {
     (mensuality) =>
       (selectedCategory === 'all' ||
         mensuality.category.id === selectedCategory) &&
-      (mensuality.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+      (mensuality.name
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .includes(
+          searchValue
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+        ) ||
         mensuality.price.toString().includes(searchValue) ||
-        mensuality.category.name.toLowerCase().includes(searchValue))
+        mensuality.category.name
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .includes(
+            searchValue
+              .toLowerCase()
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+          ))
   );
 
   if (mensualitiesLoading || categoriesLoading || statsLoading)
