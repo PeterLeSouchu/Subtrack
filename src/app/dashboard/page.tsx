@@ -141,46 +141,10 @@ export default function Dashboard() {
           open={openEditModal}
           onClose={() => setOpenEditModal(false)}
           mensualityToEdit={mensualityToEdit}
+          setMensualityToEdit={setMensualityToEdit}
         />
       )}
     </div>
-  );
-}
-
-function StatsHeader({ statsData }: { statsData: StatsType | undefined }) {
-  return (
-    <section className='flex py-3 px-3  justify-start items-center  w-full overflow-x-scroll gap-3 '>
-      <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20  text-nowrap '>
-        <span className='text-[#D6A514] font-black lg:text-4xl text-lg'>
-          {statsData?.totalPrice || 0} €
-        </span>
-        <h3 className='text-stattext font-bold text-left text-sm'>
-          Montant total
-        </h3>
-      </article>
-      <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20  text-nowrap'>
-        <span className='text-[#2C4A7B] font-black lg:text-4xl text-lg'>
-          # {statsData?.totalMensuality || 0}
-        </span>
-        <h3 className='text-stattext font-bold text-left text-sm'>
-          Nombre de mensualités
-        </h3>
-      </article>
-      <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20  text-nowrap'>
-        <span className='text-[#43669D] font-black lg:text-4xl text-lg flex gap-1 items-center'>
-          {statsData?.averagePrice || 0} €
-        </span>
-        <h3 className='text-stattext font-bold text-left text-sm'>Moyenne</h3>
-      </article>
-      <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20  w-auto text-nowrap'>
-        <span className='text-[#17C058] font-black lg:text-4xl text-lg flex gap-1 items-center'>
-          <UpIcon width='30' height='30' className='mr-3' /> + 13%
-        </span>
-        <h3 className='text-stattext font-bold text-left text-sm'>
-          de bénéfice par rapport au mois précédent
-        </h3>
-      </article>
-    </section>
   );
 }
 
@@ -497,7 +461,7 @@ function TableMobile({
               <div className='w-4/5 flex flex-col gap-4 justify-center'>
                 <p className='font-bold text-sm sm:text-base '>
                   {' '}
-                  {mensuality.category.name}
+                  {mensuality.name}
                 </p>
                 <span className='bg-[#E8E5FF] text-blue font-semibold py-1 px-2 inline-flex w-fit gap-2 items-center rounded-xl'>
                   <Image
@@ -605,5 +569,42 @@ function GraphicDesktop() {
         </div>
       </section>
     </div>
+  );
+}
+
+function StatsHeader({ statsData }: { statsData: StatsType | undefined }) {
+  return (
+    <section className='flex py-3 px-3  justify-start items-center  w-full overflow-x-scroll gap-3 '>
+      <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20  text-nowrap '>
+        <span className='text-[#D6A514] font-black lg:text-4xl text-lg'>
+          {statsData?.totalPrice || 0} €
+        </span>
+        <h3 className='text-stattext font-bold text-left text-sm'>
+          Montant total
+        </h3>
+      </article>
+      <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20  text-nowrap'>
+        <span className='text-[#2C4A7B] font-black lg:text-4xl text-lg'>
+          # {statsData?.totalMensuality || 0}
+        </span>
+        <h3 className='text-stattext font-bold text-left text-sm'>
+          Nombre de mensualités
+        </h3>
+      </article>
+      <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20  text-nowrap'>
+        <span className='text-[#43669D] font-black lg:text-4xl text-lg flex gap-1 items-center'>
+          {statsData?.averagePrice || 0} €
+        </span>
+        <h3 className='text-stattext font-bold text-left text-sm'>Moyenne</h3>
+      </article>
+      <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20  w-auto text-nowrap'>
+        <span className='text-[#17C058] font-black lg:text-4xl text-lg flex gap-1 items-center'>
+          <UpIcon width='30' height='30' className='mr-3' /> + 13%
+        </span>
+        <h3 className='text-stattext font-bold text-left text-sm'>
+          de bénéfice par rapport au mois précédent
+        </h3>
+      </article>
+    </section>
   );
 }

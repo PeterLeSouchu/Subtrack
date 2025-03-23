@@ -17,12 +17,13 @@ import {
   SelectValue,
 } from '@/src/components/ui/select';
 import { Label } from '@/src/components/ui/label';
-import { useGetCategory, usePostMensuality } from '../dashboard.service';
+import { useGetCategory, usePatchMensuality } from '../dashboard.service';
 import { useToast } from '../../providers/Toast-provider';
 import { ErrorType } from '@/src/types/error-response';
 import Image from 'next/image';
 import Spinner from '@/src/components/Spinner';
 import { MensualityGetType } from '@/src/types/mensuality';
+import { useQueryClient } from '@tanstack/react-query';
 
 const schema = z.object({
   name: z.string().min(1, 'Veuillez attribuer un nom'),
@@ -34,15 +35,17 @@ export default function ModalEditMensuality({
   open,
   onClose,
   mensualityToEdit,
+  setMensualityToEdit,
 }: {
   open: boolean;
   onClose: () => void;
-  mensualityToEdit: MensualityGetType | undefined;
+  mensualityToEdit: MensualityGetType;
+  setMensualityToEdit: (p: MensualityGetType | undefined) => void;
 }) {
-  console.log('voila la mensualité dnas la modal ', mensualityToEdit);
-  const { mutate } = usePostMensuality();
+  const { mutate } = usePatchMensuality();
   const { showToast } = useToast();
   const { data: categories, isLoading: categoriesLoading } = useGetCategory();
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -52,26 +55,39 @@ export default function ModalEditMensuality({
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: mensualityToEdit?.name ?? '',
-      price: mensualityToEdit?.price ?? '',
-      category: mensualityToEdit?.category.id ?? '',
+      name: mensualityToEdit.name,
+      price: mensualityToEdit.price,
+      category: mensualityToEdit.category.id,
     },
   });
 
   const onSubmit = (data: z.infer<typeof schema>) => {
-    console.log('Data:', data);
-    mutate(data, {
-      onSuccess: () => showToast('Mensualité ajoutée', 'success'),
-      onError: (error: ErrorType) =>
-        showToast(error?.response?.data?.message, 'error'),
-    });
-    onClose();
-    reset();
+    mutate(
+      { ...data, id: mensualityToEdit!.id },
+      {
+        onSuccess: () => {
+          console.log('notif good');
+          showToast('Mensualité ajoutée', 'success');
+          queryClient.invalidateQueries({ queryKey: ['mensuality'] });
+          queryClient.invalidateQueries({ queryKey: ['stats'] });
+          setMensualityToEdit(undefined);
+          reset();
+          onClose();
+        },
+        onError: (error: ErrorType) => {
+          setMensualityToEdit(undefined);
+          reset();
+          onClose();
+          showToast(error?.response?.data?.message, 'error');
+        },
+      }
+    );
   };
 
   function closeModal() {
-    onClose();
+    setMensualityToEdit(undefined);
     reset();
+    onClose();
   }
 
   if (categoriesLoading) return <Spinner />;
@@ -81,6 +97,7 @@ export default function ModalEditMensuality({
       <DialogContent
         className='w-2/3'
         onOpenAutoFocus={(event) => event.preventDefault()}
+        aria-describedby={undefined}
       >
         <DialogHeader>
           <DialogTitle>Nouvelle mensualité</DialogTitle>

@@ -26,8 +26,7 @@ export const GET = auth(async function GET(req) {
         },
         { status: 200 }
       );
-    } catch (error) {
-      console.error('Erreur lors de la récupération des mensualités :', error);
+    } catch {
       return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
     }
   } else {
@@ -51,7 +50,6 @@ export const POST = auth(async function POST(req) {
       }
       const parsedData = mensualitySchema.safeParse(body);
       if (!parsedData.success) {
-        console.log('voila les erreurs', parsedData.error);
         return NextResponse.json(
           {
             message: 'Les informations fournies ne sont pas correctes',
@@ -59,8 +57,6 @@ export const POST = auth(async function POST(req) {
           { status: 400 }
         );
       }
-
-      console.log('donnée parsée', parsedData.data);
 
       const existingCategory = await prisma.category.findUnique({
         where: { id: parsedData.data.category },
@@ -73,12 +69,10 @@ export const POST = auth(async function POST(req) {
         );
       }
 
-      console.log('la categorie', existingCategory);
-
       const newMensuality = await prisma.mensuality.create({
         data: {
           name,
-          price: price.toString(),
+          price,
           user: {
             connect: { id: req.auth.user.id },
           },
@@ -99,9 +93,85 @@ export const POST = auth(async function POST(req) {
       return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
     }
   } else {
-    console.log('non autoriser à faire cette requête');
     return NextResponse.json(
       { message: "Vous n'êtes pas autoriser à faire cette action" },
+      { status: 401 }
+    );
+  }
+});
+
+export const PATCH = auth(async function PATCH(req) {
+  if (req.auth?.user) {
+    try {
+      const body = await req.json();
+      const { id, name, category, price } = body;
+
+      if (!id || !name || !category || !price) {
+        return NextResponse.json(
+          { message: 'Tous les champs sont requis.' },
+          { status: 400 }
+        );
+      }
+
+      const parsedData = mensualitySchema.safeParse(body);
+      if (!parsedData.success) {
+        return NextResponse.json(
+          {
+            message: 'Les informations fournies ne sont pas correctes',
+          },
+          { status: 400 }
+        );
+      }
+
+      const existingCategory = await prisma.category.findUnique({
+        where: { id: parsedData.data.category },
+      });
+
+      if (!existingCategory) {
+        return NextResponse.json(
+          { message: 'Catégorie non trouvée' },
+          { status: 400 }
+        );
+      }
+
+      const existingMensuality = await prisma.mensuality.findUnique({
+        where: { id },
+      });
+
+      if (!existingMensuality) {
+        return NextResponse.json(
+          { message: 'Mensualité non trouvée' },
+          { status: 404 }
+        );
+      }
+
+      const updatedMensuality = await prisma.mensuality.update({
+        where: { id },
+        data: {
+          name,
+          price,
+          user: {
+            connect: { id: req.auth.user.id },
+          },
+          category: {
+            connect: { id: existingCategory.id },
+          },
+        },
+      });
+
+      return NextResponse.json(
+        {
+          message: 'Mensualité mise à jour avec succès',
+          mensuality: updatedMensuality,
+        },
+        { status: 200 }
+      );
+    } catch {
+      return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
+    }
+  } else {
+    return NextResponse.json(
+      { message: "Vous n'êtes pas autorisé à faire cette action" },
       { status: 401 }
     );
   }

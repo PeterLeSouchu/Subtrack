@@ -1,11 +1,15 @@
 import api from '@/src/lib/axios.config';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ErrorType } from '@/src/types/error-response';
-import { MensualityPostType, MensualityGetType } from '@/src/types/mensuality';
+import {
+  MensualityPostType,
+  MensualityGetType,
+  MensualityPatchType,
+} from '@/src/types/mensuality';
 import { CategoryType } from '@/src/types/category';
 import { StatsType } from '@/src/types/stats';
 
-interface MensualityResponsePost {
+interface MensualityResponsePostPatch {
   data: {
     message: string;
     mensuality: MensualityGetType;
@@ -29,9 +33,30 @@ interface StatsResponse {
 
 export function usePostMensuality() {
   const queryClient = useQueryClient();
-  return useMutation<MensualityResponsePost, ErrorType, MensualityPostType>({
+  return useMutation<
+    MensualityResponsePostPatch,
+    ErrorType,
+    MensualityPostType
+  >({
     mutationFn: (mensuality) => {
       return api.post('/mensuality', mensuality);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['mensuality'] });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
+    },
+  });
+}
+
+export function usePatchMensuality() {
+  const queryClient = useQueryClient();
+  return useMutation<
+    MensualityResponsePostPatch,
+    ErrorType,
+    MensualityPatchType
+  >({
+    mutationFn: (mensuality) => {
+      return api.patch('/mensuality', mensuality);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['mensuality'] });
