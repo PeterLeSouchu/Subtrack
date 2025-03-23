@@ -48,16 +48,20 @@ import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export function GraphicDesktop({
+function GraphicDesktop({
   statsCategories,
 }: {
   statsCategories: StatsCategoryType[] | undefined;
 }) {
+  console.log(
+    "on est dans l'enfant et voial les stats categories",
+    statsCategories
+  );
   const data = {
-    labels: statsCategories?.map((item) => item.name),
+    labels: statsCategories?.map((item) => item.name) ?? [],
     datasets: [
       {
-        data: statsCategories?.map((item) => item.price),
+        data: statsCategories?.map((item) => item.price) ?? [],
         backgroundColor: [
           'rgba(255, 99, 132, 0.8)',
           'rgba(54, 162, 235, 0.8)',
@@ -94,7 +98,22 @@ export function GraphicDesktop({
   return (
     <div className='w-1/3 hidden h-full p-3 xl:block'>
       <div className=' h-full rounded-md bg-white flex items-center justify-center drop-shadow-md'>
-        <Doughnut data={data} options={options} />
+        {statsCategories && statsCategories?.length > 0 ? (
+          <Doughnut data={data} options={options} />
+        ) : (
+          <div className='flex flex-col items-center gap-3'>
+            <Image
+              className='w-32'
+              src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742746412/rk1ydjczqgwruz2ye3qu.png'
+              alt='icone chart'
+              width={200}
+              height={200}
+            />
+            <h2 className='text-gray-500'>
+              Renseignez une mensualité pour voir le graphique
+            </h2>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -108,10 +127,10 @@ function GraphicMobile({
   statsCategories: StatsCategoryType[] | undefined;
 }) {
   const data = {
-    labels: statsCategories?.map((item) => item.name),
+    labels: statsCategories?.map((item) => item.name) ?? [],
     datasets: [
       {
-        data: statsCategories?.map((item) => item.price),
+        data: statsCategories?.map((item) => item.price) ?? [],
         backgroundColor: [
           'rgba(255, 99, 132, 0.8)',
           'rgba(54, 162, 235, 0.8)',
@@ -156,7 +175,22 @@ function GraphicMobile({
     >
       <section className='py-3 px-3 h-full rounded-md '>
         <div className='bg-white h-full w-full p-3 drop-shadow-md flex items-center justify-center rounded-md '>
-          <Doughnut data={data} options={options} />
+          {statsCategories && statsCategories?.length > 0 ? (
+            <Doughnut data={data} options={options} />
+          ) : (
+            <div className='flex flex-col items-center gap-3'>
+              <Image
+                className='w-32'
+                src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742746412/rk1ydjczqgwruz2ye3qu.png'
+                alt='icone chart'
+                width={200}
+                height={200}
+              />
+              <h2 className='text-gray-500'>
+                Renseignez une mensualité pour voir le graphique
+              </h2>
+            </div>
+          )}
         </div>
       </section>
     </motion.div>
@@ -211,6 +245,11 @@ export default function Dashboard() {
     setOpenEditModal(true);
   }
 
+  console.log(
+    'on est dans le parent et voila les mensualités',
+    mensualities?.mensualities
+  );
+
   return (
     <div className='flex   h-full    '>
       <div className='xl:w-2/3 w-full h-full flex overflow-y-scroll  flex-col'>
@@ -254,6 +293,7 @@ export default function Dashboard() {
       </div>
 
       <GraphicDesktop statsCategories={stats?.statsCategory} />
+
       <ModalCreateMensuality
         open={openCreateModal}
         onClose={() => setOpenCreateModal(false)}
