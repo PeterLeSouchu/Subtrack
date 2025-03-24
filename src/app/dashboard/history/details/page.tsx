@@ -23,6 +23,8 @@ export default function HistoryDetail() {
     isLoading: statsLoading,
   } = useGetHistoryStats({ year: Number(year), month });
 
+  console.log("voila les stats d'historique", stats);
+
   const [showGraphic, setShowGraphic] = useState(false);
 
   const [searchValue, setSearchValue] = useState('');

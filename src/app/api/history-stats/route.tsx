@@ -2,8 +2,9 @@ import { prisma } from '@/prisma/prisma-client';
 import { auth } from '@/src/lib/auth';
 import { fr } from 'date-fns/locale';
 import { NextResponse } from 'next/server';
-import { parse } from 'date-fns';
+import { endOfMonth, parse, startOfMonth } from 'date-fns';
 import { type NextRequest } from 'next/server';
+// import { TZDate } from "@date-fns/tz";
 
 interface CategoryStats {
   name: string;
@@ -24,40 +25,48 @@ export async function GET(req: NextRequest) {
   }
 
   const searchParams = req.nextUrl.searchParams;
-  const year = searchParams.get('year');
+  const yearNotParsed = searchParams.get('year');
   const month = searchParams.get('month');
 
-  console.log('voial les query param dans la route api ', year, month);
-
-  if (!year || !month) {
+  if (!yearNotParsed || !month) {
     return NextResponse.json(
       { message: 'Les paramètres year et month sont requis.' },
       { status: 400 }
     );
   }
 
+  const year = parseInt(yearNotParsed, 10);
+
   try {
     const userId = session.user.id;
 
-    const monthNumber =
-      parse(month as string, 'MMMM', new Date(), { locale: fr }).getMonth() + 1;
+    const parsedDate = parse(`1 ${month} ${year}`, 'd MMMM yyyy', new Date(), {
+      locale: fr,
+    });
 
-    const startOfMonth = new Date(
-      `${year}-${monthNumber.toString().padStart(2, '0')}-01T00:00:00.000Z`
-    );
-    const endOfMonth = new Date(
-      `${year}-${monthNumber.toString().padStart(2, '0')}-01T23:59:59.999Z`
-    );
-    endOfMonth.setMonth(endOfMonth.getMonth() + 1);
+    if (isNaN(parsedDate.getTime())) {
+      return new Response(
+        JSON.stringify({ error: 'Mois ou année invalides' }),
+        { status: 400 }
+      );
+    }
 
-    console.log('start', startOfMonth, 'et end ', endOfMonth);
+    const startDate = startOfMonth(parsedDate);
+    const endDate = endOfMonth(parsedDate);
+
+    console.log(
+      "on est dans l'api et voila le start",
+      startDate,
+      'et le end',
+      endDate
+    );
 
     const mensualities = await prisma.history.findMany({
       where: {
         userId,
         createdAt: {
-          gte: startOfMonth,
-          lt: endOfMonth,
+          gte: startDate,
+          lte: endDate,
         },
       },
       include: {
