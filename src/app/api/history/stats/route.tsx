@@ -14,7 +14,6 @@ interface CategoryStats {
 }
 
 export async function GET(req: NextRequest) {
-  console.log('ROUTE HISTORY STATS APPELE');
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -54,13 +53,6 @@ export async function GET(req: NextRequest) {
     const startDate = startOfMonth(parsedDate);
     const endDate = endOfMonth(parsedDate);
 
-    console.log(
-      "on est dans l'api et voila le start",
-      startDate,
-      'et le end',
-      endDate
-    );
-
     const mensualities = await prisma.history.findMany({
       where: {
         userId,
@@ -74,12 +66,10 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    if (mensualities.length < 1) {
-      return NextResponse.json(
-        { message: 'Aucune mensualité trouvée pour ce mois.' },
-        { status: 200 }
-      );
-    }
+    console.log(
+      "on est dans l'api route stats et voila les mensualité",
+      mensualities
+    );
 
     const totalPrice = mensualities.reduce(
       (total, mensuality) => total + Number(mensuality.price),

@@ -5,6 +5,7 @@ import {
   MensualityPostType,
   MensualityGetType,
   MensualityPatchType,
+  MensualityResponseGet,
 } from '@/src/types/mensuality';
 import { CategoryType } from '@/src/types/category';
 import { StatsResponse } from '@/src/types/stats';
@@ -14,11 +15,6 @@ interface MensualityResponsePostPatch {
     message: string;
     mensuality: MensualityGetType;
   };
-}
-
-interface MensualityResponseGet {
-  message: string;
-  mensualities: MensualityGetType[];
 }
 
 interface CategoryResponse {
