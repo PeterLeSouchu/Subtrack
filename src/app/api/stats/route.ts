@@ -24,28 +24,41 @@ export const GET = auth(async function GET(req) {
       if (mensualities.length < 1) {
         return NextResponse.json(
           {
-            message: 'Mensualités récupérées avec succès',
+            message: "Aucune donnée d'historique disponible",
           },
           { status: 200 }
         );
       }
 
-      const now = new Date();
+      const latestHistory = await prisma.history.findFirst({
+        where: { userId },
+        orderBy: { createdAt: 'desc' },
+      });
+      if (!latestHistory) {
+        return NextResponse.json(
+          { message: "Aucune donnée d'historique disponible" },
+          { status: 200 }
+        );
+      }
 
-      const firstDayOfLastMonth = new Date(
-        now.getFullYear(),
-        now.getMonth() - 1,
+      const firstDayOfLatestMonth = new Date(
+        latestHistory.createdAt.getFullYear(),
+        latestHistory.createdAt.getMonth(),
         1
       );
 
-      const lastDayOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+      const lastDayOfLatestMonth = new Date(
+        latestHistory.createdAt.getFullYear(),
+        latestHistory.createdAt.getMonth() + 1,
+        0
+      );
 
       const monthlyHistory = await prisma.history.findMany({
         where: {
           userId,
           createdAt: {
-            gte: firstDayOfLastMonth,
-            lte: lastDayOfLastMonth,
+            gte: firstDayOfLatestMonth,
+            lte: lastDayOfLatestMonth,
           },
         },
       });
