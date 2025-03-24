@@ -10,6 +10,7 @@ import { ChartDesktop, ChartMobile } from '../../components/Charts';
 import { TableMensuality } from '../../components/Tables';
 import { useSearchParams } from 'next/navigation';
 import { useGetHistoryStats } from '../history.service';
+import { filtered } from '@/src/utils/filtered';
 
 export default function HistoryDetail() {
   const searchParams = useSearchParams();
@@ -34,31 +35,10 @@ export default function HistoryDetail() {
     useGetMensuality();
   const { data: categories, isLoading: categoriesLoading } = useGetCategory();
 
-  const filteredMensualities = mensualities?.mensualities.filter(
-    (mensuality) =>
-      (selectedCategory === 'all' ||
-        mensuality.category.id === selectedCategory) &&
-      (mensuality.name
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .includes(
-          searchValue
-            .toLowerCase()
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-        ) ||
-        mensuality.price.toString().includes(searchValue) ||
-        mensuality.category.name
-          .toLowerCase()
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .includes(
-            searchValue
-              .toLowerCase()
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
-          ))
+  const filteredMensualities = filtered(
+    mensualities?.mensualities,
+    searchValue,
+    selectedCategory
   );
 
   if (mensualitiesLoading || categoriesLoading || statsLoading)

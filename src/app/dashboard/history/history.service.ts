@@ -27,7 +27,7 @@ export function useGetHistoryStats({ year, month }: QueryParams) {
     queryKey: ['date'],
     queryFn: async () => {
       return api
-        .get(`/history-stats?year=${year}&month=${month}`)
+        .get(`/history/stats?year=${year}&month=${month}`)
         .then((response) => response.data);
     },
   });
