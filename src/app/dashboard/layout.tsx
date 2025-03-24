@@ -80,7 +80,10 @@ function NavBar() {
         <ul className='hidden w-full justify-center gap-20 relative lg:flex'>
           {menuItems.map((item) => {
             const Icon = item.icon;
-            const isActive = pathName === item.path;
+            const isActive =
+              item.name === 'Historique'
+                ? pathName === item.path || pathName.startsWith(`${item.path}/`)
+                : pathName === item.path;
 
             return (
               <li key={item.path} className='relative text-lg'>
