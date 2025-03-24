@@ -60,12 +60,7 @@ export const GET = auth(async function GET(req) {
         0
       );
 
-      const difference = Number((totalPriceLastMonth - totalPrice).toFixed(2));
-
-      console.log('total price', totalPrice);
-      console.log('total price last month', totalPriceLastMonth);
-
-      console.log('difference', difference);
+      const difference = Number((totalPrice - totalPriceLastMonth).toFixed(2));
 
       const totalMensuality = mensualities.length;
 
@@ -110,7 +105,7 @@ export const GET = auth(async function GET(req) {
             totalPrice,
             totalMensuality,
             averagePrice,
-            benefitOrLoss: difference > 0 ? `+${difference}` : difference,
+            benefitOrLoss: difference,
           },
           statsCategory: categoryStats,
         },
