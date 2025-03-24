@@ -30,10 +30,42 @@ export const GET = auth(async function GET(req) {
         );
       }
 
+      const now = new Date();
+
+      const firstDayOfLastMonth = new Date(
+        now.getFullYear(),
+        now.getMonth() - 1,
+        1
+      );
+
+      const lastDayOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+
+      const monthlyHistory = await prisma.history.findMany({
+        where: {
+          userId,
+          createdAt: {
+            gte: firstDayOfLastMonth,
+            lte: lastDayOfLastMonth,
+          },
+        },
+      });
+
+      const totalPriceLastMonth = monthlyHistory.reduce(
+        (total, mensuality) => total + Number(mensuality.price),
+        0
+      );
+
       const totalPrice = mensualities.reduce(
         (total, mensuality) => total + Number(mensuality.price),
         0
       );
+
+      const difference = Number((totalPriceLastMonth - totalPrice).toFixed(2));
+
+      console.log('total price', totalPrice);
+      console.log('total price last month', totalPriceLastMonth);
+
+      console.log('difference', difference);
 
       const totalMensuality = mensualities.length;
 
@@ -78,6 +110,7 @@ export const GET = auth(async function GET(req) {
             totalPrice,
             totalMensuality,
             averagePrice,
+            benefitOrLoss: difference > 0 ? `+${difference}` : difference,
           },
           statsCategory: categoryStats,
         },

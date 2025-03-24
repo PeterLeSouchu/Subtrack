@@ -2,6 +2,7 @@ export interface StatsType {
   totalPrice: number;
   totalMensuality: number;
   averagePrice: number;
+  benefitOrLoss: number;
 }
 export interface StatsCategoryType {
   name: string;

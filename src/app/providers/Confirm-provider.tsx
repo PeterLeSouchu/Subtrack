@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from '@/src/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   PropsWithChildren,
@@ -86,20 +87,16 @@ export function ConfirmDialogWithContext() {
               <span className='font-bold'> {props?.title}</span>
             </p>
             <div className='flex justify-end space-x-4'>
-              <button
-                type='button'
-                className='px-4 py-2 bg-red-500  rounded hover:bg-red-600 transition'
-                onClick={onCancel}
-              >
+              <Button type='button' onClick={onCancel}>
                 Annuler
-              </button>
-              <button
+              </Button>
+              <Button
                 type='button'
-                className='px-4 py-2 bg-blue-600 bg-green-500 hover:bg-green-600 transition  rounded '
+                className='px-4 py-2 bg-blue-600 bg-navbar lg:hover:bg-blue transition  rounded '
                 onClick={onConfirm}
               >
                 {props?.confirmBtn}
-              </button>
+              </Button>
             </div>
           </motion.div>
         </motion.div>

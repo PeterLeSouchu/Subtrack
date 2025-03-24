@@ -13,3 +13,4 @@ export * from './trash-icon';
 export * from './edit-icon';
 export * from './right-icon';
 export * from './left-icon';
+export * from './down-icon';
