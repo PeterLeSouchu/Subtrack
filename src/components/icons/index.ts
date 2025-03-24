@@ -11,3 +11,5 @@ export * from './search-icon';
 export * from './add-icon';
 export * from './trash-icon';
 export * from './edit-icon';
+export * from './right-icon';
+export * from './left-icon';

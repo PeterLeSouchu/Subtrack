@@ -66,11 +66,6 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    console.log(
-      "on est dans l'api route stats et voila les mensualité",
-      mensualities
-    );
-
     const totalPrice = mensualities.reduce(
       (total, mensuality) => total + Number(mensuality.price),
       0

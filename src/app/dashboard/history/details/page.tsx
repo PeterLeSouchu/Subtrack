@@ -14,6 +14,7 @@ import {
   useGetHistoryStats,
 } from '../history.service';
 import { filtered } from '@/src/utils/filtered';
+import { RightIcon, LeftIcon } from '@/src/components/icons';
 
 export default function HistoryDetail() {
   const searchParams = useSearchParams();
@@ -50,7 +51,14 @@ export default function HistoryDetail() {
     return <Spinner />;
 
   if (historyStatsError || historyMensualityError) {
-    return <p>La page que vous avez demandée n&apos;existe pas</p>;
+    return (
+      <div className='flex justify-center items-center h-full'>
+        <p>
+          Il semblerait qu&apos;il n&apos;y ait pas d&apos;historique pour cette
+          date là !
+        </p>
+      </div>
+    );
   }
 
   console.log('mensualité historique', historyMensualities);
@@ -60,15 +68,49 @@ export default function HistoryDetail() {
       <div className='xl:w-2/3 w-full h-full flex overflow-y-scroll  flex-col'>
         <div className=''>
           {' '}
-          <StatsHeader statsData={historyStats?.stats} />
+          <StatsHeader statsData={historyStats?.stats} isHistory={true} />
         </div>
-        <div className='flex items-center justify-center space-x-2 xl:hidden pt-4 '>
-          <Switch
-            onCheckedChange={() => setShowGraphic((value) => !value)}
-            id='airplane-mode'
-          />
-
-          <Label htmlFor='airplane-mode'>Voir graphique</Label>
+        <div className='hidden xl:flex  justify-center  mt-1 '>
+          <span className='px-4 py-1 inline-flex justify-center items-center gap-2  bg-blue  text-white rounded-md text-lg font-extrabold'>
+            <button
+              type='button'
+              className='rounded-full border-white border-2 xl:hover:bg-slate-900  transition'
+            >
+              <LeftIcon width='25' />
+            </button>
+            Novembre 2024
+            <button
+              type='button'
+              className='rounded-full border-white border-2 xl:hover:bg-slate-900  transition '
+            >
+              <RightIcon width='25' />
+            </button>
+          </span>
+        </div>
+        <div className='flex items-center justify-center xl:hidden pt-4 gap-2 '>
+          <div className='flex items-center justify-center space-x-2'>
+            {' '}
+            <Switch
+              onCheckedChange={() => setShowGraphic((value) => !value)}
+              id='airplane-mode'
+            />
+            <Label htmlFor='airplane-mode'>Voir graphique</Label>
+          </div>
+          <span className='px-4 py-1 inline-flex sm:text-base text-sm justify-center items-center gap-2  bg-blue  text-white rounded-md font-extrabold'>
+            <button
+              type='button'
+              className='rounded-full border-white border-2 xl:hover:bg-slate-900  transition'
+            >
+              <LeftIcon width='25' />
+            </button>
+            Novembre 2024
+            <button
+              type='button'
+              className='rounded-full border-white border-2 xl:hover:bg-slate-900  transition '
+            >
+              <RightIcon width='25' />
+            </button>
+          </span>
         </div>{' '}
         <TableMensuality
           mensualitiesData={filteredMensualities}

@@ -68,6 +68,8 @@ function NavBar() {
         return 'Dashboard';
       case '/dashboard/history':
         return 'Historique';
+      case '/dashboard/history/details':
+        return 'Historique';
       case '/dashboard/result':
         return 'Bilan';
 

@@ -56,11 +56,6 @@ export const GET = auth(async function GET(req) {
       },
     });
 
-    console.log(
-      "on est dans l'api route mensualité et voila les mensualité",
-      mensualities
-    );
-
     return NextResponse.json(
       {
         message: 'Mensualités du mois récupérées avec succès',
