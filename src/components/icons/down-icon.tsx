@@ -1,17 +1,17 @@
 import { IconProps } from '@/src/types/icon-props';
 
-export function StonkIcon({ className, width, height }: IconProps) {
+export function DownIcon({ className, width, height }: IconProps) {
   return (
     <svg
       className={` ${className}`}
       width={width}
       height={height}
       viewBox='0 0 48 48'
-      fill='none'
+      fill=' none'
       xmlns='http://www.w3.org/2000/svg'
     >
       <path
-        d='M36 40V20M24 40V8M12 40V28'
+        d='M46 36L27 17L17 27L2 12M46 36H34M46 36V24'
         stroke='currentColor'
         strokeWidth='4'
         strokeLinecap='round'

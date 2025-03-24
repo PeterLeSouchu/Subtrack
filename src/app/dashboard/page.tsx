@@ -19,6 +19,7 @@ import { useToast } from '../providers/Toast-provider';
 import { StatsHeader } from './components/Stats-header';
 import { ChartDesktop, ChartMobile } from './components/Charts';
 import { TableMensuality } from './components/Tables';
+import { filtered } from '@/src/utils/filtered';
 
 export default function Dashboard() {
   const [showGraphic, setShowGraphic] = useState(false);
@@ -37,31 +38,10 @@ export default function Dashboard() {
   const { data: stats, isLoading: statsLoading } = useGetStats();
   const { mutate } = useDeleteMensuality();
 
-  const filteredMensualities = mensualities?.mensualities.filter(
-    (mensuality) =>
-      (selectedCategory === 'all' ||
-        mensuality.category.id === selectedCategory) &&
-      (mensuality.name
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .includes(
-          searchValue
-            .toLowerCase()
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-        ) ||
-        mensuality.price.toString().includes(searchValue) ||
-        mensuality.category.name
-          .toLowerCase()
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .includes(
-            searchValue
-              .toLowerCase()
-              .normalize('NFD')
-              .replace(/[\u0300-\u036f]/g, '')
-          ))
+  const filteredMensualities = filtered(
+    mensualities?.mensualities,
+    searchValue,
+    selectedCategory
   );
 
   if (mensualitiesLoading || categoriesLoading || statsLoading)

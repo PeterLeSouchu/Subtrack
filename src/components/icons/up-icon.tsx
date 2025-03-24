@@ -12,7 +12,7 @@ export function UpIcon({ className, width, height }: IconProps) {
     >
       <path
         d='M49.8334 13L29.2501 33.5833L18.4167 22.75L2.16675 39M49.8334 13H36.8334M49.8334 13V26'
-        stroke='#17C058'
+        stroke='currentColor'
         strokeWidth='6'
         strokeLinecap='round'
         strokeLinejoin='round'

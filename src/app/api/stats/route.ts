@@ -10,7 +10,7 @@ interface CategoryStats {
 }
 
 export const GET = auth(async function GET(req) {
-  if (req.auth?.user) {
+  if (req.auth?.user?.id) {
     try {
       const userId = req.auth.user.id;
 
@@ -24,16 +24,56 @@ export const GET = auth(async function GET(req) {
       if (mensualities.length < 1) {
         return NextResponse.json(
           {
-            message: 'Mensualités récupérées avec succès',
+            message: "Aucune donnée d'historique disponible",
           },
           { status: 200 }
         );
       }
 
+      const latestHistory = await prisma.history.findFirst({
+        where: { userId },
+        orderBy: { createdAt: 'desc' },
+      });
+      if (!latestHistory) {
+        return NextResponse.json(
+          { message: "Aucune donnée d'historique disponible" },
+          { status: 200 }
+        );
+      }
+
+      const firstDayOfLatestMonth = new Date(
+        latestHistory.createdAt.getFullYear(),
+        latestHistory.createdAt.getMonth(),
+        1
+      );
+
+      const lastDayOfLatestMonth = new Date(
+        latestHistory.createdAt.getFullYear(),
+        latestHistory.createdAt.getMonth() + 1,
+        0
+      );
+
+      const monthlyHistory = await prisma.history.findMany({
+        where: {
+          userId,
+          createdAt: {
+            gte: firstDayOfLatestMonth,
+            lte: lastDayOfLatestMonth,
+          },
+        },
+      });
+
+      const totalPriceLastMonth = monthlyHistory.reduce(
+        (total, mensuality) => total + Number(mensuality.price),
+        0
+      );
+
       const totalPrice = mensualities.reduce(
         (total, mensuality) => total + Number(mensuality.price),
         0
       );
+
+      const difference = Number((totalPrice - totalPriceLastMonth).toFixed(2));
 
       const totalMensuality = mensualities.length;
 
@@ -78,6 +118,7 @@ export const GET = auth(async function GET(req) {
             totalPrice,
             totalMensuality,
             averagePrice,
+            benefitOrLoss: difference,
           },
           statsCategory: categoryStats,
         },

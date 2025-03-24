@@ -10,33 +10,36 @@ const mensualitySchema = z.object({
 });
 
 export const GET = auth(async function GET(req) {
-  if (req.auth?.user) {
-    try {
-      const userId = req.auth.user.id;
-
-      const mensualities = await prisma.mensuality.findMany({
-        where: { userId },
-        include: { category: true },
-        orderBy: {
-          price: 'asc',
-        },
-      });
-
-      return NextResponse.json(
-        {
-          message: 'Mensualités récupérées avec succès',
-          mensualities,
-        },
-        { status: 200 }
-      );
-    } catch {
-      return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
-    }
-  } else {
+  if (!req.auth?.user?.id) {
     return NextResponse.json(
       { message: "Vous n'êtes pas autorisé à effectuer cette action" },
       { status: 401 }
     );
+  }
+
+  try {
+    const userId = req.auth.user.id;
+
+    const mensualities = await prisma.mensuality.findMany({
+      where: {
+        userId,
+      },
+      include: { category: true },
+      orderBy: {
+        price: 'asc',
+      },
+    });
+
+    return NextResponse.json(
+      {
+        message: 'Mensualités du mois récupérées avec succès',
+        mensualities,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Erreur lors de la récupération des mensualités :', error);
+    return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
   }
 });
 

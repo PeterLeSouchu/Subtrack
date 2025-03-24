@@ -17,3 +17,8 @@ export interface MensualityGetType {
   category: { image: string; name: string; id: string };
   id: string;
 }
+
+export interface MensualityResponseGet {
+  message: string;
+  mensualities: MensualityGetType[];
+}

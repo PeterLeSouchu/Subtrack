@@ -1,6 +1,6 @@
 import { IconProps } from '@/src/types/icon-props';
 
-export function StonkIcon({ className, width, height }: IconProps) {
+export function LeftIcon({ className, width, height }: IconProps) {
   return (
     <svg
       className={` ${className}`}
@@ -11,8 +11,8 @@ export function StonkIcon({ className, width, height }: IconProps) {
       xmlns='http://www.w3.org/2000/svg'
     >
       <path
-        d='M36 40V20M24 40V8M12 40V28'
-        stroke='currentColor'
+        d='M30 36L18 24L30 12'
+        stroke='#FFFFFF'
         strokeWidth='4'
         strokeLinecap='round'
         strokeLinejoin='round'

@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useState, useEffect } from 'react';
+import { ReactNode, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -20,22 +20,22 @@ const menuItems = [
   {
     name: 'Dashboard',
     path: '/dashboard',
-    icon: <DashboardIcon width='13' height='13' />,
+    icon: DashboardIcon,
   },
   {
     name: 'Historique',
     path: '/dashboard/history',
-    icon: <BookIcon width='18' height='18' />,
+    icon: BookIcon,
   },
   {
     name: 'Bilan',
     path: '/dashboard/result',
-    icon: <StonkIcon width='18' height='18' />,
+    icon: StonkIcon,
   },
   {
     name: 'Profil',
     path: '/dashboard/profile',
-    icon: <ProfileIcon width='22' height='22' />,
+    icon: ProfileIcon,
   },
 ];
 
@@ -43,10 +43,9 @@ export default function LayoutDashboard({ children }: { children: ReactNode }) {
   return (
     <ToastProvider>
       <ConfirmProvider>
-        <div className=' w-full flex flex-col  h-screen bg-dashboardbg '>
+        <div className='w-full flex flex-col h-screen bg-dashboardbg'>
           <NavBar />
-
-          <main className='flex-1  h-full overflow-hidden '> {children}</main>
+          <main className='flex-1 h-full overflow-hidden'>{children}</main>
         </div>
       </ConfirmProvider>
     </ToastProvider>
@@ -55,42 +54,21 @@ export default function LayoutDashboard({ children }: { children: ReactNode }) {
 
 function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeDimensions, setActiveDimensions] = useState<{
-    left: number;
-    width: number;
-  } | null>(null);
 
   const pathName = usePathname();
-
-  function displayMobilePageName(pathName: string) {
-    switch (pathName) {
-      case '/dashboard':
-        return 'Dashboard';
-      case '/dashboard/history':
-        return 'Historique';
-      case '/dashboard/result':
-        return 'Bilan';
-
-      case '/dashboard/profile':
-        return 'Profil';
-    }
-  }
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  useEffect(() => {
-    const activeLink = document.querySelector('.active-link');
+  function displayMobilePageName(pathName: string) {
+    const currentItem = menuItems.find((item) => item.path === pathName);
+    return currentItem ? currentItem.name : '';
+  }
 
-    if (activeLink) {
-      const { offsetLeft, offsetWidth } = activeLink as HTMLElement;
-      setActiveDimensions({ left: offsetLeft, width: offsetWidth });
-    }
-  }, [pathName]);
   return (
-    <header className='w-full p-3  '>
-      <nav className='w-full flex items-center rounded-xl   bg-navbar text-white font-semibold  justify-between lg:justify-center px-2 relative'>
+    <header className='w-full p-3'>
+      <nav className='w-full flex items-center rounded-xl bg-gradient-to-r from-navbar via-blue-950 to-navbar text-white font-semibold justify-between lg:justify-center px-2 relative shadow-lg'>
         <Image
           src='/logowhite.png'
           className='w-10'
@@ -98,50 +76,52 @@ function NavBar() {
           height={100}
           alt='logo'
         />
-        <ul className='hidden w-full justify-center gap-20 relative lg:flex '>
-          {menuItems.map((item) => (
-            <li
-              key={item.path}
-              className={`relative  text-lg ${
-                pathName === item.path ? 'active-link' : ''
-              }`}
-            >
-              <Link
-                className='flex justify-center items-center gap-1'
-                href={item.path}
-              >
-                {' '}
-                {item.icon} {item.name}
-              </Link>
-            </li>
-          ))}
-          {activeDimensions && (
-            <motion.div
-              className='absolute h-1 bg-white -bottom-2 rounded-2xl'
-              initial={false}
-              animate={{
-                left: activeDimensions.left,
-                width: activeDimensions.width,
-              }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            />
-          )}
+
+        <ul className='hidden w-full justify-center gap-20 relative lg:flex'>
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            const isActive =
+              item.name === 'Historique'
+                ? pathName === item.path || pathName.startsWith(`${item.path}/`)
+                : pathName === item.path;
+
+            return (
+              <li key={item.path} className='relative text-lg'>
+                <Link
+                  className={`flex justify-center items-center gap-1 px-4 py-1 rounded-xl transition-all ${
+                    isActive ? 'bg-white text-navbar' : 'hover:bg-blue'
+                  }`}
+                  href={item.path}
+                >
+                  <Icon
+                    width={item.name === 'Dashboard' ? '15' : '18'}
+                    height={item.name === 'Dashboard' ? '15' : '18'}
+                    className={isActive ? 'text-navbar' : 'text-white'}
+                  />
+                  {item.name}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
+
         <h1 className='font-bold text-2xl lg:hidden'>
           {displayMobilePageName(pathName)}
         </h1>
+
         <button type='button' onClick={toggleMenu}>
-          {' '}
           <MenuMobileIcon className='lg:hidden block' width='40' height='40' />
         </button>
+
         {isMenuOpen && (
           <div
             className='fixed inset-0 bg-black bg-opacity-50 z-20'
             onClick={toggleMenu}
           ></div>
         )}
+
         <motion.div
-          className={`fixed top-0 flex flex-col gap-10 rounded-l  ${
+          className={`fixed top-0 flex flex-col gap-10 rounded-l ${
             isMenuOpen ? 'right-0' : '-right-full'
           } w-3/5 h-full min-w-48 bg-navbar shadow-lg z-30`}
           initial={{ right: '-100%' }}
@@ -149,24 +129,32 @@ function NavBar() {
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
           <div className='flex p-5 justify-end w-full'>
-            {' '}
             <button onClick={toggleMenu}>
               <CloseIcon width='22' height='22' />
             </button>
           </div>
-          <ul className='flex flex-col gap-14 font-bold items-center '>
-            {menuItems.map((item) => (
-              <li key={item.path} className='text-xl'>
-                <Link
-                  href={item.path}
-                  onClick={toggleMenu}
-                  className='flex items-center gap-2'
-                >
-                  {item.icon}
-                  {item.name}
-                </Link>
-              </li>
-            ))}
+          <ul className='flex flex-col gap-14 font-bold items-center'>
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathName === item.path;
+
+              return (
+                <li key={item.path} className='text-xl'>
+                  <Link
+                    href={item.path}
+                    onClick={toggleMenu}
+                    className='flex items-center gap-2'
+                  >
+                    <Icon
+                      width='22'
+                      height='22'
+                      className={isActive ? 'text-blue-500' : 'text-white'}
+                    />
+                    {item.name}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </motion.div>
       </nav>
