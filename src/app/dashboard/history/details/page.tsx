@@ -66,7 +66,8 @@ export default function HistoryDetail() {
     historyStatsError ||
     historyMensualityError ||
     categoryError ||
-    dateError
+    dateError ||
+    historyMensualities?.mensualities.length === 0
   ) {
     return (
       <div className='flex justify-center items-center h-full'>
