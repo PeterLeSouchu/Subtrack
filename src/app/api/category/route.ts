@@ -3,7 +3,7 @@ import { auth } from '@/src/lib/auth';
 import { NextResponse } from 'next/server';
 
 export const GET = auth(async function GET(req) {
-  if (req.auth?.user) {
+  if (req.auth?.user?.id) {
     try {
       const categories = await prisma.category.findMany();
 

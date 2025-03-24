@@ -7,7 +7,7 @@ import { fr } from 'date-fns/locale';
 type YearMonthData = { year: number; month: string[] };
 
 export const GET = auth(async (req) => {
-  if (!req.auth?.user) {
+  if (!req.auth?.user?.id) {
     return NextResponse.json(
       { message: "Vous n'êtes pas autorisé à effectuer cette action" },
       { status: 401 }

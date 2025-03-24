@@ -3,17 +3,26 @@
 import { useState } from 'react';
 import { Switch } from '@/src/components/ui/switch';
 import { Label } from '@/src/components/ui/label';
-import {
-  useGetCategory,
-  useGetMensuality,
-  useGetStats,
-} from '../../dashboard.service';
+import { useGetCategory, useGetMensuality } from '../../dashboard.service';
 import Spinner from '@/src/components/Spinner';
 import { StatsHeader } from '../../components/Stats-header';
 import { ChartDesktop, ChartMobile } from '../../components/Charts';
 import { TableMensuality } from '../../components/Tables';
+import { useSearchParams } from 'next/navigation';
+import { useGetHistoryStats } from '../history.service';
 
 export default function HistoryDetail() {
+  const searchParams = useSearchParams();
+
+  const year = searchParams.get('year');
+  const month = searchParams.get('month');
+
+  const {
+    data: stats,
+    error,
+    isLoading: statsLoading,
+  } = useGetHistoryStats({ year: Number(year), month });
+
   const [showGraphic, setShowGraphic] = useState(false);
 
   const [searchValue, setSearchValue] = useState('');
@@ -22,7 +31,6 @@ export default function HistoryDetail() {
   const { data: mensualities, isLoading: mensualitiesLoading } =
     useGetMensuality();
   const { data: categories, isLoading: categoriesLoading } = useGetCategory();
-  const { data: stats, isLoading: statsLoading } = useGetStats();
 
   const filteredMensualities = mensualities?.mensualities.filter(
     (mensuality) =>
@@ -53,6 +61,10 @@ export default function HistoryDetail() {
 
   if (mensualitiesLoading || categoriesLoading || statsLoading)
     return <Spinner />;
+
+  if (error) {
+    return <p>La page que vous avez demandée n&apos;existe pas</p>;
+  }
 
   return (
     <div className='flex   h-full    '>

@@ -10,7 +10,7 @@ const mensualitySchema = z.object({
 });
 
 export const GET = auth(async function GET(req) {
-  if (!req.auth?.user) {
+  if (!req.auth?.user?.id) {
     return NextResponse.json(
       { message: "Vous n'êtes pas autorisé à effectuer cette action" },
       { status: 401 }
@@ -20,26 +20,9 @@ export const GET = auth(async function GET(req) {
   try {
     const userId = req.auth.user.id;
 
-    const now = new Date();
-
-    const firstDayOfMonth = new Date(
-      Date.UTC(now.getFullYear(), now.getMonth(), 1, 0, 0, 0)
-    );
-
-    const lastDayOfMonth = new Date(
-      Date.UTC(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59)
-    );
-
-    console.log('Premier jour :', firstDayOfMonth);
-    console.log('Dernier jour :', lastDayOfMonth);
-
     const mensualities = await prisma.mensuality.findMany({
       where: {
         userId,
-        createdAt: {
-          gte: firstDayOfMonth,
-          lte: lastDayOfMonth,
-        },
       },
       include: { category: true },
       orderBy: {

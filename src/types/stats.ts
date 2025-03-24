@@ -9,3 +9,9 @@ export interface StatsCategoryType {
   percentage: number;
   color: string;
 }
+
+export interface StatsResponse {
+  message: string;
+  stats: StatsType;
+  statsCategory: StatsCategoryType[];
+}

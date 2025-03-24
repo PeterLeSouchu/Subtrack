@@ -11,8 +11,6 @@ export default function History() {
     return <Spinner />;
   }
 
-  console.log('voila les dates,', data);
-
   return (
     <div className='flex justify-center'>
       {' '}

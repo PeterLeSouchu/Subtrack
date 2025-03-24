@@ -10,7 +10,7 @@ interface CategoryStats {
 }
 
 export const GET = auth(async function GET(req) {
-  if (req.auth?.user) {
+  if (req.auth?.user?.id) {
     try {
       const userId = req.auth.user.id;
 
