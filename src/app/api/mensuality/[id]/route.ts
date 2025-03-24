@@ -46,8 +46,7 @@ export async function DELETE(
       { message: 'Mensualité supprimée avec succès' },
       { status: 200 }
     );
-  } catch (error) {
-    console.error('Erreur lors de la suppression :', error);
+  } catch {
     return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
   }
 }

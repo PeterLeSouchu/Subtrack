@@ -6,6 +6,7 @@ interface CategoryStats {
   name: string;
   price: number;
   percentage: number;
+  color: string;
 }
 
 export const GET = auth(async function GET(req) {
@@ -15,7 +16,9 @@ export const GET = auth(async function GET(req) {
 
       const mensualities = await prisma.mensuality.findMany({
         where: { userId },
-        include: { category: true },
+        include: {
+          category: true,
+        },
       });
 
       if (mensualities.length < 1) {
@@ -40,6 +43,7 @@ export const GET = auth(async function GET(req) {
         (acc: CategoryStats[], mensuality) => {
           const categoryName = mensuality.category.name;
           const categoryPrice = Number(mensuality.price);
+          const categoryColor = mensuality.category.color;
 
           const existingCategory = acc.find(
             (category) => category.name === categoryName
@@ -52,6 +56,7 @@ export const GET = auth(async function GET(req) {
               name: categoryName,
               price: categoryPrice,
               percentage: 0,
+              color: categoryColor,
             });
           }
 
@@ -62,7 +67,7 @@ export const GET = auth(async function GET(req) {
 
       categoryStats.forEach((category) => {
         category.percentage = Number(
-          ((category.price / totalPrice) * 100).toFixed(2)
+          ((category.price / totalPrice) * 100).toFixed(0)
         );
       });
 
@@ -78,8 +83,7 @@ export const GET = auth(async function GET(req) {
         },
         { status: 200 }
       );
-    } catch (error) {
-      console.error('Erreur lors de la récupération des mensualités :', error);
+    } catch {
       return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
     }
   } else {

@@ -83,6 +83,7 @@ model Category {
   id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name       String
   image      String
+  color      String
   Limit      Limit[]
   Mensuality Mensuality[]
   History    History[]
@@ -92,7 +93,7 @@ model Category {
 
 model Limit {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  price      String
+  price      Float
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   userId     String
@@ -105,7 +106,7 @@ model Limit {
 model Mensuality {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name       String
-  price      String
+  price      Float
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
@@ -118,7 +119,7 @@ model Mensuality {
 model History {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name       String
-  price      String
+  price      Float
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)

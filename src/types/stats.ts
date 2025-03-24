@@ -7,4 +7,5 @@ export interface StatsCategoryType {
   name: string;
   price: number;
   percentage: number;
+  color: string;
 }

@@ -82,7 +82,8 @@ export function ConfirmDialogWithContext() {
             key='modal-content'
           >
             <p className='mb-4 text-center font-medium text-lg text-gray-600'>
-              {props?.title}
+              Etes-vous sur de vouloir supprimer la mensualité suivante :{' '}
+              <span className='font-bold'> {props?.title}</span>
             </p>
             <div className='flex justify-end space-x-4'>
               <button
