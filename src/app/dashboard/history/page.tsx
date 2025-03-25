@@ -19,7 +19,7 @@ export default function History() {
           data?.date.map((date, index) => (
             <section key={index}>
               <span className=' bg-blue text-white font-bold rounded-xl text-2xl p-2'>
-                {date.year}
+                {date?.year}
               </span>
               <div className='mt-6 mb-10  border-t-2 flex items-center gap-3 pt-2'>
                 {date.month.map((m, index) => (
