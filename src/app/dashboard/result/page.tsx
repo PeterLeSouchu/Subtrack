@@ -44,7 +44,7 @@ const BarChart = () => {
   };
 
   return (
-    <div>
+    <div className='w-full h-full'>
       <Bar data={data} />
     </div>
   );
@@ -52,9 +52,9 @@ const BarChart = () => {
 
 export default function Bilan() {
   return (
-    <div className='h-full p-3 overflow-y-scroll'>
+    <div className='h-full flex flex-col p-3 overflow-y-scroll'>
       {' '}
-      <div className='flex    w-full overflow-x-scroll gap-3 pb-4'>
+      <div className='flex   h-30   w-full overflow-x-scroll gap-3 pb-4'>
         {' '}
         <article className='flex-1 drop-shadow-md'>
           <Select>
@@ -89,7 +89,7 @@ export default function Bilan() {
           </h3>
         </article>
       </div>
-      <div>
+      <div className='flex-1'>
         <BarChart />
       </div>
     </div>
