@@ -16,3 +16,8 @@ export interface StatsResponse {
   stats: StatsType;
   statsCategory: StatsCategoryType[];
 }
+
+export interface MonthlyStat {
+  month: string;
+  price: number;
+}
