@@ -61,7 +61,6 @@ const BarChart = ({ mensualityData }: { mensualityData: MonthlyStat[] }) => {
     labels: months,
     datasets: [
       {
-        label: 'Montant du mois en € ',
         data: pricePerMonth,
         backgroundColor: [
           'rgba(75, 192, 192, 0.2)',
@@ -132,7 +131,7 @@ export default function Bilan() {
                 defaultValue={yearData?.date[0].toString()}
                 onValueChange={handleYearChange}
               >
-                <SelectTrigger className='w-full h-20'>
+                <SelectTrigger className='w-full h-20 lg:text-2xl text-lg font-bold mr-2 '>
                   <SelectValue
                     placeholder='Année'
                     className='text-xl'
@@ -143,7 +142,7 @@ export default function Bilan() {
                   {yearData?.date.map((year, index) => (
                     <SelectItem
                       key={index}
-                      className='text-xl'
+                      className='lg:text-xl text-base'
                       value={year.toString()}
                     >
                       {year}
