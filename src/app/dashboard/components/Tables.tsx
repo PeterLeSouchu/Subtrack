@@ -55,84 +55,93 @@ export function TableMensuality({
           setSelectedCategory={setSelectedCategory}
           isHistory={isHistory}
         />
-        <Table className='w-full rounded-lg overflow-y-scroll md:table hidden'>
-          <TableHeader>
-            <TableRow>
-              <TableHead className='text-left p-4 font-extrabold text-[#253145]'>
-                Catégorie
-              </TableHead>
-              <TableHead className='text-left p-4 font-extrabold text-[#253145]'>
-                Nom
-              </TableHead>
-              <TableHead className='text-left p-4 font-extrabold text-[#253145]'>
-                Prix
-              </TableHead>
-              <TableHead className='text-left p-4 font-extrabold'></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {mensualitiesData && mensualitiesData.length > 0 ? (
-              mensualitiesData.map((mensuality, index) => (
-                <TableRow key={index} className='border-t p-0 border-gray-200'>
-                  <TableCell className='p-4 flex items-center gap-2'>
-                    <span className='bg-[#E8E5FF] text-blue font-semibold py-1 px-2 flex gap-2 items-center rounded-xl'>
-                      <Image
-                        width={450}
-                        height={450}
-                        className='w-7'
-                        src={mensuality.category.image}
-                        alt='Icone catégorie'
-                      />
-                      <p className='font-extrabold'>
-                        {mensuality.category.name}
-                      </p>
-                    </span>
-                  </TableCell>
-                  <TableCell className='p-4 text-gray-700 font-semibold'>
-                    {mensuality.name}
-                  </TableCell>
-                  <TableCell className='p-4 text-gray-700 font-medium'>
-                    {mensuality.price} €
-                  </TableCell>
-                  {isHistory && editMensuality && handleDelete && (
-                    <TableCell className='p-4 flex justify-center gap-3'>
-                      <button
-                        className='hover:bg-red-200 transition p-1 rounded-full'
-                        onClick={() => handleDelete(mensuality)}
-                      >
-                        <TrashIcon width='18' />
-                      </button>
-                      <button
-                        onClick={() => editMensuality(mensuality)}
-                        className='hover:bg-amber-100 transition p-1 rounded-full'
-                      >
-                        <EditIcon width='16' />
-                      </button>
-                    </TableCell>
-                  )}
-                </TableRow>
-              ))
-            ) : (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showGraphic ? 0 : 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Table className='w-full rounded-lg overflow-y-scroll md:table hidden'>
+            <TableHeader>
               <TableRow>
-                <TableCell
-                  colSpan={4}
-                  className='text-center p-4 text-gray-500'
-                >
-                  Aucune mensualité.
-                  <div className='flex justify-center'>
-                    <Image
-                      width={200}
-                      height={200}
-                      src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp'
-                      alt='empty file'
-                      className='w-32 '
-                    />
-                  </div>
-                </TableCell>
+                <TableHead className='text-left p-4 font-extrabold text-[#253145]'>
+                  Catégorie
+                </TableHead>
+                <TableHead className='text-left p-4 font-extrabold text-[#253145]'>
+                  Nom
+                </TableHead>
+                <TableHead className='text-left p-4 font-extrabold text-[#253145]'>
+                  Prix
+                </TableHead>
+                <TableHead className='text-left p-4 font-extrabold'></TableHead>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {mensualitiesData && mensualitiesData.length > 0 ? (
+                mensualitiesData.map((mensuality, index) => (
+                  <TableRow
+                    key={index}
+                    className='border-t p-0 border-gray-200'
+                  >
+                    <TableCell className='p-4 flex items-center gap-2'>
+                      <span className='bg-[#E8E5FF] text-blue font-semibold py-1 px-2 flex gap-2 items-center rounded-xl'>
+                        <Image
+                          width={450}
+                          height={450}
+                          className='w-7'
+                          src={mensuality.category.image}
+                          alt='Icone catégorie'
+                        />
+                        <p className='font-extrabold'>
+                          {mensuality.category.name}
+                        </p>
+                      </span>
+                    </TableCell>
+                    <TableCell className='p-4 text-gray-700 font-semibold'>
+                      {mensuality.name}
+                    </TableCell>
+                    <TableCell className='p-4 text-gray-700 font-medium'>
+                      {mensuality.price} €
+                    </TableCell>
+                    {isHistory && editMensuality && handleDelete && (
+                      <TableCell className='p-4 flex justify-center gap-3'>
+                        <button
+                          className='hover:bg-red-200 transition p-1 rounded-full'
+                          onClick={() => handleDelete(mensuality)}
+                        >
+                          <TrashIcon width='18' />
+                        </button>
+                        <button
+                          onClick={() => editMensuality(mensuality)}
+                          className='hover:bg-amber-100 transition p-1 rounded-full'
+                        >
+                          <EditIcon width='16' />
+                        </button>
+                      </TableCell>
+                    )}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={4}
+                    className='text-center p-4 text-gray-500'
+                  >
+                    Aucune mensualité.
+                    <div className='flex justify-center'>
+                      <Image
+                        width={200}
+                        height={200}
+                        src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp'
+                        alt='empty file'
+                        className='w-32 '
+                      />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </motion.div>
         {mensualitiesData && mensualitiesData.length > 0 ? (
           mensualitiesData?.map((mensuality) => (
             <motion.article
