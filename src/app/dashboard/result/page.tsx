@@ -18,6 +18,8 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { useGetYearDate } from './result.service';
+import Spinner from '@/src/components/Spinner';
 
 ChartJS.register(
   CategoryScale,
@@ -29,48 +31,48 @@ ChartJS.register(
 );
 
 const BarChart = () => {
-  // Données pour le graphique
   const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'], // Labels de l'axe X
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
     datasets: [
       {
-        label: 'Ventes mensuelles', // Légende du graphique
-        data: [65, 59, 80, 81, 56], // Données des barres
-        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Couleur des barres
-        borderColor: 'rgba(75, 192, 192, 1)', // Couleur du bord des barres
-        borderWidth: 1, // Largeur de la bordure
+        label: 'Ventes mensuelles',
+        data: [65, 59, 80, 81, 56],
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
       },
     ],
   };
 
-  return (
-    <div className='w-full h-full'>
-      <Bar data={data} />
-    </div>
-  );
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+  };
+
+  return <Bar data={data} options={options} />;
 };
 
 export default function Bilan() {
+  const { data: yearData, isLoading: yearLoading } = useGetYearDate();
+
+  if (yearLoading) return <Spinner />;
+  console.log('voila les dates', yearData);
   return (
     <div className='h-full flex flex-col p-3 overflow-y-scroll'>
       {' '}
-      <div className='flex   h-30   w-full overflow-x-scroll gap-3 pb-4'>
+      <div className='flex    h-30   w-full overflow-x-scroll gap-3 pb-4'>
         {' '}
         <article className='flex-1 drop-shadow-md'>
           <Select>
             <SelectTrigger className='w-full h-20'>
-              <SelectValue placeholder='Theme' className='text-xl' />
+              <SelectValue placeholder='Année' className='text-xl' />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem className='text-xl' value='light'>
-                Light
-              </SelectItem>
-              <SelectItem className='text-xl' value='dark'>
-                Dark
-              </SelectItem>
-              <SelectItem className='text-xl' value='system'>
-                System
-              </SelectItem>
+              {yearData?.date.map((year, index) => (
+                <SelectItem key={index} className='text-xl' value={year}>
+                  {year}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </article>
