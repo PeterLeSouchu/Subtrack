@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/src/components/ui/select';
+import Image from 'next/image';
 
 import { Bar } from 'react-chartjs-2';
 import {
@@ -66,60 +67,83 @@ export default function Bilan() {
 
   if (yearLoading || yearStatsLoading) return <Spinner />;
 
+  console.log('yearData', yearData);
+
   return (
-    <div className='h-full flex flex-col p-3 overflow-y-scroll'>
-      {' '}
-      <div className='flex    h-30   w-full overflow-x-scroll gap-3 pb-4'>
-        {' '}
-        <article className='flex-1 drop-shadow-md'>
-          <Select
-            defaultValue={yearData?.date[0].toString()}
-            onValueChange={handleYearChange}
-          >
-            <SelectTrigger className='w-full h-20'>
-              <SelectValue
-                placeholder='Année'
-                className='text-xl'
+    <>
+      {yearData?.date && yearStatsData?.stats ? (
+        <div className='h-full flex flex-col p-3 overflow-y-scroll'>
+          {' '}
+          <div className='flex    h-30   w-full overflow-x-scroll gap-3 pb-4'>
+            {' '}
+            <article className='flex-1 drop-shadow-md'>
+              <Select
                 defaultValue={yearData?.date[0].toString()}
-              />
-            </SelectTrigger>
-            <SelectContent>
-              {yearData?.date.map((year, index) => (
-                <SelectItem
-                  key={index}
-                  className='text-xl'
-                  value={year.toString()}
-                >
-                  {year}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </article>
-        <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20 text-nowrap'>
-          <span className='text-[#D6A514]  font-black lg:text-4xl text-lg'>
-            {yearStatsData?.stats?.totalPrice} €
-          </span>
-          <h3 className='text-stattext font-bold text-left text-sm'>Total</h3>
-        </article>
-        <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20 text-nowrap'>
-          <span className='text-[#2C4A7B] font-black lg:text-4xl text-lg'>
-            # {yearStatsData?.stats?.totalMensuality}
-          </span>
-          <h3 className='text-stattext font-bold text-left text-sm'>
-            Nombre de mensualités
-          </h3>
-        </article>
-        <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20 text-nowrap'>
-          <span className='text-[#43669D] font-black lg:text-4xl text-lg'>
-            {yearStatsData?.stats?.averageMonthlyPrice} € / mois
-          </span>
-          <h3 className='text-stattext font-bold text-left text-sm'>Moyenne</h3>
-        </article>
-      </div>
-      <div className='flex-1'>
-        <BarChart />
-      </div>
-    </div>
+                onValueChange={handleYearChange}
+              >
+                <SelectTrigger className='w-full h-20'>
+                  <SelectValue
+                    placeholder='Année'
+                    className='text-xl'
+                    defaultValue={yearData?.date[0].toString()}
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {yearData?.date.map((year, index) => (
+                    <SelectItem
+                      key={index}
+                      className='text-xl'
+                      value={year.toString()}
+                    >
+                      {year}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </article>
+            <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20 text-nowrap'>
+              <span className='text-[#D6A514]  font-black lg:text-4xl text-lg'>
+                {yearStatsData?.stats?.totalPrice} €
+              </span>
+              <h3 className='text-stattext font-bold text-left text-sm'>
+                Total
+              </h3>
+            </article>
+            <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20 text-nowrap'>
+              <span className='text-[#2C4A7B] font-black lg:text-4xl text-lg'>
+                # {yearStatsData?.stats?.totalMensuality}
+              </span>
+              <h3 className='text-stattext font-bold text-left text-sm'>
+                Nombre de mensualités
+              </h3>
+            </article>
+            <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20 text-nowrap'>
+              <span className='text-[#43669D] font-black lg:text-4xl text-lg'>
+                {yearStatsData?.stats?.averageMonthlyPrice} € / mois
+              </span>
+              <h3 className='text-stattext font-bold text-left text-sm'>
+                Moyenne
+              </h3>
+            </article>
+          </div>
+          <div className='flex-1'>
+            <BarChart />
+          </div>
+        </div>
+      ) : (
+        <div className='flex flex-col items-center justify-center h-full'>
+          <h2 className='text-xl font-semibold text-center pt-10'>
+            Vous n&apos;avez pas encore de bilan.
+          </h2>
+          <Image
+            width={200}
+            height={200}
+            src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp'
+            alt='empty file'
+            className='w-32'
+          />
+        </div>
+      )}
+    </>
   );
 }

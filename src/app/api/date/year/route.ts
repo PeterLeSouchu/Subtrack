@@ -21,6 +21,13 @@ export const GET = auth(async (req) => {
       },
     });
 
+    if (mensualities.length === 0) {
+      return NextResponse.json(
+        { message: 'Aucune donnée disponible' },
+        { status: 200 }
+      );
+    }
+
     const years = Array.from(
       new Set(
         mensualities.map((mensuality) =>

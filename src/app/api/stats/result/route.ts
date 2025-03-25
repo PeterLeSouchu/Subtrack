@@ -27,6 +27,13 @@ export async function GET(req: NextRequest) {
       },
     });
 
+    if (yearsInHistory.length === 0) {
+      return NextResponse.json(
+        { message: 'Aucune donnée disponible' },
+        { status: 200 }
+      );
+    }
+
     const years = yearsInHistory.map((entry) => getYear(entry.createdAt));
 
     if (years.length === 0) {
