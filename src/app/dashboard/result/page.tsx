@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from '@/src/components/ui/select';
 import Image from 'next/image';
-
+import { MonthlyStat } from '@/src/types/stats';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -32,16 +32,52 @@ ChartJS.register(
   Legend
 );
 
-const BarChart = () => {
+const BarChart = ({ mensualityData }: { mensualityData: MonthlyStat[] }) => {
+  const months = [
+    'janvier',
+    'février',
+    'mars',
+    'avril',
+    'mai',
+    'juin',
+    'juillet',
+    'août',
+    'septembre',
+    'octobre',
+    'novembre',
+    'décembre',
+  ];
+
+  const pricePerMonth: number[] = Array(12).fill(0);
+
+  mensualityData.forEach((month) => {
+    const monthIndex = months.indexOf(month.month);
+    if (monthIndex !== -1) {
+      pricePerMonth[monthIndex] = month.price;
+    }
+  });
+
   const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+    labels: months,
     datasets: [
       {
-        label: 'Ventes mensuelles',
-        data: [65, 59, 80, 81, 56],
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        label: 'Montant du mois en € ',
+        data: pricePerMonth,
+        backgroundColor: [
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 205, 86, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(255, 99, 71, 0.2)',
+          'rgba(0, 255, 0, 0.2)',
+          'rgba(255, 0, 255, 0.2)',
+          'rgba(0, 0, 255, 0.2)',
+          'rgba(255, 165, 0, 0.2)',
+        ],
         borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
       },
     ],
   };
@@ -49,6 +85,21 @@ const BarChart = () => {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+    scales: {
+      y: {
+        ticks: {
+          callback: function (value: number | string) {
+            return value + ' €';
+          },
+          beginAtZero: true,
+        },
+      },
+    },
   };
 
   return <Bar data={data} options={options} />;
@@ -67,7 +118,7 @@ export default function Bilan() {
 
   if (yearLoading || yearStatsLoading) return <Spinner />;
 
-  console.log('yearData', yearData);
+  console.log('yearStatsData', yearStatsData);
 
   return (
     <>
@@ -127,7 +178,7 @@ export default function Bilan() {
             </article>
           </div>
           <div className='flex-1'>
-            <BarChart />
+            <BarChart mensualityData={yearStatsData.stats.monthlyStats} />
           </div>
         </div>
       ) : (
@@ -136,11 +187,11 @@ export default function Bilan() {
             Vous n&apos;avez pas encore de bilan.
           </h2>
           <Image
+            className='w-32 mt-6'
+            src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742935563/g9dotyrgpwn7txg4hown.png'
+            alt='icone chart'
             width={200}
             height={200}
-            src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp'
-            alt='empty file'
-            className='w-32'
           />
         </div>
       )}

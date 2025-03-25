@@ -38,7 +38,7 @@ export default function History() {
         ) : (
           <div className='flex flex-col items-center h-full justify-center'>
             <h2 className='text-xl font-semibold text-center'>
-              Vous n&apos;avez pas encore de bilan.
+              Vous n&apos;avez pas encore d&apos;historique.
             </h2>
             <Image
               width={200}

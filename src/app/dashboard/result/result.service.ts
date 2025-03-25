@@ -1,6 +1,7 @@
 import api from '@/src/lib/axios.config';
 import { useQuery } from '@tanstack/react-query';
 import { ErrorType } from '@/src/types/error-response';
+import { MonthlyStat } from '@/src/types/stats';
 
 interface DateResponseGet {
   message: string;
@@ -17,6 +18,7 @@ interface DateResponseStatsGet {
     totalPrice: number;
     totalMensuality: number;
     averageMonthlyPrice: number;
+    monthlyStats: MonthlyStat[];
   };
 }
 
@@ -33,7 +35,6 @@ export function useGetYearStats({ year }: QueryParams) {
   return useQuery<DateResponseStatsGet, ErrorType>({
     queryKey: ['result/stats', year],
     queryFn: async () => {
-      console.log('on est ds le service et voila year : ', year);
       return api
         .get(`/stats/result?year=${year}`)
         .then((response) => response.data);
