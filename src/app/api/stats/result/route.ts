@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
     if (yearsInHistory.length === 0) {
       return NextResponse.json(
         { message: 'Aucune donnée disponible' },
-        { status: 404 }
+        { status: 200 }
       );
     }
 
