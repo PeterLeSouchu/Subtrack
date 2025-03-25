@@ -10,36 +10,47 @@ interface CategoryStats {
 }
 
 export const GET = auth(async function GET(req) {
-  if (req.auth?.user?.id) {
-    try {
-      const userId = req.auth.user.id;
+  if (!req.auth?.user?.id) {
+    return NextResponse.json(
+      { message: "Vous n'êtes pas autorisé à effectuer cette action" },
+      { status: 401 }
+    );
+  }
 
-      const mensualities = await prisma.mensuality.findMany({
-        where: { userId },
-        include: {
-          category: true,
-        },
-      });
+  try {
+    const userId = req.auth.user.id;
 
-      if (mensualities.length < 1) {
-        return NextResponse.json(
-          {
-            message: "Aucune donnée d'historique disponible",
+    const mensualities = await prisma.mensuality.findMany({
+      where: { userId },
+      include: { category: true },
+    });
+
+    if (mensualities.length === 0) {
+      return NextResponse.json(
+        {
+          message: 'Aucune mensualité trouvée',
+          stats: {
+            totalPrice: 0,
+            totalMensuality: 0,
+            averagePrice: 0,
+            benefitOrLoss: null,
           },
-          { status: 200 }
-        );
-      }
+          statsCategory: [],
+        },
+        { status: 200 }
+      );
+    }
 
-      const latestHistory = await prisma.history.findFirst({
-        where: { userId },
-        orderBy: { createdAt: 'desc' },
-      });
-      if (!latestHistory) {
-        return NextResponse.json(
-          { message: "Aucune donnée d'historique disponible" },
-          { status: 200 }
-        );
-      }
+    const latestHistory = await prisma.history.findFirst({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    let totalPriceLastMonth = 0;
+    let hasHistory = false;
+
+    if (latestHistory) {
+      hasHistory = true;
 
       const firstDayOfLatestMonth = new Date(
         latestHistory.createdAt.getFullYear(),
@@ -63,74 +74,71 @@ export const GET = auth(async function GET(req) {
         },
       });
 
-      const totalPriceLastMonth = monthlyHistory.reduce(
+      totalPriceLastMonth = monthlyHistory.reduce(
         (total, mensuality) => total + Number(mensuality.price),
         0
       );
-
-      const totalPrice = mensualities.reduce(
-        (total, mensuality) => total + Number(mensuality.price),
-        0
-      );
-
-      const difference = Number((totalPrice - totalPriceLastMonth).toFixed(2));
-
-      const totalMensuality = mensualities.length;
-
-      const averagePrice = (totalPrice / totalMensuality).toFixed(2);
-
-      const categoryStats: CategoryStats[] = mensualities.reduce(
-        (acc: CategoryStats[], mensuality) => {
-          const categoryName = mensuality.category.name;
-          const categoryPrice = Number(mensuality.price);
-          const categoryColor = mensuality.category.color;
-
-          const existingCategory = acc.find(
-            (category) => category.name === categoryName
-          );
-
-          if (existingCategory) {
-            existingCategory.price += categoryPrice;
-          } else {
-            acc.push({
-              name: categoryName,
-              price: categoryPrice,
-              percentage: 0,
-              color: categoryColor,
-            });
-          }
-
-          return acc;
-        },
-        []
-      );
-
-      categoryStats.forEach((category) => {
-        category.percentage = Number(
-          ((category.price / totalPrice) * 100).toFixed(0)
-        );
-      });
-
-      return NextResponse.json(
-        {
-          message: 'Mensualités récupérées avec succès',
-          stats: {
-            totalPrice,
-            totalMensuality,
-            averagePrice,
-            benefitOrLoss: difference,
-          },
-          statsCategory: categoryStats,
-        },
-        { status: 200 }
-      );
-    } catch {
-      return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
     }
-  } else {
-    return NextResponse.json(
-      { message: "Vous n'êtes pas autorisé à effectuer cette action" },
-      { status: 401 }
+
+    const totalPrice = mensualities.reduce(
+      (total, mensuality) => total + Number(mensuality.price),
+      0
     );
+
+    const difference = hasHistory
+      ? Number((totalPrice - totalPriceLastMonth).toFixed(2))
+      : null;
+
+    const totalMensuality = mensualities.length;
+    const averagePrice = (totalPrice / totalMensuality).toFixed(2);
+
+    const categoryStats: CategoryStats[] = mensualities.reduce(
+      (acc: CategoryStats[], mensuality) => {
+        const categoryName = mensuality.category.name;
+        const categoryPrice = Number(mensuality.price);
+        const categoryColor = mensuality.category.color;
+
+        const existingCategory = acc.find(
+          (category) => category.name === categoryName
+        );
+
+        if (existingCategory) {
+          existingCategory.price += categoryPrice;
+        } else {
+          acc.push({
+            name: categoryName,
+            price: categoryPrice,
+            percentage: 0,
+            color: categoryColor,
+          });
+        }
+
+        return acc;
+      },
+      []
+    );
+
+    categoryStats.forEach((category) => {
+      category.percentage = Number(
+        ((category.price / totalPrice) * 100).toFixed(0)
+      );
+    });
+
+    return NextResponse.json(
+      {
+        message: 'Mensualités récupérées avec succès',
+        stats: {
+          totalPrice,
+          totalMensuality,
+          averagePrice,
+          benefitOrLoss: difference,
+        },
+        statsCategory: categoryStats,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Erreur serveur :', error);
+    return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
   }
 });
