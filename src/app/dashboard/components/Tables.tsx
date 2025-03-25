@@ -119,6 +119,15 @@ export function TableMensuality({
                   className='text-center p-4 text-gray-500'
                 >
                   Aucune mensualité.
+                  <div className='flex justify-center'>
+                    <Image
+                      width={200}
+                      height={200}
+                      src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp'
+                      alt='empty file'
+                      className='w-32 '
+                    />
+                  </div>
                 </TableCell>
               </TableRow>
             )}
@@ -177,9 +186,18 @@ export function TableMensuality({
             </motion.article>
           ))
         ) : (
-          <p className='text-center md:hidden text-gray-500'>
-            Aucune mensualité.
-          </p>
+          <div className='flex flex-col items-center'>
+            <p className='text-center md:hidden text-gray-500'>
+              Aucune mensualité.
+            </p>
+            <Image
+              width={200}
+              height={200}
+              src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp'
+              alt='empty file'
+              className='w-32 md:hidden'
+            />
+          </div>
         )}
       </div>
     </section>
