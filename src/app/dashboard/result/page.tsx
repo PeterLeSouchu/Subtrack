@@ -128,7 +128,7 @@ export default function Bilan() {
             {' '}
             <article className='flex-1 drop-shadow-md'>
               <Select
-                defaultValue={yearData?.date[0].toString()}
+                value={selectedYear || yearData?.date[0].toString()}
                 onValueChange={handleYearChange}
               >
                 <SelectTrigger className='w-full h-20 lg:text-2xl text-lg font-bold mr-2 '>
