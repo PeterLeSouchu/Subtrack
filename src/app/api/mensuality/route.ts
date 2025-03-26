@@ -88,7 +88,7 @@ export const GET = auth(async function GET(req) {
       {
         message: 'Mensualités du mois récupérées avec succès',
         mensualities: mensualities,
-        isLimit: exceededLimits ? exceededLimits : undefined,
+        isLimit: exceededLimits ? exceededLimits : [],
       },
       { status: 200 }
     );

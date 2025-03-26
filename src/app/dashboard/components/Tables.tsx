@@ -31,7 +31,7 @@ export function TableMensuality({
   setSelectedCategory,
   editMensuality,
   showGraphic,
-  isHistory = true,
+  isDashboard = true,
   isLimit,
 }: {
   handleDelete?: (mensuality: MensualityGetType) => void;
@@ -43,13 +43,13 @@ export function TableMensuality({
   setSelectedCategory: Dispatch<SetStateAction<string>>;
   editMensuality?: (mensuality: MensualityGetType) => void;
   showGraphic: boolean;
-  isHistory?: boolean;
+  isDashboard?: boolean;
   isLimit?: IsLimit[];
 }) {
   return (
     <section className={`flex-1 p-3 w-full overflow-hidden block `}>
       <div className='xl:bg-white xl:drop-shadow-md w-full h-full p-4 flex flex-col gap-4 rounded-md md:overflow-hidden overflow-y-scroll'>
-        {isLimit && (
+        {isDashboard && isLimit && isLimit?.length > 0 && (
           <div className=' bg-red-500 text-white p-2  rounded-md font-semibold flex items-center  gap-2'>
             <AlertIcon width='50' height='50' />
             <div className='flex flex-col gap-2'>
@@ -73,7 +73,7 @@ export function TableMensuality({
           searchValue={searchValue}
           setSearchValue={setSearchValue}
           setSelectedCategory={setSelectedCategory}
-          isHistory={isHistory}
+          isDashboard={isDashboard}
         />
 
         <Table className='w-full rounded-lg overflow-y-scroll md:table hidden'>
@@ -115,7 +115,7 @@ export function TableMensuality({
                   <TableCell className='p-4 text-gray-700 font-medium'>
                     {mensuality.price} €
                   </TableCell>
-                  {isHistory && editMensuality && handleDelete && (
+                  {isDashboard && editMensuality && handleDelete && (
                     <TableCell className='p-4 flex justify-center gap-3'>
                       <button
                         className='hover:bg-red-200 transition p-1 rounded-full'
@@ -188,7 +188,7 @@ export function TableMensuality({
                   {' '}
                   {mensuality.price} €
                 </p>
-                {isHistory && editMensuality && handleDelete && (
+                {isDashboard && editMensuality && handleDelete && (
                   <div>
                     <button
                       className=' p-1'
@@ -233,14 +233,14 @@ function NavBar({
   searchValue,
   setSearchValue,
   setSelectedCategory,
-  isHistory,
+  isDashboard,
 }: {
   setOpenCreateModal?: Dispatch<SetStateAction<boolean>>;
   categoriesData: CategoryType[] | undefined;
   searchValue: string;
   setSearchValue: Dispatch<SetStateAction<string>>;
   setSelectedCategory: Dispatch<SetStateAction<string>>;
-  isHistory: boolean;
+  isDashboard: boolean;
 }) {
   return (
     <div className='flex gap-2 w-full'>
@@ -289,7 +289,7 @@ function NavBar({
           ))}
         </SelectContent>
       </Select>
-      {isHistory && setOpenCreateModal && (
+      {isDashboard && setOpenCreateModal && (
         <button
           onClick={() => setOpenCreateModal(true)}
           type='button'
