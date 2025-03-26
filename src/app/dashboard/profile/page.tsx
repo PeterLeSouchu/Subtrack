@@ -18,18 +18,20 @@ import { useToast } from '../../providers/Toast-provider';
 import ModalEditLimit from './components/Modal-edit-limit';
 import { Limit } from '@/src/types/category';
 import ModalEditPassword from './components/Modal-edit-password';
+import ModalDeleteAccount from './components/Modal-Delete-account';
 
 export default function Profile() {
   const [openCreateLimitModal, setOpenCreateLimitModal] = useState(false);
   const [openEditLimitModal, setOpenEditLimitModal] = useState(false);
   const [editPasswordModal, setEditPasswordModal] = useState(false);
+  const [deleteAccountModal, setDeleteAccountModal] = useState(false);
   const [limitToEdit, setLimitToEdit] = useState<Limit | undefined>();
   const { data, isLoading } = useGetProfileData();
   const { confirm } = useConfirm();
   const { showToast } = useToast();
   const { mutate } = useDeleteLimit();
 
-  async function handleDelete(categoryId: string, categoryName: string) {
+  async function handleDeleteLimit(categoryId: string, categoryName: string) {
     if (
       await confirm({
         title: categoryName,
@@ -65,7 +67,7 @@ export default function Profile() {
             </p>
             <button
               className='text-white bg-[#F63F42] rounded-md px-3 py-2 font-bold md:hover:bg-[#F31418] transition'
-              onClick={() => console.log('supprimer son compte')}
+              onClick={() => setDeleteAccountModal(true)}
             >
               Supprimer son compte
             </button>
@@ -143,7 +145,10 @@ export default function Profile() {
                       <button
                         className='hover:bg-red-200 transition p-1 rounded-full'
                         onClick={() =>
-                          handleDelete(limit.categoryId, limit.category.name)
+                          handleDeleteLimit(
+                            limit.categoryId,
+                            limit.category.name
+                          )
                         }
                       >
                         <TrashIcon width='20' />
@@ -176,6 +181,11 @@ export default function Profile() {
       <ModalEditPassword
         open={editPasswordModal}
         onClose={() => setEditPasswordModal(false)}
+      />
+
+      <ModalDeleteAccount
+        open={deleteAccountModal}
+        onClose={() => setDeleteAccountModal(false)}
       />
 
       {limitToEdit && (

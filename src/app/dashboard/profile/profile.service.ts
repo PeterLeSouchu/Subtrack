@@ -39,6 +39,10 @@ interface EditPassword {
   passwordConfirm: string;
 }
 
+interface DeleteAccount {
+  password: string;
+}
+
 export function useGetAvailableCategory() {
   return useQuery<CategoryResponse, ErrorType>({
     queryKey: ['category/limit'],
@@ -64,7 +68,15 @@ export function usePostLimit() {
 export function useEditPassword() {
   return useMutation<void, ErrorType, EditPassword>({
     mutationFn: (data) => {
-      return api.post('/profile/password', data);
+      return api.patch('/profile/password', data);
+    },
+  });
+}
+
+export function useDeleteAccount() {
+  return useMutation<void, ErrorType, DeleteAccount>({
+    mutationFn: (data) => {
+      return api.post('/profile/paccount', data);
     },
   });
 }
