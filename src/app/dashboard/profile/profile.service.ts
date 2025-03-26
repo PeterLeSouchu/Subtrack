@@ -12,6 +12,8 @@ interface LimitResponsePostPatch {
   data: {
     message: string;
     limit: Limit;
+    isLimitExceeded?: boolean;
+    limitPrice?: number;
   };
 }
 

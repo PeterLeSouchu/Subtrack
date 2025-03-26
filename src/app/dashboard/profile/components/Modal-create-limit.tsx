@@ -22,6 +22,8 @@ import { ErrorType } from '@/src/types/error-response';
 import Image from 'next/image';
 import Spinner from '@/src/components/Spinner';
 import { useGetAvailableCategory, usePostLimit } from '../profile.service';
+import { useState } from 'react';
+import { AlertIcon } from '@/src/components/icons';
 
 const schema = z.object({
   price: z.string().min(1, 'Veuillez attribuer un prix'),
@@ -35,6 +37,7 @@ export default function ModalCreateLimit({
   open: boolean;
   onClose: () => void;
 }) {
+  const [errorLimit, setErrorLimit] = useState('');
   const { mutate } = usePostLimit();
   const { showToast } = useToast();
   const { data: categories, isLoading: categoriesLoading } =
@@ -52,15 +55,29 @@ export default function ModalCreateLimit({
   const onSubmit = (data: z.infer<typeof schema>) => {
     console.log('Data:', data);
     mutate(data, {
-      onSuccess: () => showToast('Limite ajoutée', 'success'),
-      onError: (error: ErrorType) =>
-        showToast(error?.response?.data?.message, 'error'),
+      onSuccess: (res) => {
+        if (res.data.isLimitExceeded) {
+          setErrorLimit(
+            `Les mensualités dépassent cette limite budgétaire de ${res.data.limitPrice}€`
+          );
+        } else {
+          showToast('Limite ajoutée', 'success');
+          setErrorLimit('');
+          onClose();
+          reset();
+        }
+      },
+      onError: (error: ErrorType) => {
+        setErrorLimit('');
+        showToast(error?.response?.data?.message, 'error');
+        onClose();
+        reset();
+      },
     });
-    onClose();
-    reset();
   };
 
   function closeModal() {
+    setErrorLimit('');
     onClose();
     reset();
   }
@@ -75,6 +92,12 @@ export default function ModalCreateLimit({
         </DialogHeader>
         {}
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+          {errorLimit && (
+            <div className='font-bold text-white rounded-md  bg-red-500 p-2 flex items-center gap-2'>
+              <AlertIcon width='40' height='40' />
+              <p>{errorLimit}</p>
+            </div>
+          )}
           <div>
             <Label htmlFor='price'>Prix</Label>
             <Input

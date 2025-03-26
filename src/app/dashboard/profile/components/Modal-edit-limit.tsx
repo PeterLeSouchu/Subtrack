@@ -17,6 +17,8 @@ import { ErrorType } from '@/src/types/error-response';
 import { usePatchLimit } from '../profile.service';
 import { Limit } from '@/src/types/category';
 import Image from 'next/image';
+import { useState } from 'react';
+import { AlertIcon } from '@/src/components/icons';
 
 const schema = z.object({
   price: z.string().min(1, 'Veuillez attribuer un prix'),
@@ -33,6 +35,7 @@ export default function ModalEditLimit({
   limitToEdit: Limit;
   setLimitToEdit: (p: Limit | undefined) => void;
 }) {
+  const [errorLimit, setErrorLimit] = useState('');
   const { mutate } = usePatchLimit();
   const { showToast } = useToast();
 
@@ -52,14 +55,20 @@ export default function ModalEditLimit({
     mutate(
       { ...data, id: limitToEdit.id },
       {
-        onSuccess: () => {
-          showToast('Limite modifiée', 'success');
-
-          setLimitToEdit(undefined);
-          reset();
-          onClose();
+        onSuccess: (res) => {
+          if (res.data.isLimitExceeded) {
+            setErrorLimit(
+              `Les mensualités dépassent cette limite budgétaire de ${res.data.limitPrice}€`
+            );
+          } else {
+            showToast('Limite modifiée', 'success');
+            setLimitToEdit(undefined);
+            reset();
+            onClose();
+          }
         },
         onError: (error: ErrorType) => {
+          setErrorLimit('');
           setLimitToEdit(undefined);
           reset();
           onClose();
@@ -70,6 +79,7 @@ export default function ModalEditLimit({
   };
 
   function closeModal() {
+    setErrorLimit('');
     setLimitToEdit(undefined);
     reset();
     onClose();
@@ -104,6 +114,12 @@ export default function ModalEditLimit({
           </div>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+          {errorLimit && (
+            <div className='font-bold text-white rounded-md  bg-red-500 p-2 flex items-center gap-2'>
+              <AlertIcon width='40' height='40' />
+              <p>{errorLimit}</p>
+            </div>
+          )}
           <div>
             <Label htmlFor='price'>Prix</Label>
             <Input

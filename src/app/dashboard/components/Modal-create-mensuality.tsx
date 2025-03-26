@@ -66,8 +66,12 @@ export default function ModalCreateMensuality({
           reset();
         }
       },
-      onError: (error: ErrorType) =>
-        showToast(error?.response?.data?.message, 'error'),
+      onError: (error: ErrorType) => {
+        setErrorLimit('');
+        showToast(error?.response?.data?.message, 'error');
+        onClose();
+        reset();
+      },
     });
   };
 

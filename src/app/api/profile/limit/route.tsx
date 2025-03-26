@@ -65,6 +65,33 @@ export const POST = auth(async function POST(req) {
       );
     }
 
+    const mensualities = await prisma.mensuality.findMany({
+      where: {
+        userId: req.auth.user.id,
+        categoryId: parsedData.data.category,
+      },
+
+      select: {
+        price: true,
+      },
+    });
+
+    const totalPrice = mensualities.reduce(
+      (sum, mensuality) => sum + mensuality.price,
+      0
+    );
+
+    if (totalPrice > Number(parsedData.data.price)) {
+      return NextResponse.json(
+        {
+          isLimitExceeded: true,
+          limitPrice: totalPrice - Number(parsedData.data.price),
+          message: 'Les mensualités dépassent cette limite budgétaire.',
+        },
+        { status: 200 }
+      );
+    }
+
     const newLimit = await prisma.limit.create({
       data: {
         user: {
@@ -128,6 +155,32 @@ export const PATCH = auth(async function PATCH(req) {
         return NextResponse.json(
           { message: 'Limite non trouvée' },
           { status: 400 }
+        );
+      }
+
+      const mensualities = await prisma.mensuality.findMany({
+        where: {
+          userId: req.auth.user.id,
+          categoryId: existingLimit.categoryId,
+        },
+        select: {
+          price: true,
+        },
+      });
+
+      const totalPrice = mensualities.reduce(
+        (sum, mensuality) => sum + mensuality.price,
+        0
+      );
+
+      if (totalPrice > Number(parsedData.data.price)) {
+        return NextResponse.json(
+          {
+            isLimitExceeded: true,
+            limitPrice: totalPrice - Number(parsedData.data.price),
+            message: 'Les mensualités dépassent cette limite budgétaire.',
+          },
+          { status: 200 }
         );
       }
 

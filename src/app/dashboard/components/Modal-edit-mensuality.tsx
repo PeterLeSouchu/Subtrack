@@ -80,6 +80,7 @@ export default function ModalEditMensuality({
           }
         },
         onError: (error: ErrorType) => {
+          setErrorLimit('');
           setMensualityToEdit(undefined);
           reset();
           onClose();
