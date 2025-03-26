@@ -1,5 +1,5 @@
 import { CategoryType } from '@/src/types/category';
-import { MensualityGetType } from '@/src/types/mensuality';
+import { IsLimit, MensualityGetType } from '@/src/types/mensuality';
 import { EditIcon, SearchIcon, TrashIcon } from 'lucide-react';
 import { Dispatch, SetStateAction } from 'react';
 import {
@@ -18,7 +18,7 @@ import {
   TableBody,
   TableCell,
 } from '@/src/components/ui/table';
-import { AddIcon } from '@/src/components/icons';
+import { AddIcon, AlertIcon } from '@/src/components/icons';
 import { motion } from 'framer-motion';
 
 export function TableMensuality({
@@ -32,6 +32,7 @@ export function TableMensuality({
   editMensuality,
   showGraphic,
   isHistory = true,
+  isLimit,
 }: {
   handleDelete?: (mensuality: MensualityGetType) => void;
   setOpenCreateModal?: Dispatch<SetStateAction<boolean>>;
@@ -43,10 +44,29 @@ export function TableMensuality({
   editMensuality?: (mensuality: MensualityGetType) => void;
   showGraphic: boolean;
   isHistory?: boolean;
+  isLimit?: IsLimit[];
 }) {
   return (
     <section className={`flex-1 p-3 w-full overflow-hidden block `}>
       <div className='xl:bg-white xl:drop-shadow-md w-full h-full p-4 flex flex-col gap-4 rounded-md md:overflow-hidden overflow-y-scroll'>
+        {isLimit && (
+          <div className=' bg-red-500 text-white p-2  rounded-md font-semibold flex items-center  gap-2'>
+            <AlertIcon width='50' height='50' />
+            <div className='flex flex-col gap-2'>
+              {isLimit.map((limit, index) => (
+                <p key={index}>
+                  - La limite budgétaire de la catégorie{' '}
+                  <span className='font-extrabold'>{limit.category}</span> (
+                  <i> {limit.limitPrice}€</i> ) à été dépassé de{' '}
+                  <span className='font-extrabold'>
+                    {limit.exceededAmount}€
+                  </span>
+                  ( <i> {limit.totalPrice}€</i> )
+                </p>
+              ))}
+            </div>
+          </div>
+        )}
         <NavBar
           setOpenCreateModal={setOpenCreateModal}
           categoriesData={categoriesData}

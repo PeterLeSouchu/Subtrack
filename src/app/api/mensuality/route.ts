@@ -21,19 +21,74 @@ export const GET = auth(async function GET(req) {
     const userId = req.auth.user.id;
 
     const mensualities = await prisma.mensuality.findMany({
-      where: {
-        userId,
-      },
+      where: { userId },
       include: { category: true },
-      orderBy: {
-        price: 'asc',
+      orderBy: { price: 'asc' },
+    });
+
+    const limits = await prisma.limit.findMany({
+      where: { userId },
+      select: {
+        price: true,
+        categoryId: true,
       },
     });
 
+    const groupedMensualities = mensualities.reduce(
+      (
+        acc: {
+          [categoryId: string]: {
+            category: {
+              id: string;
+              name: string;
+            };
+            totalPrice: number;
+          };
+        },
+        mensuality
+      ) => {
+        const { price, categoryId, category } = mensuality;
+
+        if (!acc[categoryId]) {
+          acc[categoryId] = {
+            category,
+            totalPrice: 0,
+          };
+        }
+
+        acc[categoryId].totalPrice += parseFloat(price.toString());
+
+        return acc;
+      },
+      {}
+    );
+
+    const results = Object.values(groupedMensualities);
+
+    const exceededLimits = results
+      .map(({ category, totalPrice }) => {
+        const limit = limits.find((l) => l.categoryId === category.id);
+
+        if (limit && totalPrice > limit.price) {
+          const exceededAmount = totalPrice - limit.price;
+          return {
+            category: category.name,
+            totalPrice,
+            limitPrice: limit.price,
+            exceededAmount,
+          };
+        }
+
+        return null;
+      })
+      .filter((item) => item !== null);
+
+    console.log(exceededLimits);
     return NextResponse.json(
       {
         message: 'Mensualités du mois récupérées avec succès',
-        mensualities,
+        mensualities: mensualities,
+        isLimit: exceededLimits ? exceededLimits : undefined,
       },
       { status: 200 }
     );
