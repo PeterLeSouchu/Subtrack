@@ -33,6 +33,12 @@ interface LimitPatchType {
   id: string;
 }
 
+interface EditPassword {
+  formerPassword: string;
+  password: string;
+  passwordConfirm: string;
+}
+
 export function useGetAvailableCategory() {
   return useQuery<CategoryResponse, ErrorType>({
     queryKey: ['category/limit'],
@@ -51,6 +57,14 @@ export function usePostLimit() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
       queryClient.invalidateQueries({ queryKey: ['category/limit'] });
+    },
+  });
+}
+
+export function useEditPassword() {
+  return useMutation<void, ErrorType, EditPassword>({
+    mutationFn: (data) => {
+      return api.post('/profile/password', data);
     },
   });
 }

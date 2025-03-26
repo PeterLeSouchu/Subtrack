@@ -17,10 +17,12 @@ import { useConfirm } from '../../providers/Confirm-provider';
 import { useToast } from '../../providers/Toast-provider';
 import ModalEditLimit from './components/Modal-edit-limit';
 import { Limit } from '@/src/types/category';
+import ModalEditPassword from './components/Modal-edit-password';
 
 export default function Profile() {
   const [openCreateLimitModal, setOpenCreateLimitModal] = useState(false);
   const [openEditLimitModal, setOpenEditLimitModal] = useState(false);
+  const [editPasswordModal, setEditPasswordModal] = useState(false);
   const [limitToEdit, setLimitToEdit] = useState<Limit | undefined>();
   const { data, isLoading } = useGetProfileData();
   const { confirm } = useConfirm();
@@ -70,7 +72,7 @@ export default function Profile() {
             {!data?.userData.hasAccount && (
               <button
                 className='text-white bg-[#FA964A] rounded-md px-3 py-2 font-bold md:hover:bg-[#FD8225] transition'
-                onClick={() => console.log('modifier son mot de passe')}
+                onClick={() => setEditPasswordModal(true)}
               >
                 Modifier son mot de passe
               </button>
@@ -170,6 +172,10 @@ export default function Profile() {
       <ModalCreateLimit
         open={openCreateLimitModal}
         onClose={() => setOpenCreateLimitModal(false)}
+      />
+      <ModalEditPassword
+        open={editPasswordModal}
+        onClose={() => setEditPasswordModal(false)}
       />
 
       {limitToEdit && (
