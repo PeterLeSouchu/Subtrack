@@ -126,7 +126,7 @@ export default function Bilan() {
           {' '}
           <div className='flex    h-30   w-full overflow-x-scroll gap-3 pb-4'>
             {' '}
-            <article className='flex-1 drop-shadow-md'>
+            <article className=' drop-shadow-md'>
               <Select
                 value={selectedYear || yearData?.date[0].toString()}
                 onValueChange={handleYearChange}
