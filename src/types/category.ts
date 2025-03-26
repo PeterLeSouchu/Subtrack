@@ -3,3 +3,8 @@ export interface CategoryType {
   image: string;
   id: string;
 }
+
+export interface CategoryResponse {
+  message: string;
+  categories: CategoryType[];
+}

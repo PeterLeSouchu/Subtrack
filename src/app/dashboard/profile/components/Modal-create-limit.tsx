@@ -17,12 +17,11 @@ import {
   SelectValue,
 } from '@/src/components/ui/select';
 import { Label } from '@/src/components/ui/label';
-import { useGetCategory } from '../../dashboard.service';
 import { useToast } from '../../../providers/Toast-provider';
 import { ErrorType } from '@/src/types/error-response';
 import Image from 'next/image';
 import Spinner from '@/src/components/Spinner';
-import { usePostLimit } from '../profile.service';
+import { useGetAvailableCategory, usePostLimit } from '../profile.service';
 
 const schema = z.object({
   price: z.string().min(1, 'Veuillez attribuer un prix'),
@@ -38,7 +37,8 @@ export default function ModalCreateLimit({
 }) {
   const { mutate } = usePostLimit();
   const { showToast } = useToast();
-  const { data: categories, isLoading: categoriesLoading } = useGetCategory();
+  const { data: categories, isLoading: categoriesLoading } =
+    useGetAvailableCategory();
   const {
     register,
     handleSubmit,
@@ -73,6 +73,7 @@ export default function ModalCreateLimit({
         <DialogHeader>
           <DialogTitle>Nouvelle limite budgétaire</DialogTitle>
         </DialogHeader>
+        {}
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
           <div>
             <Label htmlFor='price'>Prix</Label>

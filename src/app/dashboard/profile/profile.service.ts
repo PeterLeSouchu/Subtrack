@@ -1,6 +1,7 @@
 import api from '@/src/lib/axios.config';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ErrorType } from '@/src/types/error-response';
+import { CategoryResponse } from '@/src/types/category';
 
 interface LimitPostType {
   price: string;
@@ -16,7 +17,17 @@ interface MensualityResponsePostPatch {
   data: {
     message: string;
     limit: LimitGetType;
+    isAlreadyLimit?: boolean;
   };
+}
+
+export function useGetAvailableCategory() {
+  return useQuery<CategoryResponse, ErrorType>({
+    queryKey: ['category/limit'],
+    queryFn: async () => {
+      return api.get('/category/limit').then((response) => response.data);
+    },
+  });
 }
 
 export function usePostLimit() {
@@ -27,6 +38,7 @@ export function usePostLimit() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
+      queryClient.invalidateQueries({ queryKey: ['category/limit'] });
     },
   });
 }
