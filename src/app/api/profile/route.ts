@@ -13,7 +13,7 @@ export const GET = auth(async function GET(req) {
   try {
     const userId = req.auth.user.id;
 
-    const userData = await prisma.user.findUnique({
+    const profile = await prisma.user.findUnique({
       where: {
         id: userId,
       },
@@ -22,10 +22,41 @@ export const GET = auth(async function GET(req) {
       },
     });
 
+    if (!profile) {
+      return NextResponse.json(
+        { message: 'Utilisateur invalide' },
+        { status: 404 }
+      );
+    }
+
+    const limits = await prisma.limit.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        category: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
+      },
+    });
+
+    if (limits.length < 0) {
+      return NextResponse.json(
+        { message: 'Aucune limite pour cet utilisateur' },
+        { status: 200 }
+      );
+    }
+
     return NextResponse.json(
       {
         message: 'Information utilisateur récupérées avec succès',
-        userData,
+        userData: {
+          email: profile.email,
+          limits,
+        },
       },
       { status: 200 }
     );

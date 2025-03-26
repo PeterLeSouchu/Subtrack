@@ -2,8 +2,18 @@ import api from '@/src/lib/axios.config';
 import { useQuery } from '@tanstack/react-query';
 import { ErrorType } from '@/src/types/error-response';
 
+interface Limit {
+  price: number;
+  category: {
+    name: string;
+    image: string;
+  };
+  categoryId: string;
+}
+
 interface UserData {
   email: string;
+  limits: Limit[];
 }
 
 interface DateResponseGet {

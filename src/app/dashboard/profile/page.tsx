@@ -17,7 +17,7 @@ export default function Profile() {
 
   if (isLoading) return <Spinner />;
 
-  console.log("voila l'email", data?.userData.email);
+  console.log('voila les data', data?.userData);
   return (
     <div className='py-3 md:px-0 px-4 flex justify-center overflow-y-scroll h-full'>
       <div className='max-w-4xl md:w-2/3 w-full flex flex-col gap-20 '>
@@ -69,44 +69,46 @@ export default function Profile() {
               comme bon vous semble.
             </p>
             <section className='w-full flex flex-col gap-6'>
-              <article
-                className='drop-shadow-md bg-white rounded-2xl px-6 py-5 flex gap-3 items-center'
-                key={Math.random()}
-              >
-                <span className='bg-[#E8E5FF] text-blue font-semibold py-1 px-2 flex items-center gap-2 rounded-xl'>
-                  <div className='w-7 h-7 overflow-hidden'>
-                    <Image
-                      width={28}
-                      height={28}
-                      className='object-contain'
-                      src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742669730/gt93ijd8pwhhtnq5rxcc.webp'
-                      alt='Icone catégorie'
-                    />
-                  </div>
-                  <p className='font-extrabold text-sm sm:text-base'>
-                    Alimentation
+              {data?.userData.limits.map((limit, index) => (
+                <article
+                  className='drop-shadow-md bg-white rounded-2xl px-6 py-5 flex gap-3 items-center'
+                  key={index}
+                >
+                  <span className='bg-[#E8E5FF] text-blue font-semibold py-1 px-2 flex items-center gap-2 rounded-xl'>
+                    <div className='w-7 h-7 overflow-hidden'>
+                      <Image
+                        width={28}
+                        height={28}
+                        className='object-contain'
+                        src={limit.category.image}
+                        alt='Icone catégorie'
+                      />
+                    </div>
+                    <p className='font-extrabold text-sm sm:text-base'>
+                      {limit.category.name}
+                    </p>
+                  </span>
+
+                  <p className='sm:text-xl text-lg text-center font-bold break-words w-full flex items-center justify-center gap-2'>
+                    <LockIcon width='20' height='20' /> {limit.price} €
                   </p>
-                </span>
 
-                <p className='sm:text-xl text-lg text-center font-bold break-words w-full flex items-center justify-center gap-2'>
-                  <LockIcon width='20' height='20' /> 12 €
-                </p>
-
-                <div className='flex gap-2 items-center'>
-                  <button
-                    className='hover:bg-amber-100 transition p-1 rounded-full'
-                    onClick={() => console.log('object')}
-                  >
-                    <EditIcon width='18' />
-                  </button>
-                  <button
-                    className='hover:bg-red-200 transition p-1 rounded-full'
-                    onClick={() => console.log('object')}
-                  >
-                    <TrashIcon width='20' />
-                  </button>
-                </div>
-              </article>
+                  <div className='flex gap-2 items-center'>
+                    <button
+                      className='hover:bg-amber-100 transition p-1 rounded-full'
+                      onClick={() => console.log('object')}
+                    >
+                      <EditIcon width='18' />
+                    </button>
+                    <button
+                      className='hover:bg-red-200 transition p-1 rounded-full'
+                      onClick={() => console.log('object')}
+                    >
+                      <TrashIcon width='20' />
+                    </button>
+                  </div>
+                </article>
+              ))}
             </section>
           </div>
         </div>
