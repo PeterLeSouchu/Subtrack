@@ -11,8 +11,11 @@ import Image from 'next/image';
 import { LockIcon } from '@/src/components/icons';
 import { useGetProfileData } from './profile.service';
 import Spinner from '@/src/components/Spinner';
+import { useState } from 'react';
+import ModalCreateLimit from './components/Modal-create-limit';
 
 export default function Profile() {
+  const [openLimitModal, setOpenLimitModal] = useState(false);
   const { data, isLoading } = useGetProfileData();
 
   if (isLoading) return <Spinner />;
@@ -56,7 +59,10 @@ export default function Profile() {
             <h2 className='text-2xl font-bold text-blue  '>
               Limites budgétaires
             </h2>
-            <button className='p-1 rounded-full border-blue border-2 transition  md:hover:bg-[#d8d6ed] '>
+            <button
+              onClick={() => setOpenLimitModal(true)}
+              className='p-1 rounded-full border-blue border-2 transition  md:hover:bg-[#d8d6ed] '
+            >
               {' '}
               <AddIcon width='20' height='20' className=' text-blue ' />
             </button>
@@ -74,26 +80,27 @@ export default function Profile() {
                   className='drop-shadow-md bg-white rounded-2xl px-6 py-5 flex gap-3 items-center'
                   key={index}
                 >
-                  <span className='bg-[#E8E5FF] text-blue font-semibold py-1 px-2 flex items-center gap-2 rounded-xl'>
-                    <div className='w-7 h-7 overflow-hidden'>
-                      <Image
-                        width={28}
-                        height={28}
-                        className='object-contain'
-                        src={limit.category.image}
-                        alt='Icone catégorie'
-                      />
-                    </div>
-                    <p className='font-extrabold text-sm sm:text-base'>
-                      {limit.category.name}
-                    </p>
-                  </span>
-
-                  <p className='sm:text-xl text-lg text-center font-bold break-words w-full flex items-center justify-center gap-2'>
+                  <div className='w-1/2'>
+                    {' '}
+                    <span className='bg-[#E8E5FF]  text-blue w-fit font-semibold py-1 px-2 flex items-center gap-2 rounded-xl'>
+                      <div className='w-7 h-7 overflow-hidden'>
+                        <Image
+                          width={28}
+                          height={28}
+                          className='object-contain'
+                          src={limit.category.image}
+                          alt='Icone catégorie'
+                        />
+                      </div>
+                      <p className='font-extrabold text-sm sm:text-base'>
+                        {limit.category.name}
+                      </p>
+                    </span>{' '}
+                  </div>
+                  <p className='sm:text-xl text-lg text-center font-bold break-words  flex items-center justify-center gap-2'>
                     <LockIcon width='20' height='20' /> {limit.price} €
                   </p>
-
-                  <div className='flex gap-2 items-center'>
+                  <div className='flex flex-1 gap-2 items-center justify-end'>
                     <button
                       className='hover:bg-amber-100 transition p-1 rounded-full'
                       onClick={() => console.log('object')}
@@ -113,6 +120,10 @@ export default function Profile() {
           </div>
         </div>
       </div>
+      <ModalCreateLimit
+        open={openLimitModal}
+        onClose={() => setOpenLimitModal(false)}
+      />
     </div>
   );
 }

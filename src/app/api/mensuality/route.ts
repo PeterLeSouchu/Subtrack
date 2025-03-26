@@ -64,6 +64,15 @@ export const POST = auth(async function POST(req) {
         );
       }
 
+      if (isNaN(Number(parsedData.data.price))) {
+        return NextResponse.json(
+          {
+            message: 'Les informations fournies ne sont pas correctes',
+          },
+          { status: 400 }
+        );
+      }
+
       const existingCategory = await prisma.category.findUnique({
         where: { id: parsedData.data.category },
       });
