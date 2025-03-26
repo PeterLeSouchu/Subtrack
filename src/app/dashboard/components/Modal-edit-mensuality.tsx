@@ -62,7 +62,7 @@ export default function ModalEditMensuality({
 
   const onSubmit = (data: z.infer<typeof schema>) => {
     mutate(
-      { ...data, id: mensualityToEdit!.id },
+      { ...data, id: mensualityToEdit.id },
       {
         onSuccess: () => {
           showToast('Mensualité modifiée', 'success');

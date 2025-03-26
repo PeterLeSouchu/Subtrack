@@ -41,6 +41,9 @@ export const GET = auth(async function GET(req) {
           },
         },
       },
+      orderBy: {
+        price: 'asc',
+      },
     });
 
     if (limits.length < 0) {

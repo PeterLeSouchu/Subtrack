@@ -15,9 +15,13 @@ import { useState } from 'react';
 import ModalCreateLimit from './components/Modal-create-limit';
 import { useConfirm } from '../../providers/Confirm-provider';
 import { useToast } from '../../providers/Toast-provider';
+import ModalEditLimit from './components/Modal-edit-limit';
+import { Limit } from '@/src/types/category';
 
 export default function Profile() {
-  const [openLimitModal, setOpenLimitModal] = useState(false);
+  const [openCreateLimitModal, setOpenCreateLimitModal] = useState(false);
+  const [openEditLimitModal, setOpenEditLimitModal] = useState(false);
+  const [limitToEdit, setLimitToEdit] = useState<Limit | undefined>();
   const { data, isLoading } = useGetProfileData();
   const { confirm } = useConfirm();
   const { showToast } = useToast();
@@ -38,9 +42,13 @@ export default function Profile() {
     }
   }
 
+  function handleEditLimit(limit: Limit) {
+    setLimitToEdit(limit);
+    setOpenEditLimitModal(true);
+  }
+
   if (isLoading) return <Spinner />;
 
-  console.log('voila les data', data?.userData);
   return (
     <div className='py-3 md:px-0 px-4 flex justify-center overflow-y-scroll h-full'>
       <div className='max-w-4xl md:w-2/3 w-full flex flex-col gap-20 '>
@@ -80,7 +88,7 @@ export default function Profile() {
               Limites budgétaires
             </h2>
             <button
-              onClick={() => setOpenLimitModal(true)}
+              onClick={() => setOpenCreateLimitModal(true)}
               className='p-1 rounded-full border-blue border-2 transition  md:hover:bg-[#d8d6ed] '
             >
               {' '}
@@ -124,7 +132,7 @@ export default function Profile() {
                     <div className='flex flex-1 gap-2 items-center justify-end'>
                       <button
                         className='hover:bg-amber-100 transition p-1 rounded-full'
-                        onClick={() => console.log('object')}
+                        onClick={() => handleEditLimit(limit)}
                       >
                         <EditIcon width='18' />
                       </button>
@@ -158,9 +166,18 @@ export default function Profile() {
         </div>
       </div>
       <ModalCreateLimit
-        open={openLimitModal}
-        onClose={() => setOpenLimitModal(false)}
+        open={openCreateLimitModal}
+        onClose={() => setOpenCreateLimitModal(false)}
       />
+
+      {limitToEdit && (
+        <ModalEditLimit
+          open={openEditLimitModal}
+          onClose={() => setOpenEditLimitModal(false)}
+          limitToEdit={limitToEdit}
+          setLimitToEdit={setLimitToEdit}
+        />
+      )}
     </div>
   );
 }

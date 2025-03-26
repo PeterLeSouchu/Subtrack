@@ -4,9 +4,14 @@ import { NextResponse } from 'next/server';
 
 import { z } from 'zod';
 
-const limitSchema = z.object({
+const limitPostSchema = z.object({
   price: z.string().min(1),
   category: z.string().min(1),
+});
+
+const limitPatchSchema = z.object({
+  price: z.string().min(1),
+  id: z.string().min(1),
 });
 
 export const POST = auth(async function POST(req) {
@@ -30,7 +35,7 @@ export const POST = auth(async function POST(req) {
         { status: 400 }
       );
     }
-    const parsedData = limitSchema.safeParse(body);
+    const parsedData = limitPostSchema.safeParse(body);
     if (!parsedData.success) {
       return NextResponse.json(
         {
@@ -89,5 +94,65 @@ export const POST = auth(async function POST(req) {
   } catch (error) {
     console.error('Erreur lors de la récupération des mensualités :', error);
     return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
+  }
+});
+
+export const PATCH = auth(async function PATCH(req) {
+  if (req.auth?.user?.id) {
+    try {
+      const body = await req.json();
+      const { id: limitId, price } = body;
+
+      if (!limitId || !price) {
+        return NextResponse.json(
+          { message: 'Tous les champs sont requis.' },
+          { status: 400 }
+        );
+      }
+
+      const parsedData = limitPatchSchema.safeParse(body);
+      if (!parsedData.success) {
+        return NextResponse.json(
+          {
+            message: 'Les informations fournies ne sont pas correctes',
+          },
+          { status: 400 }
+        );
+      }
+
+      const existingLimit = await prisma.limit.findUnique({
+        where: { id: parsedData.data.id },
+      });
+
+      if (!existingLimit) {
+        return NextResponse.json(
+          { message: 'Limite non trouvée' },
+          { status: 400 }
+        );
+      }
+
+      const updatedLimit = await prisma.limit.update({
+        where: { id: limitId },
+        data: {
+          price: Number(price),
+        },
+      });
+
+      return NextResponse.json(
+        {
+          message: 'Limite mise à jour avec succès',
+          mensuality: updatedLimit,
+        },
+        { status: 200 }
+      );
+    } catch (e) {
+      console.log(e);
+      return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
+    }
+  } else {
+    return NextResponse.json(
+      { message: "Vous n'êtes pas autorisé à faire cette action" },
+      { status: 401 }
+    );
   }
 });

@@ -1,33 +1,18 @@
 import api from '@/src/lib/axios.config';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ErrorType } from '@/src/types/error-response';
-import { CategoryResponse } from '@/src/types/category';
+import { CategoryResponse, Limit } from '@/src/types/category';
 
 interface LimitPostType {
   price: string;
   category: string;
 }
 
-interface LimitGetType {
-  price: number;
-  category: string;
-}
-
-interface MensualityResponsePostPatch {
+interface LimitResponsePostPatch {
   data: {
     message: string;
-    limit: LimitGetType;
-    isAlreadyLimit?: boolean;
+    limit: Limit;
   };
-}
-
-interface Limit {
-  price: number;
-  category: {
-    name: string;
-    image: string;
-  };
-  categoryId: string;
 }
 
 interface UserData {
@@ -38,6 +23,11 @@ interface UserData {
 interface DateResponseGet {
   message: string;
   userData: UserData;
+}
+
+interface LimitPatchType {
+  price: string;
+  id: string;
 }
 
 export function useGetAvailableCategory() {
@@ -51,7 +41,7 @@ export function useGetAvailableCategory() {
 
 export function usePostLimit() {
   const queryClient = useQueryClient();
-  return useMutation<MensualityResponsePostPatch, ErrorType, LimitPostType>({
+  return useMutation<LimitResponsePostPatch, ErrorType, LimitPostType>({
     mutationFn: (limit) => {
       return api.post('/profile/limit', limit);
     },
@@ -76,6 +66,19 @@ export function useDeleteLimit() {
 
   return useMutation<void, ErrorType, string>({
     mutationFn: (id) => api.delete(`/category/limit/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      queryClient.invalidateQueries({ queryKey: ['category/limit'] });
+    },
+  });
+}
+
+export function usePatchLimit() {
+  const queryClient = useQueryClient();
+  return useMutation<LimitResponsePostPatch, ErrorType, LimitPatchType>({
+    mutationFn: (limit) => {
+      return api.patch('/profile/limit', limit);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
       queryClient.invalidateQueries({ queryKey: ['category/limit'] });
