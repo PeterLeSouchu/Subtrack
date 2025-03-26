@@ -136,13 +136,13 @@ export function TableMensuality({
         </Table>
 
         {mensualitiesData && mensualitiesData.length > 0 ? (
-          mensualitiesData?.map((mensuality) => (
+          mensualitiesData?.map((mensuality, index) => (
             <motion.article
               initial={{ opacity: 0 }}
               animate={{ opacity: showGraphic ? 0 : 1 }}
               transition={{ duration: 0.5 }}
               className=' md:hidden drop-shadow-md flex  bg-white rounded-2xl px-6 gap-2 py-3'
-              key={Math.random()}
+              key={index}
             >
               <div className='w-4/5 flex flex-col gap-4 justify-center'>
                 <p className='font-bold text-sm sm:text-base '>

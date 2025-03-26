@@ -12,7 +12,7 @@ export function AddIcon({ className, width, height }: IconProps) {
     >
       <path
         d='M1 7H13M7 12.5V1.5'
-        stroke='white'
+        stroke='currentColor'
         strokeWidth='1.5'
         strokeLinecap='round'
         strokeLinejoin='round'
