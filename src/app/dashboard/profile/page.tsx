@@ -9,14 +9,34 @@ import {
 } from '@/src/components/icons';
 import Image from 'next/image';
 import { LockIcon } from '@/src/components/icons';
-import { useGetProfileData } from './profile.service';
+import { useDeleteLimit, useGetProfileData } from './profile.service';
 import Spinner from '@/src/components/Spinner';
 import { useState } from 'react';
 import ModalCreateLimit from './components/Modal-create-limit';
+import { useConfirm } from '../../providers/Confirm-provider';
+import { useToast } from '../../providers/Toast-provider';
 
 export default function Profile() {
   const [openLimitModal, setOpenLimitModal] = useState(false);
   const { data, isLoading } = useGetProfileData();
+  const { confirm } = useConfirm();
+  const { showToast } = useToast();
+  const { mutate } = useDeleteLimit();
+
+  async function handleDelete(categoryId: string, categoryName: string) {
+    if (
+      await confirm({
+        title: categoryName,
+        text: ' Etes-vous sur de vouloir supprimer la limite pour la catégorie suivante : ',
+        confirmBtn: 'Supprimer',
+      })
+    ) {
+      mutate(categoryId, {
+        onSuccess: () => showToast('Limite supprimée', 'success'),
+        onError: (error) => showToast(error?.response?.data?.message, 'error'),
+      });
+    }
+  }
 
   if (isLoading) return <Spinner />;
 
@@ -109,7 +129,9 @@ export default function Profile() {
                     </button>
                     <button
                       className='hover:bg-red-200 transition p-1 rounded-full'
-                      onClick={() => console.log('object')}
+                      onClick={() =>
+                        handleDelete(limit.categoryId, limit.category.name)
+                      }
                     >
                       <TrashIcon width='20' />
                     </button>

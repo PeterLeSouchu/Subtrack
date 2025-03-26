@@ -21,6 +21,25 @@ interface MensualityResponsePostPatch {
   };
 }
 
+interface Limit {
+  price: number;
+  category: {
+    name: string;
+    image: string;
+  };
+  categoryId: string;
+}
+
+interface UserData {
+  email: string;
+  limits: Limit[];
+}
+
+interface DateResponseGet {
+  message: string;
+  userData: UserData;
+}
+
 export function useGetAvailableCategory() {
   return useQuery<CategoryResponse, ErrorType>({
     queryKey: ['category/limit'],
@@ -43,30 +62,23 @@ export function usePostLimit() {
   });
 }
 
-interface Limit {
-  price: number;
-  category: {
-    name: string;
-    image: string;
-  };
-  categoryId: string;
-}
-
-interface UserData {
-  email: string;
-  limits: Limit[];
-}
-
-interface DateResponseGet {
-  message: string;
-  userData: UserData;
-}
-
 export function useGetProfileData() {
   return useQuery<DateResponseGet, ErrorType>({
     queryKey: ['profile'],
     queryFn: async () => {
       return api.get('/profile').then((response) => response.data);
+    },
+  });
+}
+
+export function useDeleteLimit() {
+  const queryClient = useQueryClient();
+
+  return useMutation<void, ErrorType, string>({
+    mutationFn: (id) => api.delete(`/category/limit/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      queryClient.invalidateQueries({ queryKey: ['category/limit'] });
     },
   });
 }

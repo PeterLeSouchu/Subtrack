@@ -13,6 +13,7 @@ import {
 
 type Params = {
   title: string;
+  text: string;
   confirmBtn: string;
 };
 
@@ -83,7 +84,8 @@ export function ConfirmDialogWithContext() {
             key='modal-content'
           >
             <p className='mb-4 text-center font-medium text-lg text-gray-600'>
-              Etes-vous sur de vouloir supprimer la mensualité suivante :{' '}
+              {props?.text}
+
               <span className='font-bold'> {props?.title}</span>
             </p>
             <div className='flex justify-end space-x-4'>
