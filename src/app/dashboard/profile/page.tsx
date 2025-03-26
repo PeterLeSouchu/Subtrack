@@ -94,51 +94,66 @@ export default function Profile() {
               s’afficheront ici, vous pourrez les modifier ou les supprimer
               comme bon vous semble.
             </p>
-            <section className='w-full flex flex-col gap-6'>
-              {data?.userData.limits.map((limit, index) => (
-                <article
-                  className='drop-shadow-md bg-white rounded-2xl px-6 py-5 flex gap-3 items-center'
-                  key={index}
-                >
-                  <div className='w-1/2'>
-                    {' '}
-                    <span className='bg-[#E8E5FF]  text-blue w-fit font-semibold py-1 px-2 flex items-center gap-2 rounded-xl'>
-                      <div className='w-7 h-7 overflow-hidden'>
-                        <Image
-                          width={28}
-                          height={28}
-                          className='object-contain'
-                          src={limit.category.image}
-                          alt='Icone catégorie'
-                        />
-                      </div>
-                      <p className='font-extrabold text-sm sm:text-base'>
-                        {limit.category.name}
-                      </p>
-                    </span>{' '}
-                  </div>
-                  <p className='sm:text-xl text-lg text-center font-bold break-words  flex items-center justify-center gap-2'>
-                    <LockIcon width='20' height='20' /> {limit.price} €
-                  </p>
-                  <div className='flex flex-1 gap-2 items-center justify-end'>
-                    <button
-                      className='hover:bg-amber-100 transition p-1 rounded-full'
-                      onClick={() => console.log('object')}
-                    >
-                      <EditIcon width='18' />
-                    </button>
-                    <button
-                      className='hover:bg-red-200 transition p-1 rounded-full'
-                      onClick={() =>
-                        handleDelete(limit.categoryId, limit.category.name)
-                      }
-                    >
-                      <TrashIcon width='20' />
-                    </button>
-                  </div>
-                </article>
-              ))}
-            </section>
+            {data?.userData && data?.userData.limits.length > 0 ? (
+              <section className='w-full flex flex-col gap-6'>
+                {data?.userData.limits.map((limit, index) => (
+                  <article
+                    className='drop-shadow-md bg-white rounded-2xl px-6 py-5 flex gap-3 items-center'
+                    key={index}
+                  >
+                    <div className='w-1/2'>
+                      {' '}
+                      <span className='bg-[#E8E5FF]  text-blue w-fit font-semibold py-1 px-2 flex items-center gap-2 rounded-xl'>
+                        <div className='w-7 h-7 overflow-hidden'>
+                          <Image
+                            width={28}
+                            height={28}
+                            className='object-contain'
+                            src={limit.category.image}
+                            alt='Icone catégorie'
+                          />
+                        </div>
+                        <p className='font-extrabold text-sm sm:text-base'>
+                          {limit.category.name}
+                        </p>
+                      </span>{' '}
+                    </div>
+                    <p className='sm:text-xl text-lg text-center font-bold break-words  flex items-center justify-center gap-2'>
+                      <LockIcon width='20' height='20' /> {limit.price} €
+                    </p>
+                    <div className='flex flex-1 gap-2 items-center justify-end'>
+                      <button
+                        className='hover:bg-amber-100 transition p-1 rounded-full'
+                        onClick={() => console.log('object')}
+                      >
+                        <EditIcon width='18' />
+                      </button>
+                      <button
+                        className='hover:bg-red-200 transition p-1 rounded-full'
+                        onClick={() =>
+                          handleDelete(limit.categoryId, limit.category.name)
+                        }
+                      >
+                        <TrashIcon width='20' />
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </section>
+            ) : (
+              <div className='flex flex-col w-full items-center justify-center h-full mt-10'>
+                <h2 className='text-xl font-semibold text-center '>
+                  Vous n&apos;avez pas encore de limites budgétaires.
+                </h2>
+                <Image
+                  className='w-32 mt-6'
+                  src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1743004270/vmbkh2o0t1i71l9kne7y.png'
+                  alt='icone chart'
+                  width={200}
+                  height={200}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
