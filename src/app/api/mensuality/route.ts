@@ -26,69 +26,10 @@ export const GET = auth(async function GET(req) {
       orderBy: { price: 'asc' },
     });
 
-    const limits = await prisma.limit.findMany({
-      where: { userId },
-      select: {
-        price: true,
-        categoryId: true,
-      },
-    });
-
-    const groupedMensualities = mensualities.reduce(
-      (
-        acc: {
-          [categoryId: string]: {
-            category: {
-              id: string;
-              name: string;
-            };
-            totalPrice: number;
-          };
-        },
-        mensuality
-      ) => {
-        const { price, categoryId, category } = mensuality;
-
-        if (!acc[categoryId]) {
-          acc[categoryId] = {
-            category,
-            totalPrice: 0,
-          };
-        }
-
-        acc[categoryId].totalPrice += parseFloat(price.toString());
-
-        return acc;
-      },
-      {}
-    );
-
-    const results = Object.values(groupedMensualities);
-
-    const exceededLimits = results
-      .map(({ category, totalPrice }) => {
-        const limit = limits.find((l) => l.categoryId === category.id);
-
-        if (limit && totalPrice > limit.price) {
-          const exceededAmount = totalPrice - limit.price;
-          return {
-            category: category.name,
-            totalPrice,
-            limitPrice: limit.price,
-            exceededAmount,
-          };
-        }
-
-        return null;
-      })
-      .filter((item) => item !== null);
-
-    console.log(exceededLimits);
     return NextResponse.json(
       {
         message: 'Mensualités du mois récupérées avec succès',
         mensualities: mensualities,
-        isLimit: exceededLimits ? exceededLimits : [],
       },
       { status: 200 }
     );
@@ -136,6 +77,43 @@ export const POST = auth(async function POST(req) {
         return NextResponse.json(
           { message: 'Catégorie non trouvée' },
           { status: 400 }
+        );
+      }
+
+      const limitPrice = await prisma.limit.findFirst({
+        where: { categoryId: parsedData.data.category },
+        select: {
+          price: true,
+        },
+      });
+
+      const mensualities = await prisma.mensuality.findMany({
+        where: {
+          userId: req.auth.user.id,
+          categoryId: parsedData.data.category,
+        },
+
+        select: {
+          price: true,
+        },
+      });
+
+      const totalPriceWithoutNewMensuality = mensualities.reduce(
+        (sum, mensuality) => sum + mensuality.price,
+        0
+      );
+
+      const totalPriceWithNewMensuality =
+        totalPriceWithoutNewMensuality + Number(parsedData.data.price);
+
+      if (limitPrice && totalPriceWithNewMensuality > limitPrice.price) {
+        return NextResponse.json(
+          {
+            isLimitExceeded: true,
+            limitPrice: totalPriceWithNewMensuality - limitPrice.price,
+            message: 'Le prix total dépasse la limite de la catégorie.',
+          },
+          { status: 200 }
         );
       }
 
@@ -212,6 +190,43 @@ export const PATCH = auth(async function PATCH(req) {
         return NextResponse.json(
           { message: 'Mensualité non trouvée' },
           { status: 404 }
+        );
+      }
+
+      const limitPrice = await prisma.limit.findFirst({
+        where: { categoryId: parsedData.data.category },
+        select: {
+          price: true,
+        },
+      });
+
+      const mensualities = await prisma.mensuality.findMany({
+        where: {
+          userId: req.auth.user.id,
+          categoryId: parsedData.data.category,
+        },
+
+        select: {
+          price: true,
+        },
+      });
+
+      const totalPriceWithoutNewMensuality = mensualities.reduce(
+        (sum, mensuality) => sum + mensuality.price,
+        0
+      );
+
+      const totalPriceWithNewMensuality =
+        totalPriceWithoutNewMensuality + Number(parsedData.data.price);
+
+      if (limitPrice && totalPriceWithNewMensuality > limitPrice.price) {
+        return NextResponse.json(
+          {
+            isLimitExceeded: true,
+            limitPrice: totalPriceWithNewMensuality - limitPrice.price,
+            message: 'Le prix total dépasse la limite de la catégorie.',
+          },
+          { status: 200 }
         );
       }
 

@@ -22,6 +22,8 @@ import { useToast } from '../../providers/Toast-provider';
 import { ErrorType } from '@/src/types/error-response';
 import Image from 'next/image';
 import Spinner from '@/src/components/Spinner';
+import { useState } from 'react';
+import { AlertIcon } from '@/src/components/icons';
 
 const schema = z.object({
   name: z.string().min(1, 'Veuillez attribuer un nom'),
@@ -36,6 +38,7 @@ export default function ModalCreateMensuality({
   open: boolean;
   onClose: () => void;
 }) {
+  const [errorLimit, setErrorLimit] = useState('');
   const { mutate } = usePostMensuality();
   const { showToast } = useToast();
   const { data: categories, isLoading: categoriesLoading } = useGetCategory();
@@ -50,17 +53,26 @@ export default function ModalCreateMensuality({
   });
 
   const onSubmit = (data: z.infer<typeof schema>) => {
-    console.log('Data:', data);
     mutate(data, {
-      onSuccess: () => showToast('Mensualité ajoutée', 'success'),
+      onSuccess: (res) => {
+        if (res.data.isLimitExceeded) {
+          setErrorLimit(
+            `Vous dépassez la limite de cette catégorie de ${res.data.limitPrice}€`
+          );
+        } else {
+          showToast('Mensualité ajoutée', 'success');
+          setErrorLimit('');
+          onClose();
+          reset();
+        }
+      },
       onError: (error: ErrorType) =>
         showToast(error?.response?.data?.message, 'error'),
     });
-    onClose();
-    reset();
   };
 
   function closeModal() {
+    setErrorLimit('');
     onClose();
     reset();
   }
@@ -74,6 +86,12 @@ export default function ModalCreateMensuality({
           <DialogTitle>Nouvelle mensualité</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+          {errorLimit && (
+            <div className='font-bold text-white rounded-md  bg-red-500 p-2 flex items-center gap-2'>
+              <AlertIcon width='40' height='40' />
+              <p>{errorLimit}</p>
+            </div>
+          )}
           <div>
             <Label htmlFor='name'>Nom</Label>
             <Input {...register('name')} placeholder='Nom' id='name' />

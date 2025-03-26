@@ -94,7 +94,6 @@ export default function Dashboard() {
           setSearchValue={setSearchValue}
           setSelectedCategory={setSelectedCategory}
           showGraphic={showGraphic}
-          isLimit={mensualities?.isLimit}
         />
         <ChartMobile
           showGraphic={showGraphic}

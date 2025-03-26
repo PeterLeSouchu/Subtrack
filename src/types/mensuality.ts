@@ -28,5 +28,4 @@ export interface IsLimit {
 export interface MensualityResponseGet {
   message: string;
   mensualities: MensualityGetType[];
-  isLimit?: IsLimit[] | undefined;
 }

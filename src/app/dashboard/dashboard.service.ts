@@ -14,6 +14,8 @@ interface MensualityResponsePostPatch {
   data: {
     message: string;
     mensuality: MensualityGetType;
+    isLimitExceeded?: boolean;
+    limitPrice?: number;
   };
 }
 
