@@ -158,6 +158,13 @@ export const PATCH = auth(async function PATCH(req) {
         );
       }
 
+      if (existingLimit.userId !== req.auth.user.id) {
+        return NextResponse.json(
+          { message: "Vous n'êtes pas autorisé à faire cette action" },
+          { status: 401 }
+        );
+      }
+
       const mensualities = await prisma.mensuality.findMany({
         where: {
           userId: req.auth.user.id,

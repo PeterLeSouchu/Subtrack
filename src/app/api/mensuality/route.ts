@@ -3,7 +3,14 @@ import { auth } from '@/src/lib/auth';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
-const mensualitySchema = z.object({
+const mensualityPostSchema = z.object({
+  name: z.string().min(1),
+  price: z.string().min(1),
+  category: z.string().min(1),
+});
+
+const mensualityPatchSchema = z.object({
+  id: z.string().min(1),
   name: z.string().min(1),
   price: z.string().min(1),
   category: z.string().min(1),
@@ -40,7 +47,7 @@ export const GET = auth(async function GET(req) {
 });
 
 export const POST = auth(async function POST(req) {
-  if (req.auth?.user) {
+  if (req.auth?.user?.id) {
     try {
       const body = await req.json();
       const { name, category, price } = body;
@@ -50,7 +57,7 @@ export const POST = auth(async function POST(req) {
           { status: 400 }
         );
       }
-      const parsedData = mensualitySchema.safeParse(body);
+      const parsedData = mensualityPostSchema.safeParse(body);
       if (!parsedData.success) {
         return NextResponse.json(
           {
@@ -81,7 +88,10 @@ export const POST = auth(async function POST(req) {
       }
 
       const limitPrice = await prisma.limit.findFirst({
-        where: { categoryId: parsedData.data.category },
+        where: {
+          userId: req.auth?.user.id,
+          categoryId: parsedData.data.category,
+        },
         select: {
           price: true,
         },
@@ -161,7 +171,7 @@ export const PATCH = auth(async function PATCH(req) {
         );
       }
 
-      const parsedData = mensualitySchema.safeParse(body);
+      const parsedData = mensualityPatchSchema.safeParse(body);
       if (!parsedData.success) {
         return NextResponse.json(
           {
@@ -183,7 +193,7 @@ export const PATCH = auth(async function PATCH(req) {
       }
 
       const existingMensuality = await prisma.mensuality.findUnique({
-        where: { id },
+        where: { id: parsedData.data.id },
       });
 
       if (!existingMensuality) {
@@ -193,8 +203,18 @@ export const PATCH = auth(async function PATCH(req) {
         );
       }
 
+      if (existingMensuality.userId !== req.auth.user.id) {
+        return NextResponse.json(
+          { message: "Vous n'êtes pas autorisé à faire cette action" },
+          { status: 401 }
+        );
+      }
+
       const limitPrice = await prisma.limit.findFirst({
-        where: { categoryId: parsedData.data.category },
+        where: {
+          userId: req.auth.user.id,
+          categoryId: parsedData.data.category,
+        },
         select: {
           price: true,
         },
