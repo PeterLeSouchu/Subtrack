@@ -9,8 +9,15 @@ import {
 } from '@/src/components/icons';
 import Image from 'next/image';
 import { LockIcon } from '@/src/components/icons';
+import { useGetProfileData } from './profile.service';
+import Spinner from '@/src/components/Spinner';
 
 export default function Profile() {
+  const { data, isLoading } = useGetProfileData();
+
+  if (isLoading) return <Spinner />;
+
+  console.log("voila l'email", data?.userData.email);
   return (
     <div className='py-3 md:px-0 px-4 flex justify-center overflow-y-scroll h-full'>
       <div className='max-w-4xl md:w-2/3 w-full flex flex-col gap-20 '>
@@ -21,7 +28,7 @@ export default function Profile() {
           </h2>
           <div className='flex flex-col items-start gap-4'>
             <p className='text-slate-500'>
-              Connecté en tant que : peter22510@gmail.com
+              Connecté avec : {data?.userData.email}
             </p>
             <button
               className='text-white bg-[#F63F42] rounded-md px-3 py-2 font-bold md:hover:bg-[#F31418] transition'
