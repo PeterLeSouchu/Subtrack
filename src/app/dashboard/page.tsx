@@ -38,8 +38,6 @@ export default function Dashboard() {
   const { data: stats, isLoading: statsLoading } = useGetStats();
   const { mutate } = useDeleteMensuality();
 
-  console.log('voila les stats', stats);
-
   const filteredMensualities = filtered(
     mensualities?.mensualities,
     searchValue,

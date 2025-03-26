@@ -12,9 +12,6 @@ export function StatsHeader({
   const totalMensuality = statsData?.totalMensuality ?? 0;
   const averagePrice = statsData?.averagePrice ?? 0;
 
-  const test = '+2';
-  console.log('efeffefeef', Number(test));
-
   const benefitOrLoss = statsData?.benefitOrLoss ?? 0;
   const isPositive = benefitOrLoss > 0;
   const formattedBenefitOrLoss = `${isPositive ? '+' : ''}${benefitOrLoss}`;

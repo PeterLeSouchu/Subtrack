@@ -10,7 +10,6 @@ import { ChartDesktop, ChartMobile } from '../../components/Charts';
 import { TableMensuality } from '../../components/Tables';
 import { useSearchParams } from 'next/navigation';
 import {
-  useGetDate,
   useGetHistoryMensuality,
   useGetHistoryStats,
 } from '../history.service';
@@ -45,28 +44,19 @@ export default function HistoryDetail() {
     isLoading: categoriesLoading,
   } = useGetCategory();
 
-  const { data: date, error: dateError, isLoading: dateLoading } = useGetDate();
-  console.log('voila les dates', date);
-
   const filteredMensualities = filtered(
     historyMensualities?.mensualities,
     searchValue,
     selectedCategory
   );
 
-  if (
-    historyMensualitiesLoading ||
-    categoriesLoading ||
-    historyStatsLoading ||
-    dateLoading
-  )
+  if (historyMensualitiesLoading || categoriesLoading || historyStatsLoading)
     return <Spinner />;
 
   if (
     historyStatsError ||
     historyMensualityError ||
     categoryError ||
-    dateError ||
     historyMensualities?.mensualities.length === 0
   ) {
     return (

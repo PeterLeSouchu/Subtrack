@@ -67,12 +67,14 @@ export default function Profile() {
             >
               Supprimer son compte
             </button>
-            <button
-              className='text-white bg-[#FA964A] rounded-md px-3 py-2 font-bold md:hover:bg-[#FD8225] transition'
-              onClick={() => console.log('modifier son mot de passe')}
-            >
-              Modifier son mot de passe
-            </button>
+            {!data?.userData.hasAccount && (
+              <button
+                className='text-white bg-[#FA964A] rounded-md px-3 py-2 font-bold md:hover:bg-[#FD8225] transition'
+                onClick={() => console.log('modifier son mot de passe')}
+              >
+                Modifier son mot de passe
+              </button>
+            )}
             <button
               className='text-white md:hover:bg-[#202022] bg-[#343438] rounded-md px-3 py-2 font-bold flex items-center gap-1  transition'
               onClick={() => signOut()}
@@ -89,7 +91,7 @@ export default function Profile() {
             </h2>
             <button
               onClick={() => setOpenCreateLimitModal(true)}
-              className='p-1 rounded-full border-blue border-2 transition  md:hover:bg-[#d8d6ed] '
+              className='p-1 rounded-full border-blue border-2 transition md:mr-0 mr-4  md:hover:bg-[#d8d6ed] '
             >
               {' '}
               <AddIcon width='20' height='20' className=' text-blue ' />

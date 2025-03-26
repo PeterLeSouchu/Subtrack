@@ -29,6 +29,12 @@ export const GET = auth(async function GET(req) {
       );
     }
 
+    const hasAccount = await prisma.account.findFirst({
+      where: {
+        userId,
+      },
+    });
+
     const limits = await prisma.limit.findMany({
       where: {
         userId: userId,
@@ -59,6 +65,7 @@ export const GET = auth(async function GET(req) {
         userData: {
           email: profile.email,
           limits,
+          hasAccount: hasAccount ? true : undefined,
         },
       },
       { status: 200 }

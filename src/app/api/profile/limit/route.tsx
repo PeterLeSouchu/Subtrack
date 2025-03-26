@@ -205,8 +205,7 @@ export const PATCH = auth(async function PATCH(req) {
         },
         { status: 200 }
       );
-    } catch (e) {
-      console.log(e);
+    } catch {
       return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
     }
   } else {

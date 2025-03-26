@@ -20,6 +20,7 @@ interface LimitResponsePostPatch {
 interface UserData {
   email: string;
   limits: Limit[];
+  hasAccount?: boolean;
 }
 
 interface DateResponseGet {

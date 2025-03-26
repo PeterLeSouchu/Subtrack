@@ -117,8 +117,6 @@ export default function Bilan() {
 
   if (yearLoading || yearStatsLoading) return <Spinner />;
 
-  console.log('yearStatsData', yearStatsData);
-
   return (
     <>
       {yearData?.date && yearStatsData?.stats ? (

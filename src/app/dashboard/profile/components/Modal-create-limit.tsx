@@ -53,7 +53,6 @@ export default function ModalCreateLimit({
   });
 
   const onSubmit = (data: z.infer<typeof schema>) => {
-    console.log('Data:', data);
     mutate(data, {
       onSuccess: (res) => {
         if (res.data.isLimitExceeded) {
