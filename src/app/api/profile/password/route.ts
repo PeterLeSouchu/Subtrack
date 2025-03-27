@@ -45,7 +45,11 @@ export const PATCH = auth(async function PATCH(req) {
 
     if (password !== passwordConfirm) {
       return NextResponse.json(
-        { message: 'Les nouveaux mots de passe ne correspondent pas' },
+        {
+          message: 'Les nouveaux mots de passe ne correspondent pas',
+          passwordNotMatch: true,
+        },
+
         { status: 400 }
       );
     }
@@ -73,7 +77,7 @@ export const PATCH = auth(async function PATCH(req) {
     const isMatch = await bcrypt.compare(formerPassword, user.password);
     if (!isMatch) {
       return NextResponse.json(
-        { message: 'Mot de passe incorrect' },
+        { message: 'Mot de passe incorrect', notGoodPassword: true },
         { status: 400 }
       );
     }

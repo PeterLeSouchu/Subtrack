@@ -13,6 +13,8 @@ import { Label } from '@/src/components/ui/label';
 import { useToast } from '../../../providers/Toast-provider';
 import { ErrorType } from '@/src/types/error-response';
 import { useEditPassword } from '../profile.service';
+import { useState } from 'react';
+import { AlertIcon } from '@/src/components/icons';
 
 export const editPasswordSchema = z
   .object({
@@ -41,6 +43,7 @@ export default function ModalEditPassword({
   open: boolean;
   onClose: () => void;
 }) {
+  const [errorPassword, seterrorPassword] = useState('');
   const { mutate } = useEditPassword();
   const { showToast } = useToast();
 
@@ -62,9 +65,16 @@ export default function ModalEditPassword({
         reset();
       },
       onError: (error: ErrorType) => {
-        showToast(error?.response?.data?.message, 'error');
-        onClose();
-        reset();
+        if (
+          error.response.data.passwordNotMatch ||
+          error.response.data.notGoodPassword
+        ) {
+          seterrorPassword(error.response.data.message);
+        } else {
+          showToast(error?.response?.data?.message, 'error');
+          onClose();
+          reset();
+        }
       },
     });
   };
@@ -82,12 +92,19 @@ export default function ModalEditPassword({
         </DialogHeader>
         {}
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+          {errorPassword && (
+            <div className='font-bold text-white rounded-md  bg-red-500 p-2 flex items-center gap-2'>
+              <AlertIcon width='40' height='40' />
+              <p>{errorPassword}</p>
+            </div>
+          )}
           <div>
             <Label htmlFor='formerPassword'>Mot de passe actuel</Label>
             <Input
               {...register('formerPassword')}
               placeholder='Mot de passe'
               id='formerPassword'
+              type='password'
             />
             {errors.formerPassword?.message && (
               <p className='text-red-500 text-sm'>
@@ -101,6 +118,7 @@ export default function ModalEditPassword({
               {...register('password')}
               placeholder='Mot de passe'
               id='password'
+              type='password'
             />
             {errors.password?.message && (
               <p className='text-red-500 text-sm'>{errors.password.message}</p>
@@ -112,6 +130,7 @@ export default function ModalEditPassword({
               {...register('passwordConfirm')}
               placeholder='Mot de passe'
               id='passwordConfirm'
+              type='password'
             />
             {errors.passwordConfirm?.message && (
               <p className='text-red-500 text-sm'>

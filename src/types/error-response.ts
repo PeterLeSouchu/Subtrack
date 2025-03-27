@@ -3,6 +3,8 @@ export interface ErrorType {
     data: {
       isLimitExceeded?: boolean;
       limitPrice?: number;
+      passwordNotMatch?: boolean;
+      notGoodPassword?: boolean;
       message: string;
       status: number;
     };
