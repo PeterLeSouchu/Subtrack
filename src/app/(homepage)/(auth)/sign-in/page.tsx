@@ -21,6 +21,7 @@ import GoogleButton from '../../components/Google-button';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { signInUser } from './signin-action';
+import { EyeOpenIcon, EyeCloseIcon } from '@/src/components/icons';
 
 const formSchema = z.object({
   email: z.string(),
@@ -29,6 +30,7 @@ const formSchema = z.object({
 
 export default function SignIn() {
   const [error, setError] = useState<string>('');
+  const [showPassword, setShowPassword] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,6 +48,7 @@ export default function SignIn() {
       signIn('credentials', { userId: res.userId, email: res.email });
     }
   }
+
   return (
     <Form {...form}>
       <form
@@ -83,11 +86,24 @@ export default function SignIn() {
             <FormItem>
               <FormLabel>Mot de passe</FormLabel>
               <FormControl>
-                <Input
-                  type='password'
-                  placeholder='Entrez votre mot de passe'
-                  {...field}
-                />
+                <div className='relative'>
+                  <Input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder='Entrez votre mot de passe'
+                    {...field}
+                  />
+                  <button
+                    type='button'
+                    className='absolute right-2 top-2'
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeCloseIcon width='15' height='15' />
+                    ) : (
+                      <EyeOpenIcon width='15' height='15' />
+                    )}
+                  </button>
+                </div>
               </FormControl>
 
               <FormMessage />
@@ -99,7 +115,7 @@ export default function SignIn() {
             Se connecter
           </Button>
           <Link
-            className=' text-center underline block my-3 lg:hover:text-icon transition  '
+            className='text-center underline block my-3 lg:hover:text-icon transition'
             href='/sign-up'
           >
             Vous êtes nouveau ? Inscrivez-vous ici
