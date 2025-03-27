@@ -1,13 +1,9 @@
 import { prisma } from '@/prisma/prisma-client';
 import { auth } from '@/src/lib/auth';
 import { NextResponse } from 'next/server';
-import { z } from 'zod';
+
 import crypto from 'crypto';
 import { sendMail } from '@/src/utils/nodemailer';
-
-export const editPasswordSchema = z.object({
-  password: z.string(),
-});
 
 export const POST = auth(async function POST(req) {
   if (!req.auth?.user?.id) {

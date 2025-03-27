@@ -86,7 +86,7 @@ export function useDeleteAccount() {
 export function useVerifOtpAccount() {
   return useMutation<void, ErrorType, DeleteGoogleAccount>({
     mutationFn: (data) => {
-      return api.post('/profile/account/verif-otp', data);
+      return api.post('/profile/account/otp-verif', data);
     },
   });
 }

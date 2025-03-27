@@ -16,6 +16,7 @@ import { useState } from 'react';
 import { useSendOtpAccount, useVerifOtpAccount } from '../profile.service';
 import { ErrorType } from '@/src/types/error-response';
 import Spinner from '@/src/components/Spinner';
+import { signOut } from 'next-auth/react';
 
 export default function ModalDeleteGoogleAccount({
   open,
@@ -55,8 +56,10 @@ export default function ModalDeleteGoogleAccount({
       {
         onSuccess: () => {
           closeModal();
+          signOut();
         },
         onError: (error: ErrorType) => {
+          console.log(error.response.data);
           setError(error.response?.data?.message || 'Une erreur est survenue');
         },
       }

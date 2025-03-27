@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 
-export const editPasswordSchema = z.object({
+const deleteSchema = z.object({
   password: z.string(),
 });
 
@@ -28,7 +28,7 @@ export const POST = auth(async function POST(req) {
       );
     }
 
-    const parsedData = editPasswordSchema.safeParse(body);
+    const parsedData = deleteSchema.safeParse(body);
     if (!parsedData.success) {
       return NextResponse.json(
         { message: 'Les informations fournies ne sont pas correctes' },
