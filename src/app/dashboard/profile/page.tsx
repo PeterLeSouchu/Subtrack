@@ -18,13 +18,16 @@ import { useToast } from '../../providers/Toast-provider';
 import ModalEditLimit from './components/Modal-edit-limit';
 import { Limit } from '@/src/types/category';
 import ModalEditPassword from './components/Modal-edit-password';
-import ModalDeleteAccount from './components/Modal-Delete-account';
+import ModalDeleteAccount from './components/Modal-delete-account';
+import ModalDeleteGoogleAccount from './components/Modal-delete-google-account';
 
 export default function Profile() {
   const [openCreateLimitModal, setOpenCreateLimitModal] = useState(false);
   const [openEditLimitModal, setOpenEditLimitModal] = useState(false);
   const [editPasswordModal, setEditPasswordModal] = useState(false);
   const [deleteAccountModal, setDeleteAccountModal] = useState(false);
+  const [deleteGoogleAccountModal, setDeleteGoogleAccountModal] =
+    useState(false);
   const [limitToEdit, setLimitToEdit] = useState<Limit | undefined>();
   const { data, isLoading } = useGetProfileData();
   const { confirm } = useConfirm();
@@ -67,7 +70,13 @@ export default function Profile() {
             </p>
             <button
               className='text-white bg-[#F63F42] rounded-md px-3 py-2 font-bold md:hover:bg-[#F31418] transition'
-              onClick={() => setDeleteAccountModal(true)}
+              onClick={() => {
+                if (data?.userData.hasAccount) {
+                  setDeleteGoogleAccountModal(true);
+                } else {
+                  setDeleteAccountModal(true);
+                }
+              }}
             >
               Supprimer son compte
             </button>
@@ -186,6 +195,10 @@ export default function Profile() {
       <ModalDeleteAccount
         open={deleteAccountModal}
         onClose={() => setDeleteAccountModal(false)}
+      />
+      <ModalDeleteGoogleAccount
+        open={deleteGoogleAccountModal}
+        onClose={() => setDeleteGoogleAccountModal(false)}
       />
 
       {limitToEdit && (
