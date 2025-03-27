@@ -14,7 +14,9 @@ import { Label } from '@/src/components/ui/label';
 import { useToast } from '../../../providers/Toast-provider';
 import { ErrorType } from '@/src/types/error-response';
 import { useDeleteAccount } from '../profile.service';
-import { AlertIcon } from '@/src/components/icons';
+import { AlertIcon, EyeCloseIcon, EyeOpenIcon } from '@/src/components/icons';
+import { useState } from 'react';
+import { signOut } from 'next-auth/react';
 
 export const editPasswordSchema = z.object({
   password: z.string(),
@@ -27,6 +29,8 @@ export default function ModalDeleteAccount({
   open: boolean;
   onClose: () => void;
 }) {
+  const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const { mutate } = useDeleteAccount();
   const { showToast } = useToast();
 
@@ -43,19 +47,27 @@ export default function ModalDeleteAccount({
   const onSubmit = (data: z.infer<typeof editPasswordSchema>) => {
     mutate(data, {
       onSuccess: () => {
-        showToast('Mot de passe modifié', 'success');
+        showToast('Compte supprimé', 'success');
+        setError('');
         onClose();
         reset();
+        signOut();
       },
       onError: (error: ErrorType) => {
-        showToast(error?.response?.data?.message, 'error');
-        onClose();
-        reset();
+        if (error.response.data.notGoodPassword) {
+          setError(error.response.data.message);
+        } else {
+          setError('');
+          showToast(error?.response?.data?.message, 'error');
+          onClose();
+          reset();
+        }
       },
     });
   };
 
   function closeModal() {
+    setError('');
     onClose();
     reset();
   }
@@ -73,13 +85,33 @@ export default function ModalDeleteAccount({
         </DialogDescription>
         {}
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+          {error && (
+            <div className='font-bold text-white rounded-md bg-red-500 p-2 flex items-center gap-2'>
+              <AlertIcon width='40' height='40' />
+              <p>{error}</p>
+            </div>
+          )}
           <div>
             <Label htmlFor='password'>Mot de passe</Label>
-            <Input
-              {...register('password')}
-              placeholder='Mot de passe'
-              id='formerPassword'
-            />
+            <div className='relative'>
+              <Input
+                {...register('password')}
+                placeholder='Mot de passe'
+                id='password'
+                type={showPassword ? 'text' : 'password'}
+              />
+              <button
+                type='button'
+                className='absolute right-2 top-2'
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeCloseIcon width='15' height='15' />
+                ) : (
+                  <EyeOpenIcon width='15' height='15' />
+                )}
+              </button>
+            </div>
             {errors.password?.message && (
               <p className='text-red-500 text-sm'>{errors.password.message}</p>
             )}

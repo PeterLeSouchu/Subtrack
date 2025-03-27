@@ -74,7 +74,7 @@ export function useEditPassword() {
 export function useDeleteAccount() {
   return useMutation<void, ErrorType, DeleteAccount>({
     mutationFn: (data) => {
-      return api.post('/profile/paccount', data);
+      return api.post('/profile/account', data);
     },
   });
 }

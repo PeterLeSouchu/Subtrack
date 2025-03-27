@@ -58,6 +58,7 @@ export default function ModalEditLimit({
         onSuccess: () => {
           showToast('Limite modifiée', 'success');
           setLimitToEdit(undefined);
+          setErrorLimit('');
           reset();
           onClose();
         },
@@ -68,6 +69,7 @@ export default function ModalEditLimit({
             );
           } else {
             showToast(error?.response?.data?.message, 'error');
+            setLimitToEdit(undefined);
             setErrorLimit('');
             onClose();
             reset();

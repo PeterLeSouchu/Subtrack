@@ -43,7 +43,7 @@ export default function ModalEditPassword({
   open: boolean;
   onClose: () => void;
 }) {
-  const [errorPassword, seterrorPassword] = useState('');
+  const [errorPassword, setErrorPassword] = useState('');
   const { mutate } = useEditPassword();
   const { showToast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
@@ -63,6 +63,7 @@ export default function ModalEditPassword({
     mutate(data, {
       onSuccess: () => {
         showToast('Mot de passe modifié', 'success');
+        setErrorPassword('');
         onClose();
         reset();
       },
@@ -71,9 +72,10 @@ export default function ModalEditPassword({
           error.response.data.passwordNotMatch ||
           error.response.data.notGoodPassword
         ) {
-          seterrorPassword(error.response.data.message);
+          setErrorPassword(error.response.data.message);
         } else {
           showToast(error?.response?.data?.message, 'error');
+          setErrorPassword('');
           onClose();
           reset();
         }
@@ -82,6 +84,7 @@ export default function ModalEditPassword({
   };
 
   function closeModal() {
+    setErrorPassword('');
     onClose();
     reset();
   }

@@ -4,26 +4,11 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 
-export const editPasswordSchema = z
-  .object({
-    formerPassword: z.string(),
-    password: z
-      .string()
-      .min(8, {
-        message: 'Le mot de passe doit contenir au moins 8 caractères.',
-      })
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).*$/, {
-        message:
-          'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.',
-      }),
-    passwordConfirm: z.string(),
-  })
-  .refine((data) => data.password === data.passwordConfirm, {
-    path: ['passwordConfirm'],
-    message: 'Les mots de passe ne correspondent pas',
-  });
+export const editPasswordSchema = z.object({
+  password: z.string(),
+});
 
-export const PATCH = auth(async function PATCH(req) {
+export const POST = auth(async function POST(req) {
   if (!req.auth?.user?.id) {
     return NextResponse.json(
       { message: "Vous n'êtes pas autorisé à effectuer cette action" },
@@ -34,22 +19,11 @@ export const PATCH = auth(async function PATCH(req) {
   try {
     const userId = req.auth.user.id;
     const body = await req.json();
-    const { formerPassword, password, passwordConfirm } = body;
+    const { password } = body;
 
-    if (!formerPassword || !password || !passwordConfirm) {
+    if (!password) {
       return NextResponse.json(
         { message: 'Tous les champs sont requis.' },
-        { status: 400 }
-      );
-    }
-
-    if (password !== passwordConfirm) {
-      return NextResponse.json(
-        {
-          message: 'Les nouveaux mots de passe ne correspondent pas',
-          passwordNotMatch: true,
-        },
-
         { status: 400 }
       );
     }
@@ -75,7 +49,7 @@ export const PATCH = auth(async function PATCH(req) {
     }
 
     const isMatch = await bcrypt.compare(
-      parsedData.data.formerPassword,
+      parsedData.data.password,
       user.password
     );
     if (!isMatch) {
@@ -85,18 +59,16 @@ export const PATCH = auth(async function PATCH(req) {
       );
     }
 
-    const hashedPassword = await bcrypt.hash(parsedData.data.password, 10);
-    await prisma.user.update({
+    await prisma.user.delete({
       where: { id: userId },
-      data: { password: hashedPassword },
     });
 
     return NextResponse.json(
-      { message: 'Mot de passe mis à jour avec succès' },
+      { message: 'Compte supprimé avec succès' },
       { status: 200 }
     );
   } catch (error) {
-    console.error('Erreur lors de la mise à jour du mot de passe :', error);
+    console.error('Erreur lors de la suppression :', error);
     return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
   }
 });
