@@ -41,6 +41,10 @@ interface DeleteAccount {
   password: string;
 }
 
+interface DeleteGoogleAccount {
+  otp: string;
+}
+
 export function useGetAvailableCategory() {
   return useQuery<CategoryResponse, ErrorType>({
     queryKey: ['category/limit'],
@@ -79,7 +83,15 @@ export function useDeleteAccount() {
   });
 }
 
-export function useDeleteGoogleAccount() {
+export function useVerifOtpAccount() {
+  return useMutation<void, ErrorType, DeleteGoogleAccount>({
+    mutationFn: (data) => {
+      return api.post('/profile/account/verif-otp', data);
+    },
+  });
+}
+
+export function useSendOtpAccount() {
   return useMutation<void, ErrorType>({
     mutationFn: () => {
       return api.post('/profile/account/otp-send');

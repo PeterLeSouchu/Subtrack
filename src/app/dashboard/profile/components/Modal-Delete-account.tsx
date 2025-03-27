@@ -47,7 +47,6 @@ export default function ModalDeleteAccount({
   const onSubmit = (data: z.infer<typeof editPasswordSchema>) => {
     mutate(data, {
       onSuccess: () => {
-        showToast('Compte supprimé', 'success');
         setError('');
         onClose();
         reset();
