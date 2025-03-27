@@ -34,6 +34,8 @@ export default function Profile() {
   const { showToast } = useToast();
   const { mutate } = useDeleteLimit();
 
+  console.log('object');
+
   async function handleDeleteLimit(categoryId: string, categoryName: string) {
     if (
       await confirm({
