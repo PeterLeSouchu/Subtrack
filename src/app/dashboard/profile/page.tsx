@@ -18,8 +18,9 @@ import { useToast } from '../../providers/Toast-provider';
 import ModalEditLimit from './components/Modal-edit-limit';
 import { Limit } from '@/src/types/category';
 import ModalEditPassword from './components/Modal-edit-password';
-import ModalDeleteAccount from './components/Modal-delete-account';
+
 import ModalDeleteGoogleAccount from './components/Modal-delete-google-account';
+import ModalDeleteAccount from './components/Modal-delete-account';
 
 export default function Profile() {
   const [openCreateLimitModal, setOpenCreateLimitModal] = useState(false);
