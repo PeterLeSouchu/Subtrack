@@ -55,24 +55,23 @@ export default function ModalEditLimit({
     mutate(
       { ...data, id: limitToEdit.id },
       {
-        onSuccess: (res) => {
-          if (res.data.isLimitExceeded) {
-            setErrorLimit(
-              `Les mensualités dépassent cette limite budgétaire de ${res.data.limitPrice}€`
-            );
-          } else {
-            showToast('Limite modifiée', 'success');
-            setLimitToEdit(undefined);
-            reset();
-            onClose();
-          }
-        },
-        onError: (error: ErrorType) => {
-          setErrorLimit('');
+        onSuccess: () => {
+          showToast('Limite modifiée', 'success');
           setLimitToEdit(undefined);
           reset();
           onClose();
-          showToast(error?.response?.data?.message, 'error');
+        },
+        onError: (error: ErrorType) => {
+          if (error.response.data.isLimitExceeded) {
+            setErrorLimit(
+              `Les mensualités dépassent cette limite budgétaire de ${error.response.data.limitPrice}€`
+            );
+          } else {
+            showToast(error?.response?.data?.message, 'error');
+            setErrorLimit('');
+            onClose();
+            reset();
+          }
         },
       }
     );

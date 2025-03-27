@@ -54,23 +54,23 @@ export default function ModalCreateLimit({
 
   const onSubmit = (data: z.infer<typeof schema>) => {
     mutate(data, {
-      onSuccess: (res) => {
-        if (res.data.isLimitExceeded) {
+      onSuccess: () => {
+        showToast('Limite ajoutée', 'success');
+        setErrorLimit('');
+        onClose();
+        reset();
+      },
+      onError: (error: ErrorType) => {
+        if (error.response.data.isLimitExceeded) {
           setErrorLimit(
-            `Les mensualités dépassent cette limite budgétaire de ${res.data.limitPrice}€`
+            `Les mensualités dépassent cette limite budgétaire de ${error.response.data.limitPrice}€`
           );
         } else {
-          showToast('Limite ajoutée', 'success');
+          showToast(error?.response?.data?.message, 'error');
           setErrorLimit('');
           onClose();
           reset();
         }
-      },
-      onError: (error: ErrorType) => {
-        setErrorLimit('');
-        showToast(error?.response?.data?.message, 'error');
-        onClose();
-        reset();
       },
     });
   };

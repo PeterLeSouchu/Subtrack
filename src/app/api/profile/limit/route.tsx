@@ -88,7 +88,7 @@ export const POST = auth(async function POST(req) {
           limitPrice: totalPrice - Number(parsedData.data.price),
           message: 'Les mensualités dépassent cette limite budgétaire.',
         },
-        { status: 200 }
+        { status: 400 }
       );
     }
 
@@ -187,7 +187,7 @@ export const PATCH = auth(async function PATCH(req) {
             limitPrice: totalPrice - Number(parsedData.data.price),
             message: 'Les mensualités dépassent cette limite budgétaire.',
           },
-          { status: 200 }
+          { status: 400 }
         );
       }
 
