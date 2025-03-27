@@ -1,11 +1,12 @@
 import { prisma } from '@/prisma/prisma-client';
 import { auth } from '@/src/lib/auth';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { parse, startOfMonth, endOfMonth } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-export const GET = auth(async function GET(req) {
-  if (!req.auth?.user?.id) {
+export async function GET(req: NextRequest): Promise<NextResponse> {
+  const session = await auth();
+  if (!session?.user?.id) {
     return NextResponse.json(
       { message: "Vous n'êtes pas autorisé à effectuer cette action" },
       { status: 401 }
@@ -26,15 +27,17 @@ export const GET = auth(async function GET(req) {
   const year = parseInt(yearNotParsed, 10);
 
   try {
-    const userId = req.auth.user.id;
+    const userId = session.user.id;
 
     const parsedDate = parse(`1 ${month} ${year}`, 'd MMMM yyyy', new Date(), {
       locale: fr,
     });
 
     if (isNaN(parsedDate.getTime())) {
-      return new Response(
-        JSON.stringify({ error: 'Mois ou année invalides' }),
+      return NextResponse.json(
+        {
+          error: 'Mois ou année invalides',
+        },
         { status: 400 }
       );
     }
@@ -67,4 +70,4 @@ export const GET = auth(async function GET(req) {
     console.error('Erreur lors de la récupération des mensualités :', error);
     return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
   }
-});
+}

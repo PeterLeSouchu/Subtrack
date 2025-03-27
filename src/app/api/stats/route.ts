@@ -9,8 +9,9 @@ interface CategoryStats {
   color: string;
 }
 
-export const GET = auth(async function GET(req) {
-  if (!req.auth?.user?.id) {
+export async function GET(): Promise<NextResponse> {
+  const session = await auth();
+  if (!session?.user?.id) {
     return NextResponse.json(
       { message: "Vous n'êtes pas autorisé à effectuer cette action" },
       { status: 401 }
@@ -18,7 +19,7 @@ export const GET = auth(async function GET(req) {
   }
 
   try {
-    const userId = req.auth.user.id;
+    const userId = session.user.id;
 
     const mensualities = await prisma.mensuality.findMany({
       where: { userId },
@@ -141,4 +142,4 @@ export const GET = auth(async function GET(req) {
     console.error('Erreur serveur :', error);
     return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
   }
-});
+}

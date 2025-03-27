@@ -2,15 +2,16 @@ import { prisma } from '@/prisma/prisma-client';
 import { NextResponse } from 'next/server';
 import { auth } from '@/src/lib/auth';
 
-export const GET = auth(async (req) => {
-  if (!req.auth?.user?.id) {
+export async function GET(): Promise<NextResponse> {
+  const session = await auth();
+  if (!session?.user?.id) {
     return NextResponse.json(
       { message: "Vous n'êtes pas autorisé à effectuer cette action" },
       { status: 401 }
     );
   }
   try {
-    const userId = req.auth.user.id;
+    const userId = session.user.id;
 
     const mensualities = await prisma.history.findMany({
       where: {
@@ -50,4 +51,4 @@ export const GET = auth(async (req) => {
       { status: 500 }
     );
   }
-});
+}

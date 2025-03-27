@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma/prisma-client';
 import { auth } from '@/src/lib/auth';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 const mensualityPostSchema = z.object({
@@ -16,8 +16,9 @@ const mensualityPatchSchema = z.object({
   category: z.string().min(1),
 });
 
-export const GET = auth(async function GET(req) {
-  if (!req.auth?.user?.id) {
+export async function GET(): Promise<NextResponse> {
+  const session = await auth();
+  if (!session?.user?.id) {
     return NextResponse.json(
       { message: "Vous n'êtes pas autorisé à effectuer cette action" },
       { status: 401 }
@@ -25,7 +26,7 @@ export const GET = auth(async function GET(req) {
   }
 
   try {
-    const userId = req.auth.user.id;
+    const userId = session?.user?.id;
 
     const mensualities = await prisma.mensuality.findMany({
       where: { userId },
@@ -44,10 +45,11 @@ export const GET = auth(async function GET(req) {
     console.error('Erreur lors de la récupération des mensualités :', error);
     return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
   }
-});
+}
 
-export const POST = auth(async function POST(req) {
-  if (req.auth?.user?.id) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
+  const session = await auth();
+  if (session?.user?.id) {
     try {
       const body = await req.json();
       const { name, category, price } = body;
@@ -89,7 +91,7 @@ export const POST = auth(async function POST(req) {
 
       const limitPrice = await prisma.limit.findFirst({
         where: {
-          userId: req.auth?.user.id,
+          userId: session.user.id,
           categoryId: parsedData.data.category,
         },
         select: {
@@ -99,7 +101,7 @@ export const POST = auth(async function POST(req) {
 
       const mensualities = await prisma.mensuality.findMany({
         where: {
-          userId: req.auth.user.id,
+          userId: session.user.id,
           categoryId: parsedData.data.category,
         },
 
@@ -132,7 +134,7 @@ export const POST = auth(async function POST(req) {
           name,
           price: Number(price),
           user: {
-            connect: { id: req.auth.user.id },
+            connect: { id: session.user.id },
           },
           category: {
             connect: { id: existingCategory.id },
@@ -156,10 +158,11 @@ export const POST = auth(async function POST(req) {
       { status: 401 }
     );
   }
-});
+}
 
-export const PATCH = auth(async function PATCH(req) {
-  if (req.auth?.user) {
+export async function PATCH(req: NextRequest): Promise<NextResponse> {
+  const session = await auth();
+  if (session?.user?.id) {
     try {
       const body = await req.json();
       const { id, name, category, price } = body;
@@ -203,7 +206,7 @@ export const PATCH = auth(async function PATCH(req) {
         );
       }
 
-      if (existingMensuality.userId !== req.auth.user.id) {
+      if (existingMensuality.userId !== session.user.id) {
         return NextResponse.json(
           { message: "Vous n'êtes pas autorisé à faire cette action" },
           { status: 401 }
@@ -212,7 +215,7 @@ export const PATCH = auth(async function PATCH(req) {
 
       const limitPrice = await prisma.limit.findFirst({
         where: {
-          userId: req.auth.user.id,
+          userId: session.user.id,
           categoryId: parsedData.data.category,
         },
         select: {
@@ -222,7 +225,7 @@ export const PATCH = auth(async function PATCH(req) {
 
       const mensualities = await prisma.mensuality.findMany({
         where: {
-          userId: req.auth.user.id,
+          userId: session.user.id,
           categoryId: parsedData.data.category,
           NOT: {
             id: parsedData.data.id,
@@ -259,7 +262,7 @@ export const PATCH = auth(async function PATCH(req) {
           name,
           price: Number(price),
           user: {
-            connect: { id: req.auth.user.id },
+            connect: { id: session.user.id },
           },
           category: {
             connect: { id: existingCategory.id },
@@ -283,4 +286,4 @@ export const PATCH = auth(async function PATCH(req) {
       { status: 401 }
     );
   }
-});
+}

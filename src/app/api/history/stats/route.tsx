@@ -4,7 +4,6 @@ import { fr } from 'date-fns/locale';
 import { NextResponse } from 'next/server';
 import { endOfMonth, parse, startOfMonth } from 'date-fns';
 import { type NextRequest } from 'next/server';
-// import { TZDate } from "@date-fns/tz";
 
 interface CategoryStats {
   name: string;

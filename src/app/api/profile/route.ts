@@ -2,8 +2,9 @@ import { prisma } from '@/prisma/prisma-client';
 import { auth } from '@/src/lib/auth';
 import { NextResponse } from 'next/server';
 
-export const GET = auth(async function GET(req) {
-  if (!req.auth?.user?.id) {
+export async function GET(): Promise<NextResponse> {
+  const session = await auth();
+  if (!session?.user?.id) {
     return NextResponse.json(
       { message: "Vous n'êtes pas autorisé à effectuer cette action" },
       { status: 401 }
@@ -11,7 +12,7 @@ export const GET = auth(async function GET(req) {
   }
 
   try {
-    const userId = req.auth.user.id;
+    const userId = session?.user?.id;
 
     const profile = await prisma.user.findUnique({
       where: {
@@ -74,4 +75,4 @@ export const GET = auth(async function GET(req) {
     console.error('Erreur lors de la récupération des mensualités :', error);
     return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
   }
-});
+}

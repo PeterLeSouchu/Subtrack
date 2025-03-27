@@ -2,8 +2,9 @@ import { prisma } from '@/prisma/prisma-client';
 import { auth } from '@/src/lib/auth';
 import { NextResponse } from 'next/server';
 
-export const GET = auth(async function GET(req) {
-  if (req.auth?.user?.id) {
+export async function GET(): Promise<NextResponse> {
+  const session = await auth();
+  if (session?.user?.id) {
     try {
       const categories = await prisma.category.findMany();
 
@@ -23,4 +24,4 @@ export const GET = auth(async function GET(req) {
       { status: 401 }
     );
   }
-});
+}

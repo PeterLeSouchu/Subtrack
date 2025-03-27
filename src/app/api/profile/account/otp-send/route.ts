@@ -5,8 +5,9 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { sendMail } from '@/src/utils/nodemailer';
 
-export const POST = auth(async function POST(req) {
-  if (!req.auth?.user?.id) {
+export async function POST(): Promise<NextResponse> {
+  const session = await auth();
+  if (!session?.user?.id) {
     return NextResponse.json(
       { message: "Vous n'êtes pas autorisé à effectuer cette action" },
       { status: 401 }
@@ -14,7 +15,7 @@ export const POST = auth(async function POST(req) {
   }
 
   try {
-    const userId = req.auth.user.id;
+    const userId = session.user.id;
 
     const otpCode = crypto.randomBytes(3).toString('hex');
     const otpExpiresAt = new Date();
@@ -61,4 +62,4 @@ export const POST = auth(async function POST(req) {
     );
     return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
   }
-});
+}

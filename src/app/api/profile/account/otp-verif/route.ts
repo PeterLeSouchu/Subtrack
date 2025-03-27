@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma/prisma-client';
 import { auth } from '@/src/lib/auth';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
 const deleteSchema = z.object({
@@ -9,8 +9,9 @@ const deleteSchema = z.object({
     .min(6, { message: 'Le code OTP doit contenir au moins 6 caractères' }),
 });
 
-export const POST = auth(async function POST(req) {
-  if (!req.auth?.user?.id) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
+  const session = await auth();
+  if (!session?.user?.id) {
     return NextResponse.json(
       { message: "Vous n'êtes pas autorisé à effectuer cette action" },
       { status: 401 }
@@ -18,7 +19,7 @@ export const POST = auth(async function POST(req) {
   }
 
   try {
-    const userId = req.auth.user.id;
+    const userId = session.user.id;
     const body = await req.json();
     const { otp } = body;
 
@@ -87,4 +88,4 @@ export const POST = auth(async function POST(req) {
     );
     return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
   }
-});
+}

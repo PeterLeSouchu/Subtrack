@@ -2,10 +2,11 @@ import { prisma } from '@/prisma/prisma-client';
 import { auth } from '@/src/lib/auth';
 import { NextResponse } from 'next/server';
 
-export const GET = auth(async function GET(req) {
-  if (req.auth?.user?.id) {
+export async function GET(): Promise<NextResponse> {
+  const session = await auth();
+  if (session?.user?.id) {
     try {
-      const userId = req.auth.user.id;
+      const userId = session?.user?.id;
 
       const userLimits = await prisma.limit.findMany({
         where: { userId },
@@ -37,4 +38,4 @@ export const GET = auth(async function GET(req) {
       { status: 401 }
     );
   }
-});
+}
