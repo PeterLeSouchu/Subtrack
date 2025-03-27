@@ -122,7 +122,7 @@ export default function ModalDeleteAccount({
               Annuler
             </Button>
             <Button className='bg-navbar lg:hover:bg-blue' type='submit'>
-              Modifier
+              Supprimer mon compte
             </Button>
           </div>
         </form>

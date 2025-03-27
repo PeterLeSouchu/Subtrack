@@ -53,17 +53,25 @@ export default function Home() {
       <h2 className='font-bold md:text-4xl text-3xl pb-10 text-center'>
         À quoi ça ressemble ?
       </h2>
+
       <video
-        width='320'
-        height='240'
+        width='220'
+        height='140'
         autoPlay
         loop
         muted
         playsInline
         preload='auto'
-        className='md:w-2/3 w-full  pointer-events-none rounded-md mx-auto  shadow-2xl'
+        className='md:w-2/3 w-full  p-1 bg-white pointer-events-none rounded-md mx-auto  shadow-2xl'
       >
-        <source src='/video/subtrack-demo.mp4' type='video/mp4' />
+        <source src='/video/screenrecorder.mp4' type='video/mp4' />
+        <track
+          src='/path/to/captions.vtt'
+          kind='subtitles'
+          srcLang='en'
+          label='English'
+        />
+        Your browser does not support the video tag.
       </video>
 
       <section className=' l p-3 flex  items-center flex-col md:pt-32 pt-20 '>
