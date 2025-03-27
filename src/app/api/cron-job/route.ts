@@ -22,6 +22,7 @@ export async function GET(request: NextRequest) {
           name: mensuality.name,
           price: mensuality.price,
           categoryId: mensuality.categoryId,
+          createdAt: new Date(new Date().setDate(new Date().getDate() - 5)),
         },
       });
     }
