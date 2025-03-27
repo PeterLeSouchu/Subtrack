@@ -117,8 +117,6 @@ export default function Bilan() {
 
   if (yearLoading || yearStatsLoading) return <Spinner />;
 
-  console.log('yearStatsData', yearStatsData);
-
   return (
     <>
       {yearData?.date && yearStatsData?.stats ? (
@@ -126,9 +124,9 @@ export default function Bilan() {
           {' '}
           <div className='flex    h-30   w-full overflow-x-scroll gap-3 pb-4'>
             {' '}
-            <article className='flex-1 drop-shadow-md'>
+            <article className=' drop-shadow-md'>
               <Select
-                defaultValue={yearData?.date[0].toString()}
+                value={selectedYear || yearData?.date[0].toString()}
                 onValueChange={handleYearChange}
               >
                 <SelectTrigger className='w-full h-20 lg:text-2xl text-lg font-bold mr-2 '>

@@ -23,6 +23,8 @@ import { ErrorType } from '@/src/types/error-response';
 import Image from 'next/image';
 import Spinner from '@/src/components/Spinner';
 import { MensualityGetType } from '@/src/types/mensuality';
+import { useState } from 'react';
+import { AlertIcon } from '@/src/components/icons';
 
 const schema = z.object({
   name: z.string().min(1, 'Veuillez attribuer un nom'),
@@ -41,6 +43,7 @@ export default function ModalEditMensuality({
   mensualityToEdit: MensualityGetType;
   setMensualityToEdit: (p: MensualityGetType | undefined) => void;
 }) {
+  const [errorLimit, setErrorLimit] = useState('');
   const { mutate } = usePatchMensuality();
   const { showToast } = useToast();
   const { data: categories, isLoading: categoriesLoading } = useGetCategory();
@@ -62,26 +65,39 @@ export default function ModalEditMensuality({
 
   const onSubmit = (data: z.infer<typeof schema>) => {
     mutate(
-      { ...data, id: mensualityToEdit!.id },
+      { ...data, id: mensualityToEdit.id },
       {
-        onSuccess: () => {
-          showToast('Mensualité modifiée', 'success');
-
-          setMensualityToEdit(undefined);
-          reset();
-          onClose();
+        onSuccess: (res) => {
+          if (res.data.isLimitExceeded) {
+            setErrorLimit(
+              `Vous dépassez la limite de cette catégorie de ${res.data.limitPrice}€`
+            );
+          } else {
+            showToast('Mensualité modifiée', 'success');
+            setMensualityToEdit(undefined);
+            reset();
+            onClose();
+          }
         },
         onError: (error: ErrorType) => {
-          setMensualityToEdit(undefined);
-          reset();
-          onClose();
-          showToast(error?.response?.data?.message, 'error');
+          if (error.response.data.isLimitExceeded) {
+            setErrorLimit(
+              `Vous dépassez la limite de cette catégorie de ${error.response.data.limitPrice}€`
+            );
+          } else {
+            setErrorLimit('');
+            setMensualityToEdit(undefined);
+            reset();
+            onClose();
+            showToast(error?.response?.data?.message, 'error');
+          }
         },
       }
     );
   };
 
   function closeModal() {
+    setErrorLimit('');
     setMensualityToEdit(undefined);
     reset();
     onClose();
@@ -100,6 +116,12 @@ export default function ModalEditMensuality({
           <DialogTitle>Nouvelle mensualité</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+          {errorLimit && (
+            <div className='font-bold text-white rounded-md  bg-red-500 p-2 flex items-center gap-2'>
+              <AlertIcon width='40' height='40' />
+              <p>{errorLimit}</p>
+            </div>
+          )}
           <div>
             <Label htmlFor='name'>Nom</Label>
             <Input {...register('name')} placeholder='Nom' id='name' />

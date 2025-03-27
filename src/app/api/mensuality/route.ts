@@ -3,7 +3,14 @@ import { auth } from '@/src/lib/auth';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
-const mensualitySchema = z.object({
+const mensualityPostSchema = z.object({
+  name: z.string().min(1),
+  price: z.string().min(1),
+  category: z.string().min(1),
+});
+
+const mensualityPatchSchema = z.object({
+  id: z.string().min(1),
   name: z.string().min(1),
   price: z.string().min(1),
   category: z.string().min(1),
@@ -21,19 +28,15 @@ export const GET = auth(async function GET(req) {
     const userId = req.auth.user.id;
 
     const mensualities = await prisma.mensuality.findMany({
-      where: {
-        userId,
-      },
+      where: { userId },
       include: { category: true },
-      orderBy: {
-        price: 'asc',
-      },
+      orderBy: { price: 'asc' },
     });
 
     return NextResponse.json(
       {
         message: 'Mensualités du mois récupérées avec succès',
-        mensualities,
+        mensualities: mensualities,
       },
       { status: 200 }
     );
@@ -44,7 +47,7 @@ export const GET = auth(async function GET(req) {
 });
 
 export const POST = auth(async function POST(req) {
-  if (req.auth?.user) {
+  if (req.auth?.user?.id) {
     try {
       const body = await req.json();
       const { name, category, price } = body;
@@ -54,8 +57,17 @@ export const POST = auth(async function POST(req) {
           { status: 400 }
         );
       }
-      const parsedData = mensualitySchema.safeParse(body);
+      const parsedData = mensualityPostSchema.safeParse(body);
       if (!parsedData.success) {
+        return NextResponse.json(
+          {
+            message: 'Les informations fournies ne sont pas correctes',
+          },
+          { status: 400 }
+        );
+      }
+
+      if (isNaN(Number(parsedData.data.price))) {
         return NextResponse.json(
           {
             message: 'Les informations fournies ne sont pas correctes',
@@ -71,6 +83,46 @@ export const POST = auth(async function POST(req) {
       if (!existingCategory) {
         return NextResponse.json(
           { message: 'Catégorie non trouvée' },
+          { status: 400 }
+        );
+      }
+
+      const limitPrice = await prisma.limit.findFirst({
+        where: {
+          userId: req.auth?.user.id,
+          categoryId: parsedData.data.category,
+        },
+        select: {
+          price: true,
+        },
+      });
+
+      const mensualities = await prisma.mensuality.findMany({
+        where: {
+          userId: req.auth.user.id,
+          categoryId: parsedData.data.category,
+        },
+
+        select: {
+          price: true,
+        },
+      });
+
+      const totalPriceWithoutNewMensuality = mensualities.reduce(
+        (sum, mensuality) => sum + mensuality.price,
+        0
+      );
+
+      const totalPriceWithNewMensuality =
+        totalPriceWithoutNewMensuality + Number(parsedData.data.price);
+
+      if (limitPrice && totalPriceWithNewMensuality > limitPrice.price) {
+        return NextResponse.json(
+          {
+            isLimitExceeded: true,
+            limitPrice: totalPriceWithNewMensuality - limitPrice.price,
+            message: 'Le prix total dépasse la limite de la catégorie.',
+          },
           { status: 400 }
         );
       }
@@ -119,7 +171,7 @@ export const PATCH = auth(async function PATCH(req) {
         );
       }
 
-      const parsedData = mensualitySchema.safeParse(body);
+      const parsedData = mensualityPatchSchema.safeParse(body);
       if (!parsedData.success) {
         return NextResponse.json(
           {
@@ -141,13 +193,63 @@ export const PATCH = auth(async function PATCH(req) {
       }
 
       const existingMensuality = await prisma.mensuality.findUnique({
-        where: { id },
+        where: { id: parsedData.data.id },
       });
 
       if (!existingMensuality) {
         return NextResponse.json(
           { message: 'Mensualité non trouvée' },
           { status: 404 }
+        );
+      }
+
+      if (existingMensuality.userId !== req.auth.user.id) {
+        return NextResponse.json(
+          { message: "Vous n'êtes pas autorisé à faire cette action" },
+          { status: 401 }
+        );
+      }
+
+      const limitPrice = await prisma.limit.findFirst({
+        where: {
+          userId: req.auth.user.id,
+          categoryId: parsedData.data.category,
+        },
+        select: {
+          price: true,
+        },
+      });
+
+      const mensualities = await prisma.mensuality.findMany({
+        where: {
+          userId: req.auth.user.id,
+          categoryId: parsedData.data.category,
+          NOT: {
+            id: parsedData.data.id,
+          },
+        },
+
+        select: {
+          price: true,
+        },
+      });
+
+      const totalPriceWithoutNewMensuality = mensualities.reduce(
+        (sum, mensuality) => sum + mensuality.price,
+        0
+      );
+
+      const totalPriceWithNewMensuality =
+        totalPriceWithoutNewMensuality + Number(parsedData.data.price);
+
+      if (limitPrice && totalPriceWithNewMensuality > limitPrice.price) {
+        return NextResponse.json(
+          {
+            isLimitExceeded: true,
+            limitPrice: totalPriceWithNewMensuality - limitPrice.price,
+            message: 'Le prix total dépasse la limite de la catégorie.',
+          },
+          { status: 400 }
         );
       }
 

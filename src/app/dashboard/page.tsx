@@ -51,6 +51,7 @@ export default function Dashboard() {
     if (
       await confirm({
         title: mensuality.name,
+        text: ' Etes-vous sur de vouloir supprimer la mensualité suivante : ',
         confirmBtn: 'Supprimer',
       })
     ) {

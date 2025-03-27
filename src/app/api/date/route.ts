@@ -23,6 +23,9 @@ export const GET = auth(async (req) => {
       select: {
         createdAt: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
     const groupedData = mensualities.reduce<YearMonthData[]>(

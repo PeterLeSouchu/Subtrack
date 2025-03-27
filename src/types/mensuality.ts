@@ -18,6 +18,13 @@ export interface MensualityGetType {
   id: string;
 }
 
+export interface IsLimit {
+  category: string;
+  totalPrice: number;
+  limitPrice: number;
+  exceededAmount: number;
+}
+
 export interface MensualityResponseGet {
   message: string;
   mensualities: MensualityGetType[];

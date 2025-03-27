@@ -7,19 +7,16 @@ import {
   MensualityPatchType,
   MensualityResponseGet,
 } from '@/src/types/mensuality';
-import { CategoryType } from '@/src/types/category';
+import { CategoryResponse } from '@/src/types/category';
 import { StatsResponse } from '@/src/types/stats';
 
 interface MensualityResponsePostPatch {
   data: {
     message: string;
     mensuality: MensualityGetType;
+    isLimitExceeded?: boolean;
+    limitPrice?: number;
   };
-}
-
-interface CategoryResponse {
-  message: string;
-  categories: CategoryType[];
 }
 
 export function usePostMensuality() {

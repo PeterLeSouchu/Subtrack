@@ -14,3 +14,7 @@ export * from './edit-icon';
 export * from './right-icon';
 export * from './left-icon';
 export * from './down-icon';
+export * from './logout-icon';
+export * from './alert-icon';
+export * from './eye-close-icon';
+export * from './eye-open-icon';

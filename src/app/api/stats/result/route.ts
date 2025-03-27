@@ -78,9 +78,10 @@ export async function GET(req: NextRequest) {
       }
     }).filter(Boolean);
 
-    const totalPrice = historyEntries.reduce(
-      (total, entry) => total + Number(entry.price),
-      0
+    const totalPrice = Number(
+      historyEntries
+        .reduce((total, entry) => total + Number(entry.price), 0)
+        .toFixed(2)
     );
     const totalMensuality = historyEntries.length;
     const uniqueMonths = new Set(
