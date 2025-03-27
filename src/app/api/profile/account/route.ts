@@ -68,7 +68,10 @@ export const POST = auth(async function POST(req) {
       { status: 200 }
     );
   } catch (error) {
-    console.error('Erreur lors de la suppression :', error);
+    console.error(
+      "Erreur lors de la suppression ou de la génération de l'OTP :",
+      error
+    );
     return NextResponse.json({ message: 'Erreur serveur' }, { status: 500 });
   }
 });

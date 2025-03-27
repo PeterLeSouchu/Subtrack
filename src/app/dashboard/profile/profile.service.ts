@@ -79,6 +79,14 @@ export function useDeleteAccount() {
   });
 }
 
+export function useDeleteGoogleAccount() {
+  return useMutation<void, ErrorType>({
+    mutationFn: () => {
+      return api.post('/profile/account/otp-send');
+    },
+  });
+}
+
 export function useGetProfileData() {
   return useQuery<DateResponseGet, ErrorType>({
     queryKey: ['profile'],
