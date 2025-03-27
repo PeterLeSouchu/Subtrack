@@ -121,12 +121,13 @@ function NavBar() {
         )}
 
         <motion.div
-          className={`fixed top-0 flex flex-col gap-10 rounded-l ${
+          className={`fixed md:hidden top-0 flex flex-col gap-10 rounded-l ${
             isMenuOpen ? 'right-0' : '-right-full'
           } w-3/5 h-full min-w-48 bg-navbar shadow-lg z-30`}
           initial={{ right: '-100%' }}
           animate={{ right: isMenuOpen ? '0' : '-100%' }}
-          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+          exit={{ right: '-100%' }}
+          transition={{ duration: 0.4, ease: 'easeInOut' }}
         >
           <div className='flex p-5 justify-end w-full'>
             <button onClick={toggleMenu}>
