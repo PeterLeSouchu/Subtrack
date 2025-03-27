@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -13,8 +14,7 @@ import { Label } from '@/src/components/ui/label';
 import { useToast } from '../../../providers/Toast-provider';
 import { ErrorType } from '@/src/types/error-response';
 import { useEditPassword } from '../profile.service';
-import { useState } from 'react';
-import { AlertIcon } from '@/src/components/icons';
+import { AlertIcon, EyeOpenIcon, EyeCloseIcon } from '@/src/components/icons';
 
 export const editPasswordSchema = z
   .object({
@@ -46,11 +46,13 @@ export default function ModalEditPassword({
   const [errorPassword, seterrorPassword] = useState('');
   const { mutate } = useEditPassword();
   const { showToast } = useToast();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showFormerPassword, setShowFormerPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
-
     formState: { errors },
     reset,
   } = useForm({
@@ -90,22 +92,34 @@ export default function ModalEditPassword({
         <DialogHeader>
           <DialogTitle>Modification du mot de passe</DialogTitle>
         </DialogHeader>
-        {}
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
           {errorPassword && (
-            <div className='font-bold text-white rounded-md  bg-red-500 p-2 flex items-center gap-2'>
+            <div className='font-bold text-white rounded-md bg-red-500 p-2 flex items-center gap-2'>
               <AlertIcon width='40' height='40' />
               <p>{errorPassword}</p>
             </div>
           )}
           <div>
             <Label htmlFor='formerPassword'>Mot de passe actuel</Label>
-            <Input
-              {...register('formerPassword')}
-              placeholder='Mot de passe'
-              id='formerPassword'
-              type='password'
-            />
+            <div className='relative'>
+              <Input
+                {...register('formerPassword')}
+                placeholder='Mot de passe'
+                id='formerPassword'
+                type={showFormerPassword ? 'text' : 'password'}
+              />
+              <button
+                type='button'
+                className='absolute right-2 top-2'
+                onClick={() => setShowFormerPassword(!showFormerPassword)}
+              >
+                {showFormerPassword ? (
+                  <EyeCloseIcon width='15' height='15' />
+                ) : (
+                  <EyeOpenIcon width='15' height='15' />
+                )}
+              </button>
+            </div>
             {errors.formerPassword?.message && (
               <p className='text-red-500 text-sm'>
                 {errors.formerPassword.message}
@@ -114,24 +128,50 @@ export default function ModalEditPassword({
           </div>
           <div>
             <Label htmlFor='password'>Nouveau mot de passe</Label>
-            <Input
-              {...register('password')}
-              placeholder='Mot de passe'
-              id='password'
-              type='password'
-            />
+            <div className='relative'>
+              <Input
+                {...register('password')}
+                placeholder='Mot de passe'
+                id='password'
+                type={showPassword ? 'text' : 'password'}
+              />
+              <button
+                type='button'
+                className='absolute right-2 top-2'
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeCloseIcon width='15' height='15' />
+                ) : (
+                  <EyeOpenIcon width='15' height='15' />
+                )}
+              </button>
+            </div>
             {errors.password?.message && (
               <p className='text-red-500 text-sm'>{errors.password.message}</p>
             )}
           </div>
           <div>
             <Label htmlFor='passwordConfirm'>Confirmez le mot de passe</Label>
-            <Input
-              {...register('passwordConfirm')}
-              placeholder='Mot de passe'
-              id='passwordConfirm'
-              type='password'
-            />
+            <div className='relative'>
+              <Input
+                {...register('passwordConfirm')}
+                placeholder='Mot de passe'
+                id='passwordConfirm'
+                type={showConfirmPassword ? 'text' : 'password'}
+              />
+              <button
+                type='button'
+                className='absolute right-2 top-2'
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? (
+                  <EyeCloseIcon width='15' height='15' />
+                ) : (
+                  <EyeOpenIcon width='15' height='15' />
+                )}
+              </button>
+            </div>
             {errors.passwordConfirm?.message && (
               <p className='text-red-500 text-sm'>
                 {errors.passwordConfirm.message}
@@ -140,7 +180,6 @@ export default function ModalEditPassword({
           </div>
 
           <div className='flex justify-end gap-2'>
-            {' '}
             <Button type='button' onClick={closeModal}>
               Annuler
             </Button>
