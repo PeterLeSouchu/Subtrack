@@ -54,23 +54,23 @@ export default function ModalCreateMensuality({
 
   const onSubmit = (data: z.infer<typeof schema>) => {
     mutate(data, {
-      onSuccess: (res) => {
-        if (res.data.isLimitExceeded) {
+      onSuccess: () => {
+        showToast('Mensualité ajoutée', 'success');
+        setErrorLimit('');
+        onClose();
+        reset();
+      },
+      onError: (error: ErrorType) => {
+        if (error.response.data.isLimitExceeded) {
           setErrorLimit(
-            `Vous dépassez la limite de cette catégorie de ${res.data.limitPrice}€`
+            `Vous dépassez la limite de cette catégorie de ${error.response.data.limitPrice}€`
           );
         } else {
-          showToast('Mensualité ajoutée', 'success');
           setErrorLimit('');
+          showToast(error?.response?.data?.message, 'error');
           onClose();
           reset();
         }
-      },
-      onError: (error: ErrorType) => {
-        setErrorLimit('');
-        showToast(error?.response?.data?.message, 'error');
-        onClose();
-        reset();
       },
     });
   };

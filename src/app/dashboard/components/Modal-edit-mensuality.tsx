@@ -80,11 +80,17 @@ export default function ModalEditMensuality({
           }
         },
         onError: (error: ErrorType) => {
-          setErrorLimit('');
-          setMensualityToEdit(undefined);
-          reset();
-          onClose();
-          showToast(error?.response?.data?.message, 'error');
+          if (error.response.data.isLimitExceeded) {
+            setErrorLimit(
+              `Vous dépassez la limite de cette catégorie de ${error.response.data.limitPrice}€`
+            );
+          } else {
+            setErrorLimit('');
+            setMensualityToEdit(undefined);
+            reset();
+            onClose();
+            showToast(error?.response?.data?.message, 'error');
+          }
         },
       }
     );

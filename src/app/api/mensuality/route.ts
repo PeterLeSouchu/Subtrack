@@ -123,7 +123,7 @@ export const POST = auth(async function POST(req) {
             limitPrice: totalPriceWithNewMensuality - limitPrice.price,
             message: 'Le prix total dépasse la limite de la catégorie.',
           },
-          { status: 200 }
+          { status: 400 }
         );
       }
 
@@ -224,6 +224,9 @@ export const PATCH = auth(async function PATCH(req) {
         where: {
           userId: req.auth.user.id,
           categoryId: parsedData.data.category,
+          NOT: {
+            id: parsedData.data.id,
+          },
         },
 
         select: {
@@ -246,7 +249,7 @@ export const PATCH = auth(async function PATCH(req) {
             limitPrice: totalPriceWithNewMensuality - limitPrice.price,
             message: 'Le prix total dépasse la limite de la catégorie.',
           },
-          { status: 200 }
+          { status: 400 }
         );
       }
 
