@@ -64,6 +64,14 @@ export const POST = auth(async function POST(req) {
       );
     }
 
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        otpCode: null,
+        otpExpiresAt: null,
+      },
+    });
+
     await prisma.user.delete({
       where: { id: userId },
     });
