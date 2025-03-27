@@ -59,7 +59,32 @@ export default function Profile() {
   return (
     <div className='py-3 md:px-0 px-4 flex justify-center overflow-y-scroll h-full'>
       <div className='max-w-4xl md:w-2/3 w-full flex flex-col gap-20 '>
-        {' '}
+        <ModalCreateLimit
+          open={openCreateLimitModal}
+          onClose={() => setOpenCreateLimitModal(false)}
+        />
+        <ModalEditPassword
+          open={editPasswordModal}
+          onClose={() => setEditPasswordModal(false)}
+        />
+
+        <ModalDeleteAccount
+          open={deleteAccountModal}
+          onClose={() => setDeleteAccountModal(false)}
+        />
+        <ModalDeleteGoogleAccount
+          open={deleteGoogleAccountModal}
+          onClose={() => setDeleteGoogleAccountModal(false)}
+        />
+
+        {limitToEdit && (
+          <ModalEditLimit
+            open={openEditLimitModal}
+            onClose={() => setOpenEditLimitModal(false)}
+            limitToEdit={limitToEdit}
+            setLimitToEdit={setLimitToEdit}
+          />
+        )}
         <div>
           <h2 className='text-2xl font-bold text-blue pb-2 mb-6 border-b-1 border-blue'>
             Informations personelles
@@ -183,32 +208,6 @@ export default function Profile() {
           </div>
         </div>
       </div>
-      <ModalCreateLimit
-        open={openCreateLimitModal}
-        onClose={() => setOpenCreateLimitModal(false)}
-      />
-      <ModalEditPassword
-        open={editPasswordModal}
-        onClose={() => setEditPasswordModal(false)}
-      />
-
-      <ModalDeleteAccount
-        open={deleteAccountModal}
-        onClose={() => setDeleteAccountModal(false)}
-      />
-      <ModalDeleteGoogleAccount
-        open={deleteGoogleAccountModal}
-        onClose={() => setDeleteGoogleAccountModal(false)}
-      />
-
-      {limitToEdit && (
-        <ModalEditLimit
-          open={openEditLimitModal}
-          onClose={() => setOpenEditLimitModal(false)}
-          limitToEdit={limitToEdit}
-          setLimitToEdit={setLimitToEdit}
-        />
-      )}
     </div>
   );
 }
