@@ -20,7 +20,7 @@ import { Limit } from '@/src/types/category';
 import ModalEditPassword from './components/Modal-edit-password';
 
 import ModalDeleteGoogleAccount from './components/Modal-delete-google-account';
-import ModalDeleteAccount from './components/Modal-test-account';
+import ModalDeleteAccount from './components/Modal-account-delete';
 
 export default function Profile() {
   const [openCreateLimitModal, setOpenCreateLimitModal] = useState(false);
