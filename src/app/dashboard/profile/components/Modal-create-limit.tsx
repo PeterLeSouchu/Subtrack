@@ -38,7 +38,7 @@ export default function ModalCreateLimit({
   onClose: () => void;
 }) {
   const [errorLimit, setErrorLimit] = useState('');
-  const { mutate } = usePostLimit();
+  const { mutate, isPending } = usePostLimit();
   const { showToast } = useToast();
   const { data: categories, isLoading: categoriesLoading } =
     useGetAvailableCategory();
@@ -162,7 +162,11 @@ export default function ModalCreateLimit({
             <Button type='button' onClick={closeModal}>
               Annuler
             </Button>
-            <Button className='bg-navbar lg:hover:bg-blue' type='submit'>
+            <Button
+              disabled={isPending}
+              className='bg-navbar lg:hover:bg-blue'
+              type='submit'
+            >
               Ajouter
             </Button>
           </div>

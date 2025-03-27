@@ -44,7 +44,7 @@ export default function ModalEditMensuality({
   setMensualityToEdit: (p: MensualityGetType | undefined) => void;
 }) {
   const [errorLimit, setErrorLimit] = useState('');
-  const { mutate } = usePatchMensuality();
+  const { mutate, isPending } = usePatchMensuality();
   const { showToast } = useToast();
   const { data: categories, isLoading: categoriesLoading } = useGetCategory();
 
@@ -194,8 +194,12 @@ export default function ModalEditMensuality({
             <Button type='button' onClick={closeModal}>
               Annuler
             </Button>
-            <Button className='bg-navbar lg:hover:bg-blue' type='submit'>
-              Ajouter
+            <Button
+              disabled={isPending}
+              className='bg-navbar lg:hover:bg-blue'
+              type='submit'
+            >
+              Modifier
             </Button>
           </div>
         </form>

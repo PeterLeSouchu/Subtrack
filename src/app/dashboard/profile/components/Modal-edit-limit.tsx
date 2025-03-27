@@ -36,7 +36,7 @@ export default function ModalEditLimit({
   setLimitToEdit: (p: Limit | undefined) => void;
 }) {
   const [errorLimit, setErrorLimit] = useState('');
-  const { mutate } = usePatchLimit();
+  const { mutate, isPending } = usePatchLimit();
   const { showToast } = useToast();
 
   const {
@@ -144,8 +144,12 @@ export default function ModalEditLimit({
             <Button type='button' onClick={closeModal}>
               Annuler
             </Button>
-            <Button className='bg-navbar lg:hover:bg-blue' type='submit'>
-              Ajouter
+            <Button
+              disabled={isPending}
+              className='bg-navbar lg:hover:bg-blue'
+              type='submit'
+            >
+              Modifier
             </Button>
           </div>
         </form>

@@ -44,7 +44,7 @@ export default function ModalEditPassword({
   onClose: () => void;
 }) {
   const [errorPassword, setErrorPassword] = useState('');
-  const { mutate } = useEditPassword();
+  const { mutate, isPending } = useEditPassword();
   const { showToast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -186,7 +186,11 @@ export default function ModalEditPassword({
             <Button type='button' onClick={closeModal}>
               Annuler
             </Button>
-            <Button className='bg-navbar lg:hover:bg-blue' type='submit'>
+            <Button
+              disabled={isPending}
+              className='bg-navbar lg:hover:bg-blue'
+              type='submit'
+            >
               Modifier
             </Button>
           </div>

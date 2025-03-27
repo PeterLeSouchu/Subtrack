@@ -39,7 +39,7 @@ export default function ModalCreateMensuality({
   onClose: () => void;
 }) {
   const [errorLimit, setErrorLimit] = useState('');
-  const { mutate } = usePostMensuality();
+  const { mutate, isPending } = usePostMensuality();
   const { showToast } = useToast();
   const { data: categories, isLoading: categoriesLoading } = useGetCategory();
   const {
@@ -168,7 +168,11 @@ export default function ModalCreateMensuality({
             <Button type='button' onClick={closeModal}>
               Annuler
             </Button>
-            <Button className='bg-navbar lg:hover:bg-blue' type='submit'>
+            <Button
+              disabled={isPending}
+              className='bg-navbar lg:hover:bg-blue'
+              type='submit'
+            >
               Ajouter
             </Button>
           </div>
