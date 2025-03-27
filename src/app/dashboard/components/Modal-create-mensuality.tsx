@@ -110,18 +110,27 @@ export default function ModalCreateMensuality({
           </div>
           <div>
             <Label htmlFor='price'>Prix</Label>
+
             <Input
               disabled={isPending}
               {...register('price')}
               placeholder='Prix'
               id='price'
               onInput={(e) => {
-                e.currentTarget.value = e.currentTarget.value.replace(
-                  /[^0-9]/g,
-                  ''
-                );
+                const value = e.currentTarget.value;
+
+                if (value.split('.').length > 2) {
+                  e.currentTarget.value = value.slice(0, -1);
+                } else {
+                  e.currentTarget.value = value.replace(/[^0-9.]/g, '');
+                }
+              }}
+              onBlur={(e) => {
+                const value = e.currentTarget.value;
+                e.currentTarget.value = value;
               }}
             />
+
             {errors.price && (
               <p className='text-red-500 text-sm'>{errors.price.message}</p>
             )}

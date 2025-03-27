@@ -142,10 +142,17 @@ export default function ModalEditMensuality({
               placeholder='Prix'
               id='price'
               onInput={(e) => {
-                e.currentTarget.value = e.currentTarget.value.replace(
-                  /[^0-9]/g,
-                  ''
-                );
+                const value = e.currentTarget.value;
+
+                if (value.split('.').length > 2) {
+                  e.currentTarget.value = value.slice(0, -1);
+                } else {
+                  e.currentTarget.value = value.replace(/[^0-9.]/g, '');
+                }
+              }}
+              onBlur={(e) => {
+                const value = e.currentTarget.value;
+                e.currentTarget.value = value;
               }}
             />
             {errors.price && (
