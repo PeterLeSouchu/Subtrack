@@ -66,6 +66,15 @@ export default function ModalDeleteGoogleAccount({
     );
   };
 
+  function handleSentOtp() {
+    mutateOtpSend(undefined, {
+      onSuccess: () => setOtpDisplay(true),
+      onError: (error: ErrorType) => {
+        setError(error.response?.data?.message || 'Une erreur est survenue');
+      },
+    });
+  }
+
   return (
     <Dialog open={open} onOpenChange={closeModal}>
       <DialogContent className='w-2/3'>
@@ -80,16 +89,19 @@ export default function ModalDeleteGoogleAccount({
           </div>
         )}
 
-        {isOtpSendPending ? (
-          <Spinner />
-        ) : otpDisplay ? (
+        {otpDisplay ? (
           <>
             <p>
               Saisissez le code OTP que vous avez reçu par mail (pensez à
               vérifier vos spams) :
             </p>
             <div className='flex justify-center items-center'>
-              <InputOTP maxLength={6} value={otp} onChange={handleOtpChange}>
+              <InputOTP
+                maxLength={6}
+                disabled={isOtpVerifPending}
+                value={otp}
+                onChange={handleOtpChange}
+              >
                 <InputOTPGroup>
                   <InputOTPSlot index={0} />
                   <InputOTPSlot index={1} />
@@ -101,7 +113,9 @@ export default function ModalDeleteGoogleAccount({
               </InputOTP>
             </div>
             <div className='flex justify-end gap-2 mt-4'>
-              <Button onClick={closeModal}>Annuler</Button>
+              <Button disabled={isOtpVerifPending} onClick={closeModal}>
+                Annuler
+              </Button>
               <Button
                 onClick={handleVerifyOtp}
                 className='bg-navbar lg:hover:bg-blue'
@@ -120,25 +134,19 @@ export default function ModalDeleteGoogleAccount({
               supprimer votre compte ?
             </DialogDescription>
             <div className='flex justify-end gap-2'>
-              <Button type='button' onClick={closeModal}>
+              <Button
+                disabled={isOtpSendPending}
+                type='button'
+                onClick={closeModal}
+              >
                 Annuler
               </Button>
               <Button
-                onClick={() => {
-                  mutateOtpSend(undefined, {
-                    onSuccess: () => setOtpDisplay(true),
-                    onError: (error: ErrorType) => {
-                      setError(
-                        error.response?.data?.message ||
-                          'Une erreur est survenue'
-                      );
-                    },
-                  });
-                }}
+                onClick={() => handleSentOtp()}
                 className='bg-navbar lg:hover:bg-blue'
                 type='button'
               >
-                Continuer
+                {isOtpSendPending ? <Spinner /> : 'Continuer'}
               </Button>
             </div>
           </>

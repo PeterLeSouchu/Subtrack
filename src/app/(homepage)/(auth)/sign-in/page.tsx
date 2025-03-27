@@ -22,6 +22,7 @@ import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { signInUser } from './signin-action';
 import { EyeOpenIcon, EyeCloseIcon } from '@/src/components/icons';
+import Spinner from '@/src/components/Spinner';
 
 const formSchema = z.object({
   email: z.string(),
@@ -72,7 +73,11 @@ export default function SignIn() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder='Entrez votre adresse mail' {...field} />
+                <Input
+                  disabled={form.formState.isSubmitting}
+                  placeholder='Entrez votre adresse mail'
+                  {...field}
+                />
               </FormControl>
 
               <FormMessage />
@@ -88,6 +93,7 @@ export default function SignIn() {
               <FormControl>
                 <div className='relative'>
                   <Input
+                    disabled={form.formState.isSubmitting}
                     type={showPassword ? 'text' : 'password'}
                     placeholder='Entrez votre mot de passe'
                     {...field}
@@ -111,8 +117,16 @@ export default function SignIn() {
           )}
         />
         <div>
-          <Button type='submit' className='w-full bg-blue'>
-            Se connecter
+          <Button
+            disabled={form.formState.isSubmitting}
+            type='submit'
+            className='w-full bg-blue'
+          >
+            {form.formState.isSubmitting ? (
+              <Spinner color='border-black' />
+            ) : (
+              'Se connecter'
+            )}
           </Button>
           <Link
             className='text-center underline block my-3 lg:hover:text-icon transition'

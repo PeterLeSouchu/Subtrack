@@ -124,7 +124,12 @@ export default function ModalEditMensuality({
           )}
           <div>
             <Label htmlFor='name'>Nom</Label>
-            <Input {...register('name')} placeholder='Nom' id='name' />
+            <Input
+              disabled={isPending}
+              {...register('name')}
+              placeholder='Nom'
+              id='name'
+            />
             {errors.name && (
               <p className='text-red-500 text-sm'>{errors.name.message}</p>
             )}
@@ -132,6 +137,7 @@ export default function ModalEditMensuality({
           <div>
             <Label htmlFor='price'>Prix</Label>
             <Input
+              disabled={isPending}
               {...register('price')}
               placeholder='Prix'
               id='price'
@@ -152,7 +158,11 @@ export default function ModalEditMensuality({
             render={({ field }) => (
               <div>
                 <Label htmlFor='category'>Categorie</Label>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  disabled={isPending}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder='Catégorie' />
                   </SelectTrigger>
@@ -191,7 +201,7 @@ export default function ModalEditMensuality({
           />
           <div className='flex justify-end gap-2'>
             {' '}
-            <Button type='button' onClick={closeModal}>
+            <Button disabled={isPending} type='button' onClick={closeModal}>
               Annuler
             </Button>
             <Button
@@ -199,7 +209,7 @@ export default function ModalEditMensuality({
               className='bg-navbar lg:hover:bg-blue'
               type='submit'
             >
-              Modifier
+              {isPending ? <Spinner /> : 'Modifier'}
             </Button>
           </div>
         </form>

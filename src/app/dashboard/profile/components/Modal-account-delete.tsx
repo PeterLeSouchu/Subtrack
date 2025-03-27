@@ -17,6 +17,7 @@ import { useDeleteAccount } from '../profile.service';
 import { AlertIcon, EyeCloseIcon, EyeOpenIcon } from '@/src/components/icons';
 import { useState } from 'react';
 import { signOut } from 'next-auth/react';
+import Spinner from '@/src/components/Spinner';
 
 export const editPasswordSchema = z.object({
   password: z.string(),
@@ -31,7 +32,7 @@ export default function ModalDeleteAccount({
 }) {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { mutate } = useDeleteAccount();
+  const { mutate, isPending } = useDeleteAccount();
   const { showToast } = useToast();
 
   const {
@@ -94,6 +95,7 @@ export default function ModalDeleteAccount({
             <Label htmlFor='password'>Mot de passe</Label>
             <div className='relative'>
               <Input
+                disabled={isPending}
                 {...register('password')}
                 placeholder='Mot de passe'
                 id='password'
@@ -118,11 +120,15 @@ export default function ModalDeleteAccount({
 
           <div className='flex justify-end gap-2'>
             {' '}
-            <Button type='button' onClick={closeModal}>
+            <Button disabled={isPending} type='button' onClick={closeModal}>
               Annuler
             </Button>
-            <Button className='bg-navbar lg:hover:bg-blue' type='submit'>
-              Supprimer mon compte
+            <Button
+              disabled={isPending}
+              className='bg-navbar lg:hover:bg-blue'
+              type='submit'
+            >
+              {isPending ? <Spinner /> : 'Supprimer mon compte'}
             </Button>
           </div>
         </form>

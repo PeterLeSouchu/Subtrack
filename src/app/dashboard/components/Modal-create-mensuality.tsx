@@ -98,7 +98,12 @@ export default function ModalCreateMensuality({
           )}
           <div>
             <Label htmlFor='name'>Nom</Label>
-            <Input {...register('name')} placeholder='Nom' id='name' />
+            <Input
+              {...register('name')}
+              placeholder='Nom'
+              id='name'
+              disabled={isPending}
+            />
             {errors.name && (
               <p className='text-red-500 text-sm'>{errors.name.message}</p>
             )}
@@ -106,6 +111,7 @@ export default function ModalCreateMensuality({
           <div>
             <Label htmlFor='price'>Prix</Label>
             <Input
+              disabled={isPending}
               {...register('price')}
               placeholder='Prix'
               id='price'
@@ -126,7 +132,11 @@ export default function ModalCreateMensuality({
             render={({ field }) => (
               <div>
                 <Label htmlFor='category'>Categorie</Label>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  disabled={isPending}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder='Catégorie' />
                   </SelectTrigger>
@@ -165,7 +175,7 @@ export default function ModalCreateMensuality({
           />
           <div className='flex justify-end gap-2'>
             {' '}
-            <Button type='button' onClick={closeModal}>
+            <Button disabled={isPending} type='button' onClick={closeModal}>
               Annuler
             </Button>
             <Button
@@ -173,7 +183,7 @@ export default function ModalCreateMensuality({
               className='bg-navbar lg:hover:bg-blue'
               type='submit'
             >
-              Ajouter
+              {isPending ? <Spinner /> : 'Ajouter'}
             </Button>
           </div>
         </form>

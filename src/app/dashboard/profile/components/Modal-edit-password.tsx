@@ -15,6 +15,7 @@ import { useToast } from '../../../providers/Toast-provider';
 import { ErrorType } from '@/src/types/error-response';
 import { useEditPassword } from '../profile.service';
 import { AlertIcon, EyeOpenIcon, EyeCloseIcon } from '@/src/components/icons';
+import Spinner from '@/src/components/Spinner';
 
 export const editPasswordSchema = z
   .object({
@@ -106,6 +107,7 @@ export default function ModalEditPassword({
             <Label htmlFor='formerPassword'>Mot de passe actuel</Label>
             <div className='relative'>
               <Input
+                disabled={isPending}
                 {...register('formerPassword')}
                 placeholder='Mot de passe'
                 id='formerPassword'
@@ -133,6 +135,7 @@ export default function ModalEditPassword({
             <Label htmlFor='password'>Nouveau mot de passe</Label>
             <div className='relative'>
               <Input
+                disabled={isPending}
                 {...register('password')}
                 placeholder='Mot de passe'
                 id='password'
@@ -158,6 +161,7 @@ export default function ModalEditPassword({
             <Label htmlFor='passwordConfirm'>Confirmez le mot de passe</Label>
             <div className='relative'>
               <Input
+                disabled={isPending}
                 {...register('passwordConfirm')}
                 placeholder='Mot de passe'
                 id='passwordConfirm'
@@ -183,7 +187,7 @@ export default function ModalEditPassword({
           </div>
 
           <div className='flex justify-end gap-2'>
-            <Button type='button' onClick={closeModal}>
+            <Button disabled={isPending} type='button' onClick={closeModal}>
               Annuler
             </Button>
             <Button
@@ -191,7 +195,7 @@ export default function ModalEditPassword({
               className='bg-navbar lg:hover:bg-blue'
               type='submit'
             >
-              Modifier
+              {isPending ? <Spinner /> : 'Modifier'}
             </Button>
           </div>
         </form>

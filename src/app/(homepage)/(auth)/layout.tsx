@@ -26,7 +26,7 @@ export default function AuthHomePageLayout({
         >
           Accueil
         </Link>
-        <div className='w-full h-full  flex justify-center items-center lg:pt-0 pt-10  '>
+        <div className='w-full h-full  flex justify-center items-center lg:py-0 py-14  '>
           {' '}
           {children}
         </div>

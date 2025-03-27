@@ -22,6 +22,7 @@ import ErrorMessage from '@/src/components/Error-message';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { EyeOpenIcon, EyeCloseIcon } from '@/src/components/icons';
+import Spinner from '@/src/components/Spinner';
 
 export default function SignUp() {
   const router = useRouter();
@@ -71,7 +72,11 @@ export default function SignUp() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder='Entrez votre adresse mail' {...field} />
+                <Input
+                  disabled={form.formState.isSubmitting}
+                  placeholder='Entrez votre adresse mail'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -86,6 +91,7 @@ export default function SignUp() {
               <FormControl>
                 <div className='relative'>
                   <Input
+                    disabled={form.formState.isSubmitting}
                     type={showPassword ? 'text' : 'password'}
                     placeholder='Entrez votre mot de passe'
                     {...field}
@@ -116,6 +122,7 @@ export default function SignUp() {
               <FormControl>
                 <div className='relative'>
                   <Input
+                    disabled={form.formState.isSubmitting}
                     type={showConfirmPassword ? 'text' : 'password'}
                     placeholder='Confirmez votre mot de passe'
                     {...field}
@@ -138,8 +145,16 @@ export default function SignUp() {
           )}
         />
         <div>
-          <Button type='submit' className='w-full bg-blue'>
-            S&apos;inscrire
+          <Button
+            disabled={form.formState.isSubmitting}
+            type='submit'
+            className='w-full bg-blue'
+          >
+            {form.formState.isSubmitting ? (
+              <Spinner color='border-black' />
+            ) : (
+              "S'inscrire"
+            )}
           </Button>
           <Link
             className='text-center underline block my-3 lg:hover:text-icon transition'

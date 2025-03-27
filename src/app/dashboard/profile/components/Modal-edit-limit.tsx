@@ -19,6 +19,7 @@ import { Limit } from '@/src/types/category';
 import Image from 'next/image';
 import { useState } from 'react';
 import { AlertIcon } from '@/src/components/icons';
+import Spinner from '@/src/components/Spinner';
 
 const schema = z.object({
   price: z.string().min(1, 'Veuillez attribuer un prix'),
@@ -124,6 +125,7 @@ export default function ModalEditLimit({
           <div>
             <Label htmlFor='price'>Prix</Label>
             <Input
+              disabled={isPending}
               {...register('price')}
               placeholder='Prix'
               id='price'
@@ -141,7 +143,7 @@ export default function ModalEditLimit({
 
           <div className='flex justify-end gap-2'>
             {' '}
-            <Button type='button' onClick={closeModal}>
+            <Button disabled={isPending} type='button' onClick={closeModal}>
               Annuler
             </Button>
             <Button
@@ -149,7 +151,7 @@ export default function ModalEditLimit({
               className='bg-navbar lg:hover:bg-blue'
               type='submit'
             >
-              Modifier
+              {isPending ? <Spinner /> : 'Modifier'}
             </Button>
           </div>
         </form>

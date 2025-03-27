@@ -20,10 +20,11 @@ import { Label } from '@/src/components/ui/label';
 import { useToast } from '../../../providers/Toast-provider';
 import { ErrorType } from '@/src/types/error-response';
 import Image from 'next/image';
-import Spinner from '@/src/components/Spinner';
+
 import { useGetAvailableCategory, usePostLimit } from '../profile.service';
 import { useState } from 'react';
 import { AlertIcon } from '@/src/components/icons';
+import Spinner from '@/src/components/Spinner';
 
 const schema = z.object({
   price: z.string().min(1, 'Veuillez attribuer un prix'),
@@ -40,8 +41,7 @@ export default function ModalCreateLimit({
   const [errorLimit, setErrorLimit] = useState('');
   const { mutate, isPending } = usePostLimit();
   const { showToast } = useToast();
-  const { data: categories, isLoading: categoriesLoading } =
-    useGetAvailableCategory();
+  const { data: categories } = useGetAvailableCategory();
   const {
     register,
     handleSubmit,
@@ -81,8 +81,6 @@ export default function ModalCreateLimit({
     reset();
   }
 
-  if (categoriesLoading) return <Spinner />;
-
   return (
     <Dialog open={open} onOpenChange={closeModal}>
       <DialogContent className='w-2/3'>
@@ -100,6 +98,7 @@ export default function ModalCreateLimit({
           <div>
             <Label htmlFor='price'>Prix</Label>
             <Input
+              disabled={isPending}
               {...register('price')}
               placeholder='Prix'
               id='price'
@@ -120,7 +119,11 @@ export default function ModalCreateLimit({
             render={({ field }) => (
               <div>
                 <Label htmlFor='category'>Categorie</Label>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  disabled={isPending}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder='Catégorie' />
                   </SelectTrigger>
@@ -159,7 +162,7 @@ export default function ModalCreateLimit({
           />
           <div className='flex justify-end gap-2'>
             {' '}
-            <Button type='button' onClick={closeModal}>
+            <Button disabled={isPending} type='button' onClick={closeModal}>
               Annuler
             </Button>
             <Button
@@ -167,7 +170,7 @@ export default function ModalCreateLimit({
               className='bg-navbar lg:hover:bg-blue'
               type='submit'
             >
-              Ajouter
+              {isPending ? <Spinner /> : 'Ajouter'}
             </Button>
           </div>
         </form>
