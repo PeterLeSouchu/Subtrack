@@ -45,7 +45,11 @@ export function TableMensuality({
   isDashboard?: boolean;
 }) {
   return (
-    <section className={`flex-1 p-3 w-full overflow-hidden block `}>
+    <section
+      className={`flex-1 p-3 w-full ${
+        showGraphic ? 'overflow-hidden' : 'md:overflow-hidden'
+      } block `}
+    >
       <div className='xl:bg-white xl:drop-shadow-md w-full h-full p-4 flex flex-col gap-4 rounded-md md:overflow-hidden overflow-y-scroll'>
         <NavBar
           setOpenCreateModal={setOpenCreateModal}
