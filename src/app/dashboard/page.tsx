@@ -68,8 +68,8 @@ export default function Dashboard() {
   }
 
   return (
-    <div className='flex   h-full    '>
-      <div className='xl:w-2/3 w-full h-full flex overflow-y-scroll  flex-col'>
+    <div className='flex overflow-y-scroll   h-full    '>
+      <div className='xl:w-2/3 w-full h-full flex   flex-col'>
         <div className=''>
           {' '}
           <StatsHeader statsData={stats?.stats} />
