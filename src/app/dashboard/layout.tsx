@@ -68,7 +68,7 @@ function NavBar() {
 
   return (
     <header className='w-full p-3'>
-      <nav className='w-full flex items-center rounded-xl bg-gradient-to-r from-navbar via-blue-950 to-navbar text-white font-semibold justify-between lg:justify-center px-2 relative shadow-lg'>
+      <nav className='w-full flex items-center rounded-xl bg-gradient-to-r from-[#4670DB] to-[#3A5BA8] text-white font-semibold justify-between lg:justify-center px-4  relative shadow-md'>
         <Image
           src='/logowhite.png'
           className='w-10'
