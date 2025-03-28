@@ -47,7 +47,7 @@ export function TableMensuality({
   return (
     <section
       className={`flex-1 p-3 w-full ${
-        showGraphic ? 'overflow-hidden' : 'md:overflow-hidden'
+        showGraphic ? 'overflow-hidden hidden' : 'md:overflow-hidden'
       } block `}
     >
       <div className='xl:bg-white xl:drop-shadow-md w-full h-full p-4 flex flex-col gap-4 rounded-md md:overflow-hidden overflow-y-scroll'>
@@ -227,7 +227,7 @@ function NavBar({
   isDashboard: boolean;
 }) {
   return (
-    <div className='flex gap-2 w-full'>
+    <div className='flex gap-2 w-full '>
       <div className='flex flex-1 bg-white border items-center rounded-full w-full p-1'>
         <input
           id='search'

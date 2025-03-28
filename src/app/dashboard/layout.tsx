@@ -43,7 +43,7 @@ export default function LayoutDashboard({ children }: { children: ReactNode }) {
   return (
     <ToastProvider>
       <ConfirmProvider>
-        <div className='w-full flex flex-col h-screen bg-dashboardbg'>
+        <div className='w-full overflow-hidden flex flex-col h-screen bg-dashboardbg'>
           <NavBar />
           <main className='flex-1 h-full overflow-hidden'>{children}</main>
         </div>
