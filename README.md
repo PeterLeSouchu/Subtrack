@@ -54,7 +54,14 @@ L'application est accessible à l'adresse suivante: https://subtrack-seven.verce
 - Utilisation d'une base de données relationnelle Postgres.
 - Utilisation de l'ORM Prisma pour communiquer avec la base de données.
 
-### 💻 6. Technologies utilisées
+
+### 📅 6. Historique des mensualités
+
+- Mise en place d'un Cron job  avec Vercel, qui s'effectue une fois tous les 1ers du mois à minuit.
+- Mise en place d'une route API qui vient faire 2 actions, la 1ère étant de venir nettoyer les codes OTP qui ne sont plus valides, ces codes sont utilisés lors de la suppression des comptes google par mail, et si l'utilisateur ne va pas au bout de sa démarche, alors le code reste en BDD. Ensuite, cette route vient stocker toutes les mensualités de l'utilisateur dans l'historique, seulement pour les utilisateurs actifs sur l'application, c'est à dire  ceux qui se sont connectés dans les 3 derniers mois.
+
+
+### 💻 7. Technologies utilisées
 
 - Next.js avec TypeScript
 - [Tailwind CSS](https://tailwindcss.com/) pour le style
@@ -72,7 +79,7 @@ L'application est accessible à l'adresse suivante: https://subtrack-seven.verce
 - [Nodemailer](https://www.nodemailer.com/) Pour l'envoi des codes OTP par mail
 - [Postgres](https://www.postgresql.org/) Pour la base de données
 
-### ⬇️ 7. Points à ajouter ou améliorer
+### ⬇️ 8. Points à ajouter ou améliorer
 
 - Factoriser le code pour diminuer le nombre de composants nécessaires.
 - Améliorer le style et le rendre plus moderne.
