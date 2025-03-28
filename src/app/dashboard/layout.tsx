@@ -43,9 +43,11 @@ export default function LayoutDashboard({ children }: { children: ReactNode }) {
   return (
     <ToastProvider>
       <ConfirmProvider>
-        <div className='w-full overflow-hidden flex flex-col min-h-screen bg-dashboardbg'>
+        <div className='w-full overflow-hidden flex flex-col h-screen bg-dashboardbg'>
           <NavBar />
-          <main className='flex-1 h-full overflow-y-scroll'>{children}</main>
+          <main className='flex-1 h-full overflow-y-scroll pt-[70px]'>
+            {children}
+          </main>
         </div>
       </ConfirmProvider>
     </ToastProvider>
@@ -67,7 +69,7 @@ function NavBar() {
   }
 
   return (
-    <header className='w-full p-3'>
+    <header className=' fixed top-0 left-0 w-full z-10 backdrop-blur-md   p-3'>
       <nav className='w-full flex items-center rounded-xl bg-gradient-to-r from-[#4670DB] to-[#3A5BA8] text-white font-semibold justify-between lg:justify-center px-4  relative shadow-md'>
         <Image
           src='/logowhite.png'
