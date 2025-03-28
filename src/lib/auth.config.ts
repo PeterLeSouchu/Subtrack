@@ -58,11 +58,12 @@ export default {
         });
 
         console.log("voila l'utilisateur existant : ", existingUser);
-
-        await prisma.user.update({
-          where: { email: user.email },
-          data: { lastLog: new Date() },
-        });
+        if (existingUser) {
+          await prisma.user.update({
+            where: { email: user.email },
+            data: { lastLog: new Date() },
+          });
+        }
         return true;
       } catch (error) {
         console.error(

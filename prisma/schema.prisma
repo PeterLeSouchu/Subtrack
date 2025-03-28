@@ -16,7 +16,7 @@ model User {
   image         String?
   otpCode       String?
   otpExpiresAt  DateTime?
-  lastLog       DateTime?
+  lastLog       DateTime?       @default(now())
   accounts      Account[]
   sessions      Session[]
   Authenticator Authenticator[]
