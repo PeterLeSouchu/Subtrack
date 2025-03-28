@@ -20,59 +20,64 @@ L'application est accessible à l'adresse suivante: https://subtrack-seven.verce
 - Modifier son mot de passe
 - Supprimer son compte
 
-## 🛠️ Fonctionnement du front-end :
+## 🛠️ Fonctionnement de l'application :
 
 ### ⚙️ 1. Architecture
 
-- Single Page Application avec Vite, React et TypeScript.
-- Tailwind CSS pour le style avec des classes CSS personnalisées.
-- Utilisation d'ESLint AirBnb.
+- Projet réalisé avec Next.js v15 (Fullstack) + TypeScript.
+- API REST CRUD
+- Utilisation d'ESLint.
 
-### 📦 2. Store
+### 🔒 2. Sécurité
 
-- Mise en place d'un store Zustand.
-- 1 state "logged" pour savoir si l'utilisateur est connecté.
-- 1 state "darkTheme" qui permet de définir le thème de l'application (avec Tailwind).
-- 1 state "loading" qui permet d'afficher le composant loader quand une requête prend du temps.
-- 1 state "globalErrorMessage" qui permet d'afficher une erreur générale (pas les petites erreurs de validation de formulaire).
-
-### 🔒 3. Sécurité
-
-- Mise en place d'une route protégée, englobant toutes celle nécessitant une authentification et qui utilise le state "logged" du store afin d'afficher un layout privé, ou de redirigé vers le layout public selon le state "logged".
+- Mise en place d'un middleware pour rediriger l'utilisateur en front selon son statut de connexion.
 - Utilisation de ZOD avec React Hook Form pour valider les données avant de les envoyer au back.
+- Utilisation supplémentaire de ZOD en back pour valider les données.
 - Prémunition des attaques XSS avec React.
-- Stockage d'un JWT et d'un CSRF token dans les cookies en HTTP-Only
-- Stockage d'un deuxième CSRF token dans le local storage que l'on passe au headers de certaines requêtes sensibles afin de s'assurer que l'action provient bien de l'utilisateur ( en complément du CSRF token des cookies, donc double vérification du token CSRF )
+- Protection des route API avec la session de Auth.js.
+- Hashage du mot de passe avec Bcrypt.
+- Suppression du compte (google uniquement) par 2FA avec envoi d'un code OTP par mail.
 
-### ❌ 4. Gestion d'erreur
+### ❌ 3. Gestion d'erreur
 
-- Dans les requêtes API, utilisation d'un try/catch, qui, en cas d'erreur vient regarder si l'erreur vient de la session(expiration, pas de token, mauvais token) afin de passer sa valeur au state "globalErrorMessage" du store et ainsi afficher le composant erreur avec le message d 'erreur pour inciter l'utilisateur à se re-connecter. Sinon le message d'erreur est passé à un state local d'un composant et ce dernier, s'il est true, affiche un composant erreur avec le message d'erreur provenant du back.
-- Pour les erreurs provenant du front, donc des erreurs de validation de schéma de formulaire avec ZOD, on utilise React Hook Form qui, en complément d'un schéma ZOD déclenche automatiquement l'erreur, erreur que l'on passe en props d'un composant erreur front pour afficher le message d'erreur.
+- Utilisation des hook useMutation (POST / PATCH / DELETE) et de useQuery(GET) de TanStack Query lors des requêtes API avec leurs fonctionnalités permettant de gérer le pending, le success et l'erreur provenant du back.
+- Pour les erreurs provenant du front, donc des erreurs de validation de schéma de formulaire avec ZOD, on utilise React Hook Form qui, en complément d'un schéma ZOD déclenche automatiquement l'erreur, afin de l'afficher.
+- Utilisation du bloc try catch dans l'API pour chaque requête.
 
-### ⏳ 5. Gestion du chargement (requêtes API)
+### ⏳ 4. Gestion du chargement (requêtes API)
 
-- Utilisation d'un composant parent wrapper sur certains composants, qui permet d'afficher un spinner/loader pendant une requête asynchrone en fonction de l'état "loading" du store.
-- Utilisation du hook "useNavigation" de react-router afin d'afficher le spinner/loader en fonction du state du hook. Lorsqu'un utilisateur change de page, les données de la page sont fetchées grâce à un loader, ce qui permet de récupéerer toutes les données du back avant d'afficher ces dernières et c'est là qu'intervient ce hook qui me permet de regarder si le state === 'loading', et si c'est le cas d'afficher le spinner/loader.
+- Mise en place d'un composant Spinner.
+- Utilisation de TanStack Query lors des requêtes API pour afficher le Spinner selon le pending.
+
+### 🗄️ 5. Base de données
+
+- Utilisation d'une base de données relationnelle Postgres.
+- Utilisation de l'ORM Prisma pour communiquer avec la base de données.
 
 ### 💻 6. Technologies utilisées
 
-- React avec TypeScript
+- Next.js avec TypeScript
 - [Tailwind CSS](https://tailwindcss.com/) pour le style
 - [Axios](https://www.npmjs.com/package/axios) pour les requêtes API
+- [TanStack Query](https://tanstack.com/query/latest) pour facilité les requêtes API et sa mise en cache
 - [React Hook Form](https://www.npmjs.com/package/react-hook-form) pour la gestion des formulaires
-- [React icon](https://react-icons.github.io/react-icons/) pour les icones
 - [ZOD](https://www.npmjs.com/package/zod) Pour valider les données de formulaire
-- [Zustand](https://www.npmjs.com/package/zustand) pour gérer les states partagés dans mon app
-- [socket.io-client](https://socket.io/docs/v4/client-initialization/) pour la communication en temps réel.
+- [Shadcn/ui](https://ui.shadcn.com/) Pour des composants modernes et accessibles
+- [Prisma](https://www.prisma.io/docs/getting-started/quickstart-sqlite) Pour simplifier la communication avec la BDD
+- [Auth.js](https://authjs.dev/) Pour automatiser l'authetification
+- [Date-fns](https://date--fns-org.translate.goog/?_x_tr_sl=en&_x_tr_tl=fr&_x_tr_hl=fr&_x_tr_pto=sc) Pour gérer les dates
+- [Bcrypt](https://www.npmjs.com/package/bcrypt) Pour hasher les mot de passes
+- [Chart.js](https://www.chartjs.org/) Pour la visualisation des données sous forme de graphique
+- [Framer motion](https://motion.dev/) Pour améliorer / moderniser l'UI avec des effets
+- [Nodemailer](https://www.nodemailer.com/) Pour l'envoi des codes OTP par mail
+- [Postgres](https://www.postgresql.org/) Pour la base de données
 
 ### ⬇️ 7. Points à ajouter ou améliorer
 
-- Se prémunir des attaques par force brute avec un captcha pour la connnexion.
-- Mettre en place une pagination sur la page d'accueil pour gagner en rapidité et ainsi améliorer l'expérience utilisateur.
-- Mettre en place des notifications en cas d'ajout / modification / suppression de projet ou de profil.
-- Mettre en place une "pillule rouge" afin de voir quand on a un nouveau message.
-- Mettre en place une FAQ sur la page d'accueil pour expliquer plus en détail l'application.
 - Factoriser le code pour diminuer le nombre de composants nécessaires.
-- Trouver un moyen de faire une fonction permettant de faire une requete api avec axios et un try catch inclu, afin de ne pas se répeter dans le code, et permettre une meilleure lisibilité.
 - Améliorer le style et le rendre plus moderne.
-- Améliorer l'accessibilité, surtout au niveau des formulaires.
+- Améliorer l'accessibilité.
+- Ajouter plus de statistiques sur le dashboard et l'historique.
+- Ajouter un thème sombre/clair.
+- Améliorer l'architecture de l'API (notamment le nom de ces dernières pour une meilleure compréhension).
+- 
