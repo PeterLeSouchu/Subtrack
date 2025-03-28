@@ -43,7 +43,7 @@ export default function LayoutDashboard({ children }: { children: ReactNode }) {
   return (
     <ToastProvider>
       <ConfirmProvider>
-        <div className='w-full overflow-hidden flex flex-col h-screen bg-dashboardbg'>
+        <div className='w-full overflow-hidden flex flex-col min-h-screen bg-dashboardbg'>
           <NavBar />
           <main className='flex-1 h-full overflow-y-scroll'>{children}</main>
         </div>
@@ -121,7 +121,7 @@ function NavBar() {
         )}
 
         <motion.div
-          className={`fixed md:hidden top-0 flex flex-col gap-10 rounded-l ${
+          className={`fixed lg:hidden top-0 flex flex-col gap-10 rounded-l ${
             isMenuOpen ? 'right-0' : '-right-full'
           } w-3/5 h-full min-w-48 bg-navbar shadow-lg z-30`}
           initial={{ right: '-100%' }}
