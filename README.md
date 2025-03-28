@@ -4,7 +4,7 @@
 
 L'application est accessible à l'adresse suivante: https://develup.up.railway.app/
 
-![Screenshot de l'application](/screenshot-subtrack.png)
+![Screenshot de l'application](/public/screenshot-subtrack.png)
 
 ## ⭐ Fonctionnalitées de l'application :
 
@@ -52,10 +52,10 @@ L'application est accessible à l'adresse suivante: https://develup.up.railway.a
 - Dans les requêtes API, utilisation d'un try/catch, qui, en cas d'erreur vient regarder si l'erreur vient de la session(expiration, pas de token, mauvais token) afin de passer sa valeur au state "globalErrorMessage" du store et ainsi afficher le composant erreur avec le message d 'erreur pour inciter l'utilisateur à se re-connecter. Sinon le message d'erreur est passé à un state local d'un composant et ce dernier, s'il est true, affiche un composant erreur avec le message d'erreur provenant du back.
 - Pour les erreurs provenant du front, donc des erreurs de validation de schéma de formulaire avec ZOD, on utilise React Hook Form qui, en complément d'un schéma ZOD déclenche automatiquement l'erreur, erreur que l'on passe en props d'un composant erreur front pour afficher le message d'erreur.
 
-
 ### ⏳ 5. Gestion du chargement (requêtes API)
+
 - Utilisation d'un composant parent wrapper sur certains composants, qui permet d'afficher un spinner/loader pendant une requête asynchrone en fonction de l'état "loading" du store.
-- Utilisation du hook "useNavigation" de react-router afin d'afficher le spinner/loader en fonction du state du hook. Lorsqu'un utilisateur change de page, les données de la page sont fetchées grâce à un loader, ce qui permet de récupéerer toutes les données du back avant d'afficher ces dernières et c'est là qu'intervient ce hook qui me permet de regarder si le state === 'loading', et si c'est le cas d'afficher le spinner/loader. 
+- Utilisation du hook "useNavigation" de react-router afin d'afficher le spinner/loader en fonction du state du hook. Lorsqu'un utilisateur change de page, les données de la page sont fetchées grâce à un loader, ce qui permet de récupéerer toutes les données du back avant d'afficher ces dernières et c'est là qu'intervient ce hook qui me permet de regarder si le state === 'loading', et si c'est le cas d'afficher le spinner/loader.
 
 ### 💻 6. Technologies utilisées
 
@@ -73,9 +73,9 @@ L'application est accessible à l'adresse suivante: https://develup.up.railway.a
 - Se prémunir des attaques par force brute avec un captcha pour la connnexion.
 - Mettre en place une pagination sur la page d'accueil pour gagner en rapidité et ainsi améliorer l'expérience utilisateur.
 - Mettre en place des notifications en cas d'ajout / modification / suppression de projet ou de profil.
--  Mettre en place une "pillule rouge" afin de voir quand on a un nouveau message.
+- Mettre en place une "pillule rouge" afin de voir quand on a un nouveau message.
 - Mettre en place une FAQ sur la page d'accueil pour expliquer plus en détail l'application.
 - Factoriser le code pour diminuer le nombre de composants nécessaires.
 - Trouver un moyen de faire une fonction permettant de faire une requete api avec axios et un try catch inclu, afin de ne pas se répeter dans le code, et permettre une meilleure lisibilité.
 - Améliorer le style et le rendre plus moderne.
--  Améliorer l'accessibilité, surtout au niveau des formulaires.
+- Améliorer l'accessibilité, surtout au niveau des formulaires.
