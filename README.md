@@ -80,4 +80,4 @@ L'application est accessible à l'adresse suivante: https://subtrack-seven.verce
 - Ajouter plus de statistiques sur le dashboard et l'historique.
 - Ajouter un thème sombre/clair.
 - Améliorer l'architecture de l'API (notamment le nom de ces dernières pour une meilleure compréhension).
-- 
+- Améliorer la partie de configuration avec Auth.js
