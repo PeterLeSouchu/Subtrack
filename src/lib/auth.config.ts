@@ -55,22 +55,13 @@ export default {
           where: { email: user.email },
         });
 
-        if (!existingUser) {
-          await prisma.user.create({
-            data: {
-              email: user.email,
-              name: user.name,
-              lastLog: new Date(),
-            },
-          });
-          return true;
-        } else {
-          await prisma.user.update({
-            where: { email: user.email },
-            data: { lastLog: new Date() },
-          });
-          return true;
-        }
+        console.log("voila l'utilisateur existant : ", existingUser);
+
+        await prisma.user.update({
+          where: { email: user.email },
+          data: { lastLog: new Date() },
+        });
+        return true;
       } catch (error) {
         console.error(
           'Erreur lors de la mise à jour / création de lastLog:',
