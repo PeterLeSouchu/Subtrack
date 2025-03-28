@@ -120,7 +120,7 @@ export default function Bilan() {
   return (
     <>
       {yearData?.date && yearStatsData?.stats ? (
-        <div className='h-full flex flex-col p-3 overflow-y-scroll'>
+        <div className='h-full flex-1 flex flex-col p-3 overflow-y-scroll'>
           {' '}
           <div className='flex    h-30   w-full overflow-x-scroll gap-3 pb-4'>
             {' '}
