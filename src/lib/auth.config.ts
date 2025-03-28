@@ -45,15 +45,35 @@ export default {
       return session;
     },
     async signIn({ user }) {
-      if (!user || !user.email) return false;
+      if (!user || !user.email) {
+        console.error('Utilisateur non trouvé ou email manquant.');
+        return false;
+      }
 
       try {
-        await prisma.user.update({
+        const existingUser = await prisma.user.findUnique({
           where: { email: user.email },
-          data: { lastLog: new Date() },
         });
+
+        if (!existingUser) {
+          await prisma.user.create({
+            data: {
+              email: user.email,
+              name: user.name,
+              lastLog: new Date(),
+            },
+          });
+        } else {
+          await prisma.user.update({
+            where: { email: user.email },
+            data: { lastLog: new Date() },
+          });
+        }
       } catch (error) {
-        console.error('Erreur lors de la mise à jour de lastLog:', error);
+        console.error(
+          'Erreur lors de la mise à jour / création de lastLog:',
+          error
+        );
         return false;
       }
 
