@@ -63,11 +63,13 @@ export default {
               lastLog: new Date(),
             },
           });
+          return true;
         } else {
           await prisma.user.update({
             where: { email: user.email },
             data: { lastLog: new Date() },
           });
+          return true;
         }
       } catch (error) {
         console.error(
@@ -76,8 +78,6 @@ export default {
         );
         return false;
       }
-
-      return true;
     },
   },
 } satisfies NextAuthConfig;
