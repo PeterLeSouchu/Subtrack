@@ -1,8 +1,8 @@
-# 🌟 [Projet Develup](https://develup.up.railway.app)
+# 🌟 [Projet Subtrack](https://subtrack-seven.vercel.app/)
 
-**Develup est une application web réalisée dans le cadre de mon portfolio, qui permet de faire collaborer des développeurs, ou toute personne intéressée par le monde du dev, sur des projets web. Les utilisateurs pourront poster des projets, rechercher des projets selon des technologies et un rythme de travail, et communiquer en temps réel. L’objectif de Develup est de vous aider à progresser tout en enrichissant votre portfolio, et quoi de mieux que de le faire en équipe.**
+**Subtrack est une application web réalisée dans le cadre de mon portfolio. Elle permet de suivre et gérer facilement les paiements mensuels en offrant une vue d'ensemble claire grâce à des graphiques et des statistiques détaillées. L'application inclut également un historique des paiements passés et permet à l'utilisateur de définir des limites budgétaires personnalisées pour mieux contrôler ses dépenses et ajuster son budget en fonction de ses besoins.**
 
-L'application est accessible à l'adresse suivante: https://develup.up.railway.app/
+L'application est accessible à l'adresse suivante: https://subtrack-seven.vercel.app/
 
 ![Screenshot de l'application](/public/screenshot-subtrack.png)
 
@@ -10,18 +10,15 @@ L'application est accessible à l'adresse suivante: https://develup.up.railway.a
 
 - Créer un compte utilisateur
 - Se connecter
-- Demander à réinitialiser son mot de passe (mot de passe oublié)
-- Rechercher un projet selon ses technologies et son rythme de travail
-- Accéder à la page détail d'un projet
-- Accéder à la page détail d'un utilisateur
-- Ajouter / Supprimer / modifier un projet
-- Modifier son profil
+- Ajouter modifier / supprimer une mensualité
+- Ajouter / modifier / supprimer une limite budgétaire
+- Filtrer une mensualité par nom / catégorie / prix
+- Visualiser les mensualités sous forme de graphique (camembert)
+- Visualiser les statistiques des mensualités
+- Visualiser l'historique de ses mensualités par mois
+- Visualiser l'historique de ses mensualités par année (graphique en bar  avec prix / mois)
 - Modifier son mot de passe
 - Supprimer son compte
-- Communiquer en temps réel avec un utilisateur
-- Changer de thème (clair / sombre)
-
-**Ce repo contient le code front-end de Develup et est dédié à la partie technique de ses fonctionnalités, si vous souhaitez voir la partie technique du back-end [cliquez-ici](https://github.com/PeterLeSouchu/Develup-back)**
 
 ## 🛠️ Fonctionnement du front-end :
 
