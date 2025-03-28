@@ -45,30 +45,8 @@ export default {
       return session;
     },
     async signIn({ user }) {
-      if (!user || !user.email) {
-        console.error('Utilisateur non trouvé ou email manquant.');
-        return false;
-      }
-
-      try {
-        const existingUser = await prisma.user.findUnique({
-          where: { email: user.email },
-        });
-
-        console.log("voila l'utilisateur existant : ", existingUser);
-
-        await prisma.user.update({
-          where: { email: user.email },
-          data: { lastLog: new Date() },
-        });
-        return true;
-      } catch (error) {
-        console.error(
-          'Erreur lors de la mise à jour / création de lastLog:',
-          error
-        );
-        return false;
-      }
+      console.log("voila l'user", user);
+      return true;
     },
   },
 } satisfies NextAuthConfig;
