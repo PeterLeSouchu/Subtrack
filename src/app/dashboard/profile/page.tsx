@@ -61,7 +61,7 @@ export default function Profile() {
 
   return (
     <div className='py-3 md:px-0 px-4 flex justify-center  h-full'>
-      <div className='max-w-4xl md:w-2/3 w-full flex flex-col overflow-y-scroll gap-20 '>
+      <div className='max-w-4xl md:w-2/3 w-full flex flex-col overflow-y-scroll bg-pink-500 h-full gap-20 '>
         <ModalCreateLimit
           open={openCreateLimitModal}
           onClose={() => setOpenCreateLimitModal(false)}
