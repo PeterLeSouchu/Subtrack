@@ -50,14 +50,12 @@ export default {
         return false;
       }
 
-      console.log("voila l'user", user);
-
       try {
         const existingUser = await prisma.user.findUnique({
           where: { email: user.email },
+          select: { email: true },
         });
 
-        console.log("voila l'utilisateur existant : ", existingUser);
         if (existingUser) {
           await prisma.user.update({
             where: { email: user.email },
