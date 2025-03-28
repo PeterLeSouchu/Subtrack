@@ -44,5 +44,20 @@ export default {
       session.user.id = token.id as string;
       return session;
     },
+    async signIn({ user }) {
+      if (!user || !user.email) return false;
+
+      try {
+        await prisma.user.update({
+          where: { email: user.email },
+          data: { lastLog: new Date() },
+        });
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour de lastLog:', error);
+        return false;
+      }
+
+      return true;
+    },
   },
 } satisfies NextAuthConfig;
