@@ -13,6 +13,7 @@
     "@date-fns/utc": "^2.1.0",
     "@hookform/resolvers": "^4.1.0",
     "@nextui-org/react": "^2.6.11",
+    "@nextui-org/theme": "^2.4.5",
     "@prisma/adapter-pg": "^6.4.1",
     "@prisma/client": "^6.4.1",
     "@radix-ui/react-accordion": "^1.2.3",

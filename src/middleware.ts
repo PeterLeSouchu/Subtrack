@@ -1,21 +1,28 @@
-import { auth } from './lib/auth';
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
+import type { NextRequest } from "next/server";
 
-export default auth((req) => {
+export default async function middleware(req: NextRequest) {
+  const token = await getToken({
+    req,
+    secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
+  });
   const { nextUrl } = req;
-  const isLoggedIn = !!req.auth;
+  const isLoggedIn = !!token;
 
-  const publicRoutes = ['/', '/sign-in', '/sign-up', '/legal-notices', '/cgu'];
+  const publicRoutes = ["/", "/sign-in", "/sign-up", "/legal-notices", "/cgu"];
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
 
   if (!isLoggedIn && !isPublicRoute) {
-    return NextResponse.redirect(new URL('/sign-in', nextUrl.origin));
+    return NextResponse.redirect(new URL("/sign-in", nextUrl.origin));
   }
   if (isLoggedIn && isPublicRoute) {
-    return NextResponse.redirect(new URL('/dashboard', nextUrl.origin));
+    return NextResponse.redirect(new URL("/dashboard", nextUrl.origin));
   }
-});
+
+  return NextResponse.next();
+}
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|video).*)'],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|video).*)"],
 };

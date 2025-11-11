@@ -105,7 +105,7 @@ export default function ModalCreateMensuality({
               disabled={isPending}
             />
             {errors.name && (
-              <p className='text-red-500 text-sm'>{errors.name.message}</p>
+              <p className='text-red-500  text-sm'>{errors.name.message}</p>
             )}
           </div>
           <div>
