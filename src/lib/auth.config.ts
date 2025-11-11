@@ -1,7 +1,7 @@
-import Google from 'next-auth/providers/google';
-import type { NextAuthConfig } from 'next-auth';
-import Credentials from 'next-auth/providers/credentials';
-import { prisma } from '@/prisma/prisma-client';
+import Google from "next-auth/providers/google";
+import type { NextAuthConfig } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+import { prisma } from "../../prisma/prisma-client";
 
 export default {
   providers: [
@@ -9,11 +9,11 @@ export default {
     Credentials({
       credentials: {
         email: {
-          label: 'Email',
-          type: 'text',
-          placeholder: 'email@example.com',
+          label: "Email",
+          type: "text",
+          placeholder: "email@example.com",
         },
-        password: { label: 'Password', type: 'password' },
+        password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
         const existingUser = await prisma.user.findUnique({
@@ -30,7 +30,7 @@ export default {
     }),
   ],
   pages: {
-    signIn: '/sign-in',
+    signIn: "/sign-in",
   },
   callbacks: {
     jwt({ token, user }) {
@@ -46,7 +46,7 @@ export default {
     },
     async signIn({ user }) {
       if (!user || !user.email) {
-        console.error('Utilisateur non trouvé ou email manquant.');
+        console.error("Utilisateur non trouvé ou email manquant.");
         return false;
       }
 
@@ -65,7 +65,7 @@ export default {
         return true;
       } catch (error) {
         console.error(
-          'Erreur lors de la mise à jour / création de lastLog:',
+          "Erreur lors de la mise à jour / création de lastLog:",
           error
         );
         return false;
