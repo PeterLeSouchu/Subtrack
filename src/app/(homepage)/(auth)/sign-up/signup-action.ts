@@ -1,9 +1,9 @@
-'use server';
+"use server";
 
-import { prisma } from '@/prisma/prisma-client';
-import bcrypt from 'bcrypt';
-import { z } from 'zod';
-import { signupSchema } from './signup-schema';
+import { prisma } from "@/prisma/prisma-client";
+import bcrypt from "bcryptjs";
+import { z } from "zod";
+import { signupSchema } from "./signup-schema";
 
 type SignupData = z.infer<typeof signupSchema>;
 
@@ -15,7 +15,7 @@ export async function signUpUser(data: SignupData) {
     const existingUser = await prisma.user.findUnique({ where: { email } });
 
     if (existingUser) {
-      return { error: 'Ce compte existe déjà' };
+      return { error: "Ce compte existe déjà" };
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -24,7 +24,7 @@ export async function signUpUser(data: SignupData) {
     });
 
     return {
-      message: 'Inscription réussie',
+      message: "Inscription réussie",
     };
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -35,6 +35,6 @@ export async function signUpUser(data: SignupData) {
       return { error: error.message };
     }
 
-    return { error: 'Erreur inconnue' };
+    return { error: "Erreur inconnue" };
   }
 }
