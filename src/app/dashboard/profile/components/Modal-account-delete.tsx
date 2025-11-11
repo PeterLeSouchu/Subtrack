@@ -125,7 +125,7 @@ export default function ModalDeleteAccount({
             </Button>
             <Button
               disabled={isPending}
-              className='bg-navbar lg:hover:bg-blue'
+              className='bg-brand-600 text-white transition hover:bg-brand-700'
               type='submit'
             >
               {isPending ? <Spinner /> : 'Supprimer mon compte'}

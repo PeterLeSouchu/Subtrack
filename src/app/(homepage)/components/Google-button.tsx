@@ -11,7 +11,7 @@ export default function GoogleButton({
     <button
       type='button'
       onClick={() => signIn('google', { redirectTo: '/dashboard' })}
-      className=' bg-white py-2 px-4 w-full  text-blue hover:bg-slate-100 rounded-full flex justify-center items-center border shadow-sm mx-auto font-bold gap-2'
+      className=' bg-white py-2 px-4 w-full hover:bg-brand-50 rounded-full flex justify-center items-center border border-brand/20 shadow-sm mx-auto font-bold gap-2'
     >
       <GoogleIcon className=' ' />
       <p className='flex-grow'> {auth} avec Google</p>

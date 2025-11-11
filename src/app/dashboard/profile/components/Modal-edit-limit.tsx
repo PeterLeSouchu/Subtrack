@@ -99,7 +99,7 @@ export default function ModalEditLimit({
             Modification de la catégorie :{' '}
           </DialogTitle>
           <div className='flex justify-center items-center gap-3'>
-            <span className='bg-[#E8E5FF]  text-blue w-fit font-semibold py-1 px-2 flex items-center gap-2 rounded-xl'>
+            <span className='bg-brand-50 text-brand-700 w-fit font-semibold py-1 px-2 flex items-center gap-2 rounded-xl'>
               <div className='w-7 h-7 overflow-hidden'>
                 <Image
                   width={28}
@@ -155,7 +155,7 @@ export default function ModalEditLimit({
             </Button>
             <Button
               disabled={isPending}
-              className='bg-navbar lg:hover:bg-blue'
+              className='bg-brand-600 text-white transition hover:bg-brand-700'
               type='submit'
             >
               {isPending ? <Spinner /> : 'Modifier'}

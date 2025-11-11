@@ -118,7 +118,7 @@ export default function ModalDeleteGoogleAccount({
               </Button>
               <Button
                 onClick={handleVerifyOtp}
-                className='bg-navbar lg:hover:bg-blue'
+                className='bg-brand-600 text-white transition hover:bg-brand-700'
                 type='button'
                 disabled={isOtpVerifPending || !otp || otp.length < 6}
               >
@@ -143,7 +143,7 @@ export default function ModalDeleteGoogleAccount({
               </Button>
               <Button
                 onClick={() => handleSentOtp()}
-                className='bg-navbar lg:hover:bg-blue'
+                className='bg-brand-600 text-white transition hover:bg-brand-700'
                 type='button'
               >
                 {isOtpSendPending ? <Spinner /> : 'Continuer'}

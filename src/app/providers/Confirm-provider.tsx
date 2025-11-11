@@ -94,7 +94,7 @@ export function ConfirmDialogWithContext() {
               </Button>
               <Button
                 type='button'
-                className='px-4 py-2 bg-blue-600 bg-navbar lg:hover:bg-blue transition  rounded '
+                className='px-4 py-2 rounded bg-brand-600 text-white transition hover:bg-brand-700'
                 onClick={onConfirm}
               >
                 {props?.confirmBtn}

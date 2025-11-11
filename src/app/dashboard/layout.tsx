@@ -68,7 +68,7 @@ function NavBar() {
 
   return (
     <header className='w-full p-3'>
-      <nav className='w-full flex items-center rounded-xl bg-gradient-to-r from-[#4670DB] to-[#3A5BA8] text-white font-semibold justify-between lg:justify-center px-4  relative shadow-md'>
+      <nav className='w-full flex items-center rounded-xl bg-gradient-to-r from-brand-600 via-brand-500 to-brand-700 text-white font-semibold justify-between lg:justify-center px-4 relative shadow-md'>
         <Image
           src='/logowhite.png'
           className='w-10'
@@ -89,14 +89,16 @@ function NavBar() {
               <li key={item.path} className='relative text-lg'>
                 <Link
                   className={`flex justify-center items-center gap-1 px-4 py-1 rounded-xl transition-all ${
-                    isActive ? 'bg-white text-navbar' : 'hover:bg-blue'
+                    isActive
+                      ? 'bg-white text-brand-700'
+                      : 'hover:bg-white/15 text-white'
                   }`}
                   href={item.path}
                 >
                   <Icon
                     width={item.name === 'Dashboard' ? '15' : '18'}
                     height={item.name === 'Dashboard' ? '15' : '18'}
-                    className={isActive ? 'text-navbar' : 'text-white'}
+                    className={isActive ? 'text-brand-600' : 'text-white'}
                   />
                   {item.name}
                 </Link>
@@ -105,7 +107,7 @@ function NavBar() {
           })}
         </ul>
 
-        <h1 className='font-bold text-2xl lg:hidden'>
+        <h1 className='font-bold text-2xl lg:hidden text-white'>
           {displayMobilePageName(pathName)}
         </h1>
 
@@ -123,7 +125,7 @@ function NavBar() {
         <motion.div
           className={`fixed lg:hidden top-0 flex flex-col gap-10 rounded-l ${
             isMenuOpen ? 'right-0' : '-right-full'
-          } w-3/5 h-full min-w-48 bg-navbar shadow-lg z-30`}
+          } w-3/5 h-full min-w-48 bg-gradient-to-b from-brand-600 to-brand-800 shadow-lg z-30`}
           initial={{ right: '-100%' }}
           animate={{ right: isMenuOpen ? '0' : '-100%' }}
           exit={{ right: '-100%' }}
@@ -144,12 +146,12 @@ function NavBar() {
                   <Link
                     href={item.path}
                     onClick={toggleMenu}
-                    className='flex items-center gap-2'
+                    className='flex items-center gap-2 text-white hover:text-brand-200'
                   >
                     <Icon
                       width='22'
                       height='22'
-                      className={isActive ? 'text-blue-500' : 'text-white'}
+                      className={isActive ? 'text-brand-200' : 'text-white'}
                     />
                     {item.name}
                   </Link>

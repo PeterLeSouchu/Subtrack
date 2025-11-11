@@ -79,7 +79,7 @@ export default function HistoryDetail() {
           <StatsHeader statsData={historyStats?.stats} isHistory={true} />
         </div>
         <div className='hidden xl:flex  justify-center  mt-1 '>
-          <span className='px-4 py-1   bg-blue  text-white rounded-md text-lg font-extrabold'>
+          <span className='px-4 py-1 bg-brand-600 text-white rounded-md text-lg font-extrabold'>
             {month} {year}
           </span>
         </div>
@@ -92,7 +92,7 @@ export default function HistoryDetail() {
             />
             <Label htmlFor='airplane-mode'>Voir graphique</Label>
           </div>
-          <span className='px-4 py-1  sm:text-base text-sm   bg-blue  text-white rounded-md font-extrabold'>
+          <span className='px-4 py-1 sm:text-base text-sm bg-brand-600 text-white rounded-md font-extrabold'>
             {month} {year}
           </span>
         </div>{' '}

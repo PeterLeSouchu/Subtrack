@@ -46,7 +46,7 @@ export default function ModalCreateLimit({
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
   } = useForm({
     resolver: zodResolver(schema),
@@ -173,8 +173,8 @@ export default function ModalCreateLimit({
               Annuler
             </Button>
             <Button
-              disabled={isPending}
-              className='bg-navbar lg:hover:bg-blue'
+              disabled={isPending || !isValid}
+              className='bg-brand-600 text-white transition hover:bg-brand-700'
               type='submit'
             >
               {isPending ? <Spinner /> : 'Ajouter'}

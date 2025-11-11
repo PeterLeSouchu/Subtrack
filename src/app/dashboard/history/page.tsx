@@ -19,7 +19,7 @@ export default function History() {
         {data?.date && data?.date?.length > 0 ? (
           data?.date.map((date, index) => (
             <section key={index}>
-              <span className=' bg-blue text-white font-bold rounded-xl text-2xl p-2'>
+              <span className='bg-brand-600 text-white font-bold rounded-xl text-2xl p-2'>
                 {date?.year}
               </span>
               <div className='mt-6 mb-10  flex-wrap border-t-2 flex items-center gap-3 pt-2'>

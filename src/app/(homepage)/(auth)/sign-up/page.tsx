@@ -148,7 +148,7 @@ export default function SignUp() {
           <Button
             disabled={form.formState.isSubmitting}
             type="submit"
-            className="w-full bg-blue-600 text-white transition hover:bg-blue-500"
+            className="w-full bg-brand-600 text-white transition hover:bg-brand-700"
           >
             {form.formState.isSubmitting ? (
               <Spinner color="border-black" />

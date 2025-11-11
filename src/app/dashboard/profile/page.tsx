@@ -89,7 +89,7 @@ export default function Profile() {
           />
         )}
         <div>
-          <h2 className='text-2xl font-bold text-blue pb-2 mb-6 border-b-1 border-blue'>
+          <h2 className='text-2xl font-bold text-brand-700 pb-2 mb-6 border-b border-brand/30'>
             Informations personelles
           </h2>
           <div className='flex flex-col items-start gap-4'>
@@ -126,16 +126,15 @@ export default function Profile() {
           </div>
         </div>
         <div>
-          <section className=' flex justify-between items-center border-b-1 border-blue pb-2 mb-6'>
-            <h2 className='text-2xl font-bold text-blue  '>
+          <section className=' flex justify-between items-center border-b border-brand/30 pb-2 mb-6'>
+            <h2 className='text-2xl font-bold text-brand-700'>
               Limites budgétaires
             </h2>
             <button
               onClick={() => setOpenCreateLimitModal(true)}
-              className='p-1 rounded-full border-blue border-2 transition md:mr-0 mr-4  md:hover:bg-[#d8d6ed] '
+              className='p-1 rounded-full border-brand/40 border-2 transition md:mr-0 mr-4 md:hover:bg-brand-50'
             >
-              {' '}
-              <AddIcon width='20' height='20' className=' text-blue ' />
+              <AddIcon width='20' height='20' className='text-brand-600' />
             </button>
           </section>
           <div className='flex flex-col items-start gap-4 w-full pb-10'>
@@ -154,7 +153,7 @@ export default function Profile() {
                   >
                     <div className='w-1/2'>
                       {' '}
-                      <span className='bg-[#E8E5FF]  text-blue w-fit font-semibold py-1 px-2 flex items-center gap-2 rounded-xl'>
+                      <span className='bg-brand-50 text-brand-700 w-fit font-semibold py-1 px-2 flex items-center gap-2 rounded-xl'>
                         <div className='w-7 h-7 overflow-hidden'>
                           <Image
                             width={28}

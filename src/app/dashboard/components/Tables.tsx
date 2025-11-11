@@ -1,15 +1,15 @@
-import { CategoryType } from '@/src/types/category';
-import { MensualityGetType } from '@/src/types/mensuality';
-import { EditIcon, SearchIcon, TrashIcon } from 'lucide-react';
-import { Dispatch, SetStateAction } from 'react';
+import { CategoryType } from "@/src/types/category";
+import { MensualityGetType } from "@/src/types/mensuality";
+import { EditIcon, SearchIcon, TrashIcon } from "lucide-react";
+import { Dispatch, SetStateAction } from "react";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/src/components/ui/select';
-import Image from 'next/image';
+} from "@/src/components/ui/select";
+import Image from "next/image";
 import {
   Table,
   TableHeader,
@@ -17,9 +17,9 @@ import {
   TableHead,
   TableBody,
   TableCell,
-} from '@/src/components/ui/table';
-import { AddIcon } from '@/src/components/icons';
-import { motion } from 'framer-motion';
+} from "@/src/components/ui/table";
+import { AddIcon } from "@/src/components/icons";
+import { motion } from "framer-motion";
 
 export function TableMensuality({
   handleDelete,
@@ -47,10 +47,10 @@ export function TableMensuality({
   return (
     <section
       className={`flex-1 p-3 w-full ${
-        showGraphic ? 'overflow-hidden hidden' : 'md:overflow-hidden'
+        showGraphic ? "overflow-hidden hidden" : "md:overflow-hidden"
       } block `}
     >
-      <div className='xl:bg-white xl:drop-shadow-md w-full h-full p-4 flex flex-col gap-4 rounded-md md:overflow-hidden overflow-y-scroll'>
+      <div className="xl:bg-white xl:drop-shadow-md w-full h-full p-4 flex flex-col gap-4 rounded-md md:overflow-hidden overflow-y-scroll">
         <NavBar
           setOpenCreateModal={setOpenCreateModal}
           categoriesData={categoriesData}
@@ -60,58 +60,58 @@ export function TableMensuality({
           isDashboard={isDashboard}
         />
 
-        <Table className='w-full rounded-lg overflow-y-scroll md:table hidden'>
+        <Table className="w-full rounded-lg overflow-y-scroll md:table hidden">
           <TableHeader>
             <TableRow>
-              <TableHead className='text-left p-4 font-extrabold text-[#253145]'>
+              <TableHead className="text-left p-4 font-extrabold text-[#253145]">
                 Catégorie
               </TableHead>
-              <TableHead className='text-left p-4 font-extrabold text-[#253145]'>
+              <TableHead className="text-left p-4 font-extrabold text-[#253145]">
                 Nom
               </TableHead>
-              <TableHead className='text-left p-4 font-extrabold text-[#253145]'>
+              <TableHead className="text-left p-4 font-extrabold text-[#253145]">
                 Prix
               </TableHead>
-              <TableHead className='text-left p-4 font-extrabold'></TableHead>
+              <TableHead className="text-left p-4 font-extrabold"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {mensualitiesData && mensualitiesData.length > 0 ? (
               mensualitiesData.map((mensuality, index) => (
-                <TableRow key={index} className='border-t p-0 border-gray-200'>
-                  <TableCell className='p-4 flex items-center gap-2'>
-                    <span className='bg-[#E8E5FF] text-blue font-semibold py-1 px-2 flex gap-2 items-center rounded-xl'>
+                <TableRow key={index} className="border-t p-0 border-gray-200">
+                  <TableCell className="p-4 flex items-center gap-2">
+                    <span className="bg-brand-50 text-brand-700 font-semibold py-1 px-2 flex gap-2 items-center rounded-xl">
                       <Image
                         width={450}
                         height={450}
-                        className='w-7'
+                        className="w-7"
                         src={mensuality.category.image}
-                        alt='Icone catégorie'
+                        alt="Icone catégorie"
                       />
-                      <p className='font-extrabold'>
+                      <p className="font-extrabold">
                         {mensuality.category.name}
                       </p>
                     </span>
                   </TableCell>
-                  <TableCell className='p-4 text-gray-700 font-semibold'>
+                  <TableCell className="p-4 text-gray-700 font-semibold">
                     {mensuality.name}
                   </TableCell>
-                  <TableCell className='p-4 text-gray-700 font-medium'>
+                  <TableCell className="p-4 text-gray-700 font-medium">
                     {mensuality.price} €
                   </TableCell>
                   {isDashboard && editMensuality && handleDelete && (
-                    <TableCell className='p-4 flex justify-center gap-3'>
+                    <TableCell className="p-4 flex justify-center gap-3">
                       <button
-                        className='hover:bg-red-200 transition p-1 rounded-full'
+                        className="hover:bg-red-200 transition p-1 rounded-full"
                         onClick={() => handleDelete(mensuality)}
                       >
-                        <TrashIcon width='18' />
+                        <TrashIcon width="18" />
                       </button>
                       <button
                         onClick={() => editMensuality(mensuality)}
-                        className='hover:bg-amber-100 transition p-1 rounded-full'
+                        className="hover:bg-amber-100 transition p-1 rounded-full"
                       >
-                        <EditIcon width='16' />
+                        <EditIcon width="16" />
                       </button>
                     </TableCell>
                   )}
@@ -121,16 +121,16 @@ export function TableMensuality({
               <TableRow>
                 <TableCell
                   colSpan={4}
-                  className='text-center p-4 text-gray-500'
+                  className="text-center p-4 text-gray-500"
                 >
                   Aucune mensualité.
-                  <div className='flex justify-center'>
+                  <div className="flex justify-center">
                     <Image
                       width={200}
                       height={200}
-                      src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp'
-                      alt='empty file'
-                      className='w-32 '
+                      src="https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp"
+                      alt="empty file"
+                      className="w-32 "
                     />
                   </div>
                 </TableCell>
@@ -145,46 +145,46 @@ export function TableMensuality({
               initial={{ opacity: 0 }}
               animate={{ opacity: showGraphic ? 0 : 1 }}
               transition={{ duration: 0.5 }}
-              className=' md:hidden drop-shadow-md flex  bg-white rounded-2xl px-6 gap-2 py-3'
+              className=" md:hidden drop-shadow-md flex  bg-white rounded-2xl px-6 gap-2 py-3"
               key={index}
             >
-              <div className='w-4/5 flex flex-col gap-4 justify-center'>
-                <p className='font-bold text-sm sm:text-base '>
-                  {' '}
+              <div className="w-4/5 flex flex-col gap-4 justify-center">
+                <p className="font-bold text-sm sm:text-base ">
+                  {" "}
                   {mensuality.name}
                 </p>
-                <span className='bg-[#E8E5FF] text-blue font-semibold py-1 px-2 inline-flex w-fit gap-2 items-center rounded-xl'>
+                <span className="bg-brand-50 text-brand-700 font-semibold py-1 px-2 inline-flex w-fit gap-2 items-center rounded-xl">
                   <Image
                     width={450}
                     height={450}
-                    className='w-7'
+                    className="w-7"
                     src={mensuality.category.image}
-                    alt={'Icone catégorie '}
+                    alt={"Icone catégorie "}
                   />
-                  <p className='font-extrabold text-sm sm:text-base'>
-                    {' '}
+                  <p className="font-extrabold text-sm sm:text-base">
+                    {" "}
                     {mensuality.category.name}
                   </p>
                 </span>
               </div>
-              <div className='w-1/5 flex flex-col items-center gap-4'>
-                <p className='sm:text-xl text-lg text-center font-bold break-words w-full '>
-                  {' '}
+              <div className="w-1/5 flex flex-col items-center gap-4">
+                <p className="sm:text-xl text-lg text-center font-bold break-words w-full ">
+                  {" "}
                   {mensuality.price} €
                 </p>
                 {isDashboard && editMensuality && handleDelete && (
                   <div>
                     <button
-                      className=' p-1'
+                      className=" p-1"
                       onClick={() => handleDelete(mensuality)}
                     >
-                      <TrashIcon width='20' />
+                      <TrashIcon width="20" />
                     </button>
                     <button
                       onClick={() => editMensuality(mensuality)}
-                      className=' p-1'
+                      className=" p-1"
                     >
-                      <EditIcon width='18' />
+                      <EditIcon width="18" />
                     </button>
                   </div>
                 )}
@@ -192,16 +192,16 @@ export function TableMensuality({
             </motion.article>
           ))
         ) : (
-          <div className='flex flex-col items-center'>
-            <p className='text-center md:hidden text-gray-500'>
+          <div className="flex flex-col items-center">
+            <p className="text-center md:hidden text-gray-500">
               Aucune mensualité.
             </p>
             <Image
               width={200}
               height={200}
-              src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp'
-              alt='empty file'
-              className='w-32 md:hidden'
+              src="https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp"
+              alt="empty file"
+              className="w-32 md:hidden"
             />
           </div>
         )}
@@ -227,26 +227,26 @@ function NavBar({
   isDashboard: boolean;
 }) {
   return (
-    <div className='flex gap-2 w-full '>
-      <div className='flex flex-1 bg-white border items-center rounded-full w-full p-1'>
+    <div className="flex gap-2 w-full ">
+      <div className="flex flex-1 bg-white border items-center rounded-full w-full p-1">
         <input
-          id='search'
-          placeholder='Cherchez une mensualité par nom , par catégorie ou par prix ... '
-          type='text'
-          className='rounded-full bg-transparent flex-1 outline-none px-3 w-full min-w-[120px]'
+          id="search"
+          placeholder="Cherchez une mensualité par nom , par catégorie ou par prix ... "
+          type="text"
+          className="rounded-full bg-transparent flex-1 outline-none px-3 w-full min-w-[120px]"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
         />
-        <label htmlFor='search'>
-          <SearchIcon width='20' height='20' />
+        <label htmlFor="search">
+          <SearchIcon width="20" height="20" />
         </label>
       </div>
       <Select onValueChange={setSelectedCategory}>
-        <SelectTrigger className='w-auto'>
-          <SelectValue placeholder='Catégorie' />
+        <SelectTrigger className="w-auto">
+          <SelectValue placeholder="Catégorie" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={'all'} className='cursor-pointer border-b'>
+          <SelectItem value={"all"} className="cursor-pointer border-b">
             <p>Toutes</p>
           </SelectItem>
           {categoriesData?.map((category, categoryIndex) => (
@@ -255,17 +255,17 @@ function NavBar({
               value={category.id}
               className={`cursor-pointer ${
                 categoryIndex === categoriesData.length - 1
-                  ? 'border-none'
-                  : 'border-b'
+                  ? "border-none"
+                  : "border-b"
               }`}
             >
-              <div className='flex flex-row items-center justify-start gap-1'>
+              <div className="flex flex-row items-center justify-start gap-1">
                 <Image
                   height={20}
                   width={20}
-                  className='w-5 h-5 object-contain'
+                  className="w-5 h-5 object-contain"
                   src={category.image}
-                  alt='icone categorie'
+                  alt="icone categorie"
                 />
                 <p>{category.name}</p>
               </div>
@@ -276,11 +276,11 @@ function NavBar({
       {isDashboard && setOpenCreateModal && (
         <button
           onClick={() => setOpenCreateModal(true)}
-          type='button'
-          className='flex gap-3 p-2 lg:w-auto lg:h-auto w-10 h-10 justify-center bg-navbar items-center transition lg:hover:bg-blue rounded-full lg:rounded-md font-bold text-white'
+          type="button"
+          className="flex gap-3 p-2 lg:w-auto lg:h-auto w-10 h-10 justify-center items-center rounded-full bg-brand-600 text-white transition hover:bg-brand-700 lg:rounded-md"
         >
-          <AddIcon width='16' height='16' />
-          <p className='lg:block hidden'> Nouvelle mensualité</p>
+          <AddIcon width="16" height="16" />
+          <p className="lg:block hidden"> Nouvelle mensualité</p>
         </button>
       )}
     </div>
