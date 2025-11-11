@@ -1,22 +1,23 @@
 import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 
-export default async function middleware(req: NextRequest) {
-  console.log("middleware");
-  const token = await getToken({
-    req,
-    secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
-  });
-  const { nextUrl } = req;
-  const isLoggedIn = !!token;
+const publicRoutes = ["/", "/sign-in", "/sign-up", "/legal-notices", "/cgu"];
 
-  const publicRoutes = ["/", "/sign-in", "/sign-up", "/legal-notices", "/cgu"];
+function isAuthenticated(req: NextRequest) {
+  const secureToken = req.cookies.get("__Secure-authjs.session-token");
+  return Boolean(secureToken?.value);
+}
+
+export default function middleware(req: NextRequest) {
+  const { nextUrl } = req;
+  const isLoggedIn = isAuthenticated(req);
+  console.log("isLoggedIn dans le middleware", isLoggedIn);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
 
   if (!isLoggedIn && !isPublicRoute) {
     return NextResponse.redirect(new URL("/sign-in", nextUrl.origin));
   }
+
   if (isLoggedIn && isPublicRoute) {
     return NextResponse.redirect(new URL("/dashboard", nextUrl.origin));
   }
