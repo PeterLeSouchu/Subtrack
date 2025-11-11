@@ -13,18 +13,26 @@ export default function GoogleButton({
   return (
     <button
       type="button"
+      aria-live="polite"
+      aria-busy={isLoading}
       onClick={() => {
         if (isLoading) return;
         setIsLoading(true);
         void signIn("google", { redirectTo: "/dashboard" });
       }}
       disabled={isLoading}
-      className={`bg-white py-2 px-4 w-full rounded-full flex justify-center items-center border border-brand/20 shadow-sm mx-auto font-bold gap-2 transition ${
+      className={`bg-white py-2 px-4 w-full rounded-full flex items-center border border-brand/20 shadow-sm mx-auto font-bold gap-3 transition ${
         isLoading ? "opacity-60 cursor-not-allowed" : "hover:bg-brand-50"
       }`}
     >
-      <GoogleIcon className=" " />
-      <p className="flex-grow"> {auth} avec Google</p>
+      <GoogleIcon />
+      <p className="flex-grow text-center">{auth} avec Google</p>
+      <span
+        className={`h-4 w-4 rounded-full border-2 border-brand-500 border-t-transparent animate-spin transition-opacity ${
+          isLoading ? "opacity-100" : "opacity-0"
+        }`}
+        aria-hidden="true"
+      />
     </button>
   );
 }
