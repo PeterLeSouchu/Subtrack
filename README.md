@@ -78,6 +78,7 @@ L'application est accessible à l'adresse suivante: https://subtrack-seven.verce
 - [Framer motion](https://motion.dev/) Pour améliorer / moderniser l'UI avec des effets
 - [Nodemailer](https://www.nodemailer.com/) Pour l'envoi des codes OTP par mail
 - [Postgres](https://www.postgresql.org/) Pour la base de données
+- [Storybook](https://storybook.js.org/) Pour documenter certains composants
 
 ### ⬇️ 8. Points à ajouter ou améliorer
 
@@ -88,3 +89,4 @@ L'application est accessible à l'adresse suivante: https://subtrack-seven.verce
 - Ajouter un thème sombre/clair.
 - Améliorer l'architecture de l'API (notamment le nom de ces dernières pour une meilleure compréhension).
 - Améliorer la partie de configuration avec Auth.js
+- Améliorer la gestion du cache pour éviter des fetchs répétitifs.

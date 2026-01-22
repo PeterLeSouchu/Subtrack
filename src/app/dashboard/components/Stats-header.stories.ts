@@ -13,7 +13,7 @@ const meta = {
     statsData: {
       control: "object",
       description:
-        "Statistiques (numbers) qui s'afficheront dans le composant. On y trouve le prix total, le nombre de mensualités, la moyenne et les bénéfices ou la perte d'argent par rapport au mois précédent.",
+        "Statistiques (numbers) qui s'afficheront dans le composant. On y trouve le prix total, le nombre de mensualités, la moyenne et les bénéfices ou la perte d'argent par rapport auvercel d mois précédent.",
     },
     isHistory: {
       control: "boolean",
