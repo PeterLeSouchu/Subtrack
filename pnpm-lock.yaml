@@ -68,6 +68,9 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
+      dotenv:
+        specifier: ^17.2.3
+        version: 17.2.3
       framer-motion:
         specifier: ^12.4.10
         version: 12.6.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -79,10 +82,10 @@ importers:
         version: 0.482.0(react@19.1.0)
       next:
         specifier: 15.1.4
-        version: 15.1.4(@babel/core@7.28.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 15.1.4(@babel/core@7.28.5)(@playwright/test@1.58.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       next-auth:
         specifier: ^5.0.0-beta.25
-        version: 5.0.0-beta.25(next@15.1.4(@babel/core@7.28.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(nodemailer@6.10.1)(react@19.1.0)
+        version: 5.0.0-beta.25(next@15.1.4(@babel/core@7.28.5)(@playwright/test@1.58.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(nodemailer@6.10.1)(react@19.1.0)
       nodemailer:
         specifier: ^6.10.0
         version: 6.10.1
@@ -117,6 +120,9 @@ importers:
       '@eslint/eslintrc':
         specifier: ^3
         version: 3.3.1
+      '@playwright/test':
+        specifier: ^1.58.0
+        version: 1.58.0
       '@storybook/addon-a11y':
         specifier: ^10.1.11
         version: 10.1.11(storybook@10.1.11(@testing-library/dom@10.4.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
@@ -131,7 +137,7 @@ importers:
         version: 10.1.11(@vitest/browser-playwright@4.0.16)(@vitest/browser@4.0.16(vite@7.3.1(@types/node@20.17.29)(jiti@1.21.7)(yaml@2.7.1))(vitest@4.0.16))(@vitest/runner@4.0.16)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@10.1.11(@testing-library/dom@10.4.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(vitest@4.0.16)
       '@storybook/nextjs-vite':
         specifier: ^10.1.11
-        version: 10.1.11(@babel/core@7.28.5)(esbuild@0.25.2)(next@15.1.4(@babel/core@7.28.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(rollup@4.55.1)(storybook@10.1.11(@testing-library/dom@10.4.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.2)(vite@7.3.1(@types/node@20.17.29)(jiti@1.21.7)(yaml@2.7.1))
+        version: 10.1.11(@babel/core@7.28.5)(esbuild@0.25.2)(next@15.1.4(@babel/core@7.28.5)(@playwright/test@1.58.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(rollup@4.55.1)(storybook@10.1.11(@testing-library/dom@10.4.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.2)(vite@7.3.1(@types/node@20.17.29)(jiti@1.21.7)(yaml@2.7.1))
       '@types/node':
         specifier: ^20
         version: 20.17.29
@@ -1554,6 +1560,11 @@ packages:
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
+
+  '@playwright/test@1.58.0':
+    resolution: {integrity: sha512-fWza+Lpbj6SkQKCrU6si4iu+fD2dD3gxNHFhUPxsfXBPhnv3rRSQVd0NtBUT9Z/RhF/boCBcuUaMUSTRTopjZg==}
+    engines: {node: '>=18'}
+    hasBin: true
 
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
@@ -3442,6 +3453,10 @@ packages:
   dom-accessibility-api@0.6.3:
     resolution: {integrity: sha512-7ZgogeTnjuHbo+ct10G9Ffp0mif17idi0IyWNVA/wcwcm7NPOD/WEHVP3n7n3MhXqxoIYm8d6MuZohYWIZ4T3w==}
 
+  dotenv@17.2.3:
+    resolution: {integrity: sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w==}
+    engines: {node: '>=12'}
+
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
@@ -4467,8 +4482,18 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
+  playwright-core@1.58.0:
+    resolution: {integrity: sha512-aaoB1RWrdNi3//rOeKuMiS65UCcgOVljU46At6eFcOFPFHWtd2weHRRow6z/n+Lec0Lvu0k9ZPKJSjPugikirw==}
+    engines: {node: '>=18'}
+    hasBin: true
+
   playwright@1.57.0:
     resolution: {integrity: sha512-ilYQj1s8sr2ppEJ2YVadYBN0Mb3mdo9J0wQ+UuDhzYqURwSoW4n1Xs5vs7ORwgDGmyEh33tRMeS8KhdkMoLXQw==}
+    engines: {node: '>=18'}
+    hasBin: true
+
+  playwright@1.58.0:
+    resolution: {integrity: sha512-2SVA0sbPktiIY/MCOPX8e86ehA/e+tDNq+e5Y8qjKYti2Z/JG7xnronT/TXTIkKbYGWlCbuucZ6dziEgkoEjQQ==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -6993,6 +7018,10 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
+  '@playwright/test@1.58.0':
+    dependencies:
+      playwright: 1.58.0
+
   '@polka/url@1.0.0-next.29': {}
 
   '@prisma/adapter-pg@6.5.0(pg@8.14.1)':
@@ -8494,18 +8523,18 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
-  '@storybook/nextjs-vite@10.1.11(@babel/core@7.28.5)(esbuild@0.25.2)(next@15.1.4(@babel/core@7.28.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(rollup@4.55.1)(storybook@10.1.11(@testing-library/dom@10.4.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.2)(vite@7.3.1(@types/node@20.17.29)(jiti@1.21.7)(yaml@2.7.1))':
+  '@storybook/nextjs-vite@10.1.11(@babel/core@7.28.5)(esbuild@0.25.2)(next@15.1.4(@babel/core@7.28.5)(@playwright/test@1.58.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(rollup@4.55.1)(storybook@10.1.11(@testing-library/dom@10.4.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.2)(vite@7.3.1(@types/node@20.17.29)(jiti@1.21.7)(yaml@2.7.1))':
     dependencies:
       '@storybook/builder-vite': 10.1.11(esbuild@0.25.2)(rollup@4.55.1)(storybook@10.1.11(@testing-library/dom@10.4.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(vite@7.3.1(@types/node@20.17.29)(jiti@1.21.7)(yaml@2.7.1))
       '@storybook/react': 10.1.11(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@10.1.11(@testing-library/dom@10.4.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.2)
       '@storybook/react-vite': 10.1.11(esbuild@0.25.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(rollup@4.55.1)(storybook@10.1.11(@testing-library/dom@10.4.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.2)(vite@7.3.1(@types/node@20.17.29)(jiti@1.21.7)(yaml@2.7.1))
-      next: 15.1.4(@babel/core@7.28.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      next: 15.1.4(@babel/core@7.28.5)(@playwright/test@1.58.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       storybook: 10.1.11(@testing-library/dom@10.4.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       styled-jsx: 5.1.6(@babel/core@7.28.5)(react@19.1.0)
       vite: 7.3.1(@types/node@20.17.29)(jiti@1.21.7)(yaml@2.7.1)
-      vite-plugin-storybook-nextjs: 3.1.8(next@15.1.4(@babel/core@7.28.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(storybook@10.1.11(@testing-library/dom@10.4.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.2)(vite@7.3.1(@types/node@20.17.29)(jiti@1.21.7)(yaml@2.7.1))
+      vite-plugin-storybook-nextjs: 3.1.8(next@15.1.4(@babel/core@7.28.5)(@playwright/test@1.58.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(storybook@10.1.11(@testing-library/dom@10.4.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.2)(vite@7.3.1(@types/node@20.17.29)(jiti@1.21.7)(yaml@2.7.1))
     optionalDependencies:
       typescript: 5.8.2
     transitivePeerDependencies:
@@ -9310,6 +9339,8 @@ snapshots:
   dom-accessibility-api@0.5.16: {}
 
   dom-accessibility-api@0.6.3: {}
+
+  dotenv@17.2.3: {}
 
   dunder-proto@1.0.1:
     dependencies:
@@ -10275,15 +10306,15 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  next-auth@5.0.0-beta.25(next@15.1.4(@babel/core@7.28.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(nodemailer@6.10.1)(react@19.1.0):
+  next-auth@5.0.0-beta.25(next@15.1.4(@babel/core@7.28.5)(@playwright/test@1.58.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(nodemailer@6.10.1)(react@19.1.0):
     dependencies:
       '@auth/core': 0.37.2(nodemailer@6.10.1)
-      next: 15.1.4(@babel/core@7.28.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      next: 15.1.4(@babel/core@7.28.5)(@playwright/test@1.58.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react: 19.1.0
     optionalDependencies:
       nodemailer: 6.10.1
 
-  next@15.1.4(@babel/core@7.28.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  next@15.1.4(@babel/core@7.28.5)(@playwright/test@1.58.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
       '@next/env': 15.1.4
       '@swc/counter': 0.1.3
@@ -10303,6 +10334,7 @@ snapshots:
       '@next/swc-linux-x64-musl': 15.1.4
       '@next/swc-win32-arm64-msvc': 15.1.4
       '@next/swc-win32-x64-msvc': 15.1.4
+      '@playwright/test': 1.58.0
       sharp: 0.33.5
     transitivePeerDependencies:
       - '@babel/core'
@@ -10485,9 +10517,17 @@ snapshots:
 
   playwright-core@1.57.0: {}
 
+  playwright-core@1.58.0: {}
+
   playwright@1.57.0:
     dependencies:
       playwright-core: 1.57.0
+    optionalDependencies:
+      fsevents: 2.3.2
+
+  playwright@1.58.0:
+    dependencies:
+      playwright-core: 1.58.0
     optionalDependencies:
       fsevents: 2.3.2
 
@@ -11280,13 +11320,13 @@ snapshots:
 
   util-deprecate@1.0.2: {}
 
-  vite-plugin-storybook-nextjs@3.1.8(next@15.1.4(@babel/core@7.28.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(storybook@10.1.11(@testing-library/dom@10.4.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.2)(vite@7.3.1(@types/node@20.17.29)(jiti@1.21.7)(yaml@2.7.1)):
+  vite-plugin-storybook-nextjs@3.1.8(next@15.1.4(@babel/core@7.28.5)(@playwright/test@1.58.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(storybook@10.1.11(@testing-library/dom@10.4.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.8.2)(vite@7.3.1(@types/node@20.17.29)(jiti@1.21.7)(yaml@2.7.1)):
     dependencies:
       '@next/env': 16.0.0
       image-size: 2.0.2
       magic-string: 0.30.21
       module-alias: 2.2.3
-      next: 15.1.4(@babel/core@7.28.5)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      next: 15.1.4(@babel/core@7.28.5)(@playwright/test@1.58.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       storybook: 10.1.11(@testing-library/dom@10.4.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       ts-dedent: 2.2.0
       vite: 7.3.1(@types/node@20.17.29)(jiti@1.21.7)(yaml@2.7.1)
