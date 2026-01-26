@@ -3,7 +3,7 @@ import { test, expect, } from "@playwright/test";
 
 test.setTimeout(180000);
 
-test("Navigation de la page d’accueil vers la page de login", async ({
+test("Connexion + création d'une mensualité", async ({
   page,
 }) => {
   const date = Date.now();
@@ -77,5 +77,31 @@ console.log(' ✅ Champ mot de passe (sign-in) rempli');
 console.log('➡️ Click sur le bouton Se connecter');
 await page.getByRole('button', { name: 'Se connecter', exact: true }).click();
 console.log(' ✅ Bouton Se connecter cliqué');
+
+await expect(page).toHaveURL(/\/dashboard$/);
+
+console.log('➡️ Click sur le bouton "Nouvelle mensualité"');
+await page.getByRole('button', { name: /Nouvelle mensualité/i }).click();
+console.log(' ✅ Bouton "Nouvelle mensualité" cliqué');
+
+console.log('➡️ Remplissage du champ Nom');
+await page.getByLabel('Nom').fill('Netflix');
+console.log(' ✅ Champ Nom rempli');
+
+console.log('➡️ Remplissage du champ Prix');
+await page.getByLabel('Prix').fill('15.99');
+console.log(' ✅ Champ Prix rempli');
+
+console.log('➡️ Ouverture du select Catégorie');
+await page.getByRole('combobox').click();
+console.log(' ✅ Select Catégorie ouvert');
+
+console.log('➡️ Sélection de la catégorie "Logement"');
+await page.getByLabel('Logement').getByText('Logement').click();
+console.log(' ✅ Catégorie "Logement" sélectionnée');
+
+console.log('➡️ Click sur le bouton "Ajouter"');
+await page.getByRole('button', { name: 'Ajouter', exact: true }).click();
+console.log(' ✅ Bouton "Ajouter" cliqué et mensualité envoyée');
 
 });

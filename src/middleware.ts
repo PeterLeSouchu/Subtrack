@@ -4,8 +4,14 @@ import type { NextRequest } from "next/server";
 const publicRoutes = ["/", "/sign-in", "/sign-up", "/legal-notices", "/cgu"];
 
 function isAuthenticated(req: NextRequest) {
-  const secureToken = req.cookies.get("__Secure-authjs.session-token");
-  return Boolean(secureToken?.value);
+
+  const cookieName =
+  process.env.NODE_ENV === "development"
+    ? "authjs.session-token"
+    : "__Secure-authjs.session-token ";
+
+  const token = req.cookies.get(cookieName);
+  return Boolean(token?.value);
 }
 
 export default function middleware(req: NextRequest) {
