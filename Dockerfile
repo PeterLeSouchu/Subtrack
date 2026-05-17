@@ -10,6 +10,11 @@ RUN npx prisma generate
 
 COPY . .
 
+RUN npm run build
+
+COPY docker-entrypoint.sh ./
+RUN chmod +x docker-entrypoint.sh
+
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+CMD ["./docker-entrypoint.sh"]
