@@ -23,8 +23,10 @@ services:
       - "3000:3000"
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/subtrack
+      APP_ENV: local
     env_file:
       - .env
+      - .env.local
     depends_on:
       db:
         condition: service_healthy
