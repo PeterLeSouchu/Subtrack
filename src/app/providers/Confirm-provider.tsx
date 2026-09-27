@@ -2,6 +2,7 @@
 
 import { Button } from '@/src/components/ui/button';
 import { AnimatePresence, motion } from 'framer-motion';
+import { AlertTriangle } from 'lucide-react';
 import {
   PropsWithChildren,
   createContext,
@@ -66,7 +67,7 @@ export function ConfirmDialogWithContext() {
     <AnimatePresence>
       {open && (
         <motion.div
-          className='fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4 backdrop-blur-[2px]'
+          className='fixed inset-0 z-50 flex items-center justify-center bg-ink/30 p-4 backdrop-blur-sm'
           onClick={onCancel}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -77,7 +78,7 @@ export function ConfirmDialogWithContext() {
           <motion.div
             role='alertdialog'
             aria-modal='true'
-            className='relative w-full max-w-md rounded-2xl border bg-white p-6 shadow-pop'
+            className='relative w-full max-w-md rounded-3xl bg-white p-6 shadow-float ring-1 ring-ink/5 md:p-7'
             onClick={(e) => e.stopPropagation()}
             initial={{ scale: 0.96, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -85,7 +86,16 @@ export function ConfirmDialogWithContext() {
             transition={{ duration: 0.2 }}
             key='modal-content'
           >
-            <p className='mb-6 text-base text-stattext'>
+            <span
+              className={`flex h-11 w-11 items-center justify-center rounded-2xl ring-1 ring-inset ${
+                props?.confirmBtn === 'Supprimer'
+                  ? 'bg-red-50 text-red-600 ring-red-100'
+                  : 'bg-brand-50 text-brand-600 ring-brand-100'
+              }`}
+            >
+              <AlertTriangle className='h-5 w-5' />
+            </span>
+            <p className='mb-6 mt-4 text-base text-stattext'>
               {props?.text}
 
               <span className='font-semibold text-ink'> {props?.title}</span>

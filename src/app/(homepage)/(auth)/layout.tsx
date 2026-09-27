@@ -1,31 +1,23 @@
 import Link from "next/link";
-import { ArrowLeft, TrendingUp } from "lucide-react";
+import { ArrowLeft, Wallet } from "lucide-react";
 import { Logo } from "../components/Site-nav";
-import { FloatingLimit, FloatingRenewal } from "../components/Product-mockup";
+import { FloatingLimitAlert, FloatingToast } from "../components/Product-mockup";
 
+// Replica of the "Montant total" stat card from the dashboard.
 function TotalCard() {
   return (
-    <div className="w-72 rounded-2xl bg-white p-5 shadow-float ring-1 ring-ink/5">
-      <div className="flex items-center justify-between">
-        <p className="text-[13px] font-medium text-stattext">Total du mois</p>
-        <span className="flex items-center gap-1 rounded-full bg-brand-50 px-2 py-0.5 text-[11px] font-semibold text-brand-700">
-          <TrendingUp className="h-3 w-3" /> 2,4 %
+    <div className="relative isolate w-72 overflow-hidden rounded-2xl bg-gradient-to-br from-brand-600 to-brand-800 p-5 text-white shadow-float ring-1 ring-white/10">
+      <span className="absolute -right-10 -top-10 -z-10 h-32 w-32 rounded-full bg-white/10" />
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-sm font-medium text-brand-100">Montant total</p>
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/15 ring-1 ring-inset ring-white/20">
+          <Wallet className="h-4 w-4" />
         </span>
       </div>
-      <p className="mt-1 text-3xl font-semibold tracking-tight text-ink">
-        1 228,89 €
+      <p className="mt-4 text-[1.75rem] font-semibold leading-none tracking-[-0.03em]">
+        1198.99 €
       </p>
-      <div className="mt-4 flex h-14 items-end gap-1">
-        {[48, 55, 52, 60, 58, 66, 62, 70, 68, 74, 80, 86].map((h, i, a) => (
-          <span
-            key={i}
-            className={`flex-1 rounded-[3px] ${
-              i === a.length - 1 ? "bg-brand-600" : "bg-brand-100"
-            }`}
-            style={{ height: `${h}%` }}
-          />
-        ))}
-      </div>
+      <p className="mt-2 text-xs text-brand-100">Ce mois-ci</p>
     </div>
   );
 }
@@ -75,15 +67,15 @@ export default function AuthHomePageLayout({
           </p>
         </div>
 
-        <div className="relative mx-auto h-[290px] w-full max-w-md" aria-hidden="true">
+        <div className="relative mx-auto h-[360px] w-full max-w-md" aria-hidden="true">
           <div className="absolute left-0 top-0 -rotate-2">
             <TotalCard />
           </div>
           <div className="absolute right-0 top-[120px] rotate-2">
-            <FloatingLimit />
+            <FloatingLimitAlert />
           </div>
-          <div className="absolute bottom-0 left-10 -rotate-1">
-            <FloatingRenewal />
+          <div className="absolute bottom-0 left-4 -rotate-1">
+            <FloatingToast />
           </div>
         </div>
       </section>

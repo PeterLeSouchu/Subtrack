@@ -1,10 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Switch } from '@/src/components/ui/switch';
-import { Label } from '@/src/components/ui/label';
 import { useGetCategory } from '../../dashboard.service';
 import Spinner from '@/src/components/Spinner';
+import { ViewToggle } from '../../components/View-toggle';
 import { StatsHeader } from '../../components/Stats-header';
 import { ChartDesktop, ChartMobile } from '../../components/Charts';
 import { TableMensuality } from '../../components/Tables';
@@ -63,21 +62,28 @@ export default function HistoryDetail() {
     historyMensualities?.mensualities.length === 0
   ) {
     return (
-      <div className='mx-auto flex h-full max-w-md items-center justify-center p-6 text-center'>
+      <div className='mx-auto flex h-full max-w-md flex-col items-center justify-center gap-4 p-6 text-center'>
         <p className='text-stattext'>
           Il semblerait qu&apos;il n&apos;y ait pas d&apos;historique pour cette
           date là !
         </p>
+        <Link
+          href='/dashboard/history'
+          className='inline-flex h-9 items-center gap-1.5 rounded-lg bg-white px-3 text-sm font-medium text-ink shadow-soft ring-1 ring-ink/5 transition-colors hover:text-brand-700'
+        >
+          <ArrowLeft className='h-4 w-4' />
+          Retour à l&apos;historique
+        </Link>
       </div>
     );
   }
 
   return (
-    <div className='mx-auto flex w-full max-w-[90rem] flex-col gap-6 p-4 md:p-6 xl:p-8'>
+    <div className='mx-auto flex w-full max-w-[90rem] flex-col gap-5 p-4 md:gap-6 md:p-6 xl:p-10'>
       <div>
         <Link
           href='/dashboard/history'
-          className='mb-3 inline-flex items-center gap-1 text-sm font-medium text-stattext transition-colors hover:text-brand-700'
+          className='mb-4 inline-flex h-8 items-center gap-1.5 rounded-lg bg-white px-3 text-sm font-medium text-stattext shadow-soft ring-1 ring-ink/5 transition-colors hover:text-brand-700'
         >
           <ArrowLeft className='h-4 w-4' />
           Historique
@@ -88,13 +94,7 @@ export default function HistoryDetail() {
         />
       </div>
       <StatsHeader statsData={historyStats?.stats} isHistory={true} />
-      <div className='flex items-center gap-3 xl:hidden'>
-        <Switch
-          onCheckedChange={() => setShowGraphic((value) => !value)}
-          id='airplane-mode'
-        />
-        <Label htmlFor='airplane-mode'>Voir graphique</Label>
-      </div>
+      <ViewToggle showGraphic={showGraphic} setShowGraphic={setShowGraphic} />
       <div className='flex flex-col gap-6 xl:flex-row xl:items-start'>
         <TableMensuality
           mensualitiesData={filteredMensualities}

@@ -90,7 +90,7 @@ export default function ModalCreateLimit({
         {}
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
           {errorLimit && (
-            <div className='flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-medium text-red-700'>
+            <div className='flex items-start gap-2 rounded-xl bg-red-50 p-3 text-sm font-medium text-red-700 ring-1 ring-inset ring-red-100'>
               <AlertIcon width='20' height='20' className='mt-0.5 shrink-0' />
               <p>{errorLimit}</p>
             </div>
@@ -117,7 +117,7 @@ export default function ModalCreateLimit({
               }}
             />
             {errors.price && (
-              <p className='text-sm font-medium text-destructive'>{errors.price.message}</p>
+              <p className='mt-1.5 text-sm font-medium text-destructive'>{errors.price.message}</p>
             )}
           </div>
           <Controller
@@ -160,7 +160,7 @@ export default function ModalCreateLimit({
                   </SelectContent>
                 </Select>
                 {errors.category && (
-                  <p className='text-sm font-medium text-destructive'>
+                  <p className='mt-1.5 text-sm font-medium text-destructive'>
                     {errors.category.message}
                   </p>
                 )}
@@ -174,7 +174,6 @@ export default function ModalCreateLimit({
             </Button>
             <Button
               disabled={isPending || !isValid}
-              className='bg-brand-600 text-white transition hover:bg-brand-700'
               type='submit'
             >
               {isPending ? <Spinner color='border-white' /> : 'Ajouter'}

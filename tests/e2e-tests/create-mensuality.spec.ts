@@ -81,7 +81,7 @@ console.log(' ✅ Bouton Se connecter cliqué');
 await expect(page).toHaveURL(/\/dashboard$/);
 
 console.log('➡️ Click sur le bouton "Nouvelle mensualité"');
-await page.getByRole('button', { name: /Nouvelle mensualité/i }).click();
+await page.getByRole('button', { name: /Nouvelle mensualité/i }).first().click();
 console.log(' ✅ Bouton "Nouvelle mensualité" cliqué');
 
 console.log('➡️ Remplissage du champ Nom');

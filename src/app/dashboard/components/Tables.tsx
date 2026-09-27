@@ -1,6 +1,6 @@
 import { CategoryType } from "@/src/types/category";
 import { MensualityGetType } from "@/src/types/mensuality";
-import { EditIcon, SearchIcon, TrashIcon } from "lucide-react";
+import { PencilLine, Plus, SearchIcon, Trash2 } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import {
   Select,
@@ -18,8 +18,8 @@ import {
   TableBody,
   TableCell,
 } from "@/src/components/ui/table";
-import { AddIcon } from "@/src/components/icons";
-import { CategoryChip } from "./Category-chip";
+import { Button } from "@/src/components/ui/button";
+import { CategoryChip, CategoryIcon } from "./Category-chip";
 import { motion } from "framer-motion";
 
 export function TableMensuality({
@@ -50,9 +50,9 @@ export function TableMensuality({
 
   return (
     <section
-      className={`min-w-0 flex-1 ${showGraphic ? 'hidden' : 'block'} xl:block`}
+      className={`min-w-0 flex-1 ${showGraphic ? "hidden" : "block"} xl:block`}
     >
-      <div className='overflow-hidden rounded-2xl border border-line bg-white shadow-card'>
+      <div className="overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-ink/5">
         <NavBar
           setOpenCreateModal={setOpenCreateModal}
           categoriesData={categoriesData}
@@ -62,129 +62,184 @@ export function TableMensuality({
           isDashboard={isDashboard}
         />
 
-        <Table className='hidden w-full md:table'>
+        <Table className="hidden w-full md:table">
           <TableHeader>
-            <TableRow className='hover:bg-transparent'>
-              <TableHead className='px-5'>Catégorie</TableHead>
-              <TableHead className='px-5'>Nom</TableHead>
-              <TableHead className='px-5 text-right'>Prix</TableHead>
-              {showActions && <TableHead className='w-24 px-5'></TableHead>}
+            <TableRow className="border-line bg-slate-50/70 hover:bg-slate-50/70">
+              <TableHead className="h-10 px-5 text-xs font-medium text-stattext">
+                Mensualité
+              </TableHead>
+              <TableHead className="h-10 px-5 text-xs font-medium text-stattext">
+                Catégorie
+              </TableHead>
+              <TableHead className="h-10 px-5 text-right text-xs font-medium text-stattext">
+                Prix
+              </TableHead>
+              {showActions && <TableHead className="h-10 w-24 px-5" />}
             </TableRow>
           </TableHeader>
           <TableBody>
             {hasData ? (
               mensualitiesData.map((mensuality, index) => (
-                <TableRow key={index} className='group'>
-                  <TableCell className='px-5 py-3.5'>
+                <TableRow
+                  key={index}
+                  className="group border-line hover:bg-brand-50/40"
+                >
+                  <TableCell className="px-5 py-4 font-medium text-ink">
+                    {mensuality.name}
+                  </TableCell>
+                  <TableCell className="px-5 py-4">
                     <CategoryChip
                       name={mensuality.category.name}
                       image={mensuality.category.image}
                     />
                   </TableCell>
-                  <TableCell className='px-5 py-3.5 font-semibold text-ink'>
-                    {mensuality.name}
-                  </TableCell>
-                  <TableCell className='px-5 py-3.5 text-right font-semibold tabular-nums text-ink'>
+                  <TableCell className="px-5 py-4 text-right font-semibold text-ink">
                     {mensuality.price} €
                   </TableCell>
                   {showActions && (
-                    <TableCell className='px-5 py-3.5'>
-                      <div className='flex justify-end gap-1'>
-                        <button
-                          onClick={() => editMensuality(mensuality)}
-                          aria-label={`Modifier ${mensuality.name}`}
-                          className='rounded-md p-2 text-stattext transition-colors hover:bg-brand-50 hover:text-brand-700'
-                        >
-                          <EditIcon width='16' height='16' />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(mensuality)}
-                          aria-label={`Supprimer ${mensuality.name}`}
-                          className='rounded-md p-2 text-stattext transition-colors hover:bg-red-50 hover:text-red-600'
-                        >
-                          <TrashIcon width='16' height='16' />
-                        </button>
-                      </div>
+                    <TableCell className="px-5 py-4">
+                      <RowActions
+                        name={mensuality.name}
+                        onEdit={() => editMensuality(mensuality)}
+                        onDelete={() => handleDelete(mensuality)}
+                      />
                     </TableCell>
                   )}
                 </TableRow>
               ))
             ) : (
-              <TableRow className='hover:bg-transparent'>
-                <TableCell colSpan={4} className='p-0'>
-                  <EmptyState />
+              <TableRow className="hover:bg-transparent">
+                <TableCell colSpan={4} className="p-0">
+                  <EmptyState
+                    onCreate={
+                      isDashboard && setOpenCreateModal
+                        ? () => setOpenCreateModal(true)
+                        : undefined
+                    }
+                  />
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
 
-        <div className='md:hidden'>
+        <div className="md:hidden">
           {hasData ? (
-            <ul className='divide-y divide-line'>
+            <ul className="divide-y divide-line">
               {mensualitiesData.map((mensuality, index) => (
                 <motion.li
                   initial={{ opacity: 0 }}
                   animate={{ opacity: showGraphic ? 0 : 1 }}
                   transition={{ duration: 0.3 }}
-                  className='flex items-center gap-3 px-4 py-3.5'
+                  className="flex items-center gap-3 px-4 py-3"
                   key={index}
                 >
-                  <div className='flex min-w-0 flex-1 flex-col gap-2'>
-                    <p className='truncate font-semibold text-ink'>
+                  <CategoryIcon image={mensuality.category.image} />
+                  <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                    <p className="truncate font-medium text-ink">
                       {mensuality.name}
                     </p>
-                    <CategoryChip
-                      name={mensuality.category.name}
-                      image={mensuality.category.image}
-                    />
-                  </div>
-                  <div className='flex flex-col items-end gap-1'>
-                    <p className='font-display text-lg font-semibold tabular-nums text-ink'>
-                      {mensuality.price} €
+                    <p className="truncate text-xs text-stattext">
+                      {mensuality.category.name}
                     </p>
-                    {showActions && (
-                      <div className='flex'>
-                        <button
-                          onClick={() => editMensuality(mensuality)}
-                          aria-label={`Modifier ${mensuality.name}`}
-                          className='rounded-md p-2 text-stattext transition-colors hover:bg-brand-50 hover:text-brand-700'
-                        >
-                          <EditIcon width='16' height='16' />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(mensuality)}
-                          aria-label={`Supprimer ${mensuality.name}`}
-                          className='rounded-md p-2 text-stattext transition-colors hover:bg-red-50 hover:text-red-600'
-                        >
-                          <TrashIcon width='16' height='16' />
-                        </button>
-                      </div>
-                    )}
                   </div>
+                  <p className="font-semibold text-ink">{mensuality.price} €</p>
+                  {showActions && (
+                    <RowActions
+                      name={mensuality.name}
+                      onEdit={() => editMensuality(mensuality)}
+                      onDelete={() => handleDelete(mensuality)}
+                      alwaysVisible
+                    />
+                  )}
                 </motion.li>
               ))}
             </ul>
           ) : (
-            <EmptyState />
+            <EmptyState
+              onCreate={
+                isDashboard && setOpenCreateModal
+                  ? () => setOpenCreateModal(true)
+                  : undefined
+              }
+            />
           )}
         </div>
+
+        {hasData && (
+          <div className="border-t border-line bg-slate-50/50 px-5 py-3 text-xs text-stattext">
+            {mensualitiesData.length}{" "}
+            {mensualitiesData.length > 1 ? "mensualités" : "mensualité"}
+          </div>
+        )}
       </div>
     </section>
   );
 }
 
-function EmptyState() {
+function RowActions({
+  name,
+  onEdit,
+  onDelete,
+  alwaysVisible = false,
+}: {
+  name: string;
+  onEdit: () => void;
+  onDelete: () => void;
+  alwaysVisible?: boolean;
+}) {
   return (
-    <div className='flex flex-col items-center gap-3 px-4 py-14 text-center'>
-      <Image
-        width={200}
-        height={200}
-        src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp'
-        alt=''
-        className='w-24'
-      />
-      <p className='text-stattext'>Aucune mensualité.</p>
+    <div
+      className={`flex justify-end gap-0.5 transition-opacity ${
+        alwaysVisible
+          ? ""
+          : "opacity-60 group-hover:opacity-100 focus-within:opacity-100"
+      }`}
+    >
+      <button
+        onClick={onEdit}
+        aria-label={`Modifier ${name}`}
+        className="rounded-lg p-2 text-stattext transition-colors hover:bg-brand-50 hover:text-brand-700"
+      >
+        <PencilLine className="h-4 w-4" />
+      </button>
+      <button
+        onClick={onDelete}
+        aria-label={`Supprimer ${name}`}
+        className="rounded-lg p-2 text-stattext transition-colors hover:bg-red-50 hover:text-red-600"
+      >
+        <Trash2 className="h-4 w-4" />
+      </button>
+    </div>
+  );
+}
+
+function EmptyState({ onCreate }: { onCreate?: () => void }) {
+  return (
+    <div className="flex flex-col items-center gap-3 px-4 py-16 text-center">
+      <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-50 ring-1 ring-inset ring-brand-100">
+        <Image
+          width={200}
+          height={200}
+          src="https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp"
+          alt=""
+          className="w-9"
+        />
+      </span>
+      <div>
+        <p className="font-semibold text-ink">Aucune mensualité</p>
+        <p className="mt-1 text-sm text-stattext">
+          {onCreate
+            ? "Ajoutez votre première mensualité pour commencer le suivi."
+            : "Aucun résultat pour cette recherche."}
+        </p>
+      </div>
+      {onCreate && (
+        <Button onClick={onCreate} className="mt-2">
+          <Plus />
+          Nouvelle mensualité
+        </Button>
+      )}
     </div>
   );
 }
@@ -206,41 +261,41 @@ function NavBar({
   isDashboard: boolean;
 }) {
   return (
-    <div className='flex items-center gap-2 border-b border-line p-3 md:p-4'>
-      <div className='relative min-w-0 flex-1'>
-        <label htmlFor='search' className='sr-only'>
+    <div className="flex items-center gap-2 p-3 md:p-4">
+      <div className="relative min-w-0 flex-1">
+        <label htmlFor="search" className="sr-only">
           Rechercher
         </label>
         <SearchIcon
-          className='pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stattext'
-          aria-hidden='true'
+          className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stattext"
+          aria-hidden="true"
         />
         <input
-          id='search'
-          placeholder='Rechercher par nom, catégorie ou prix'
-          type='text'
-          className='h-10 w-full truncate rounded-lg border border-input bg-white pl-9 pr-3 text-sm shadow-card transition-colors placeholder:text-muted-foreground/70 hover:border-brand-300 focus-visible:border-brand-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand-500/15'
+          id="search"
+          placeholder="Rechercher par nom, catégorie ou prix"
+          type="text"
+          className="h-10 w-full truncate rounded-xl border-0 bg-slate-50 pl-9 pr-3 text-sm ring-1 ring-inset ring-ink/5 transition placeholder:text-muted-foreground/70 hover:ring-ink/10 focus-visible:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
         />
       </div>
       <Select onValueChange={setSelectedCategory}>
-        <SelectTrigger className='w-auto min-w-[7.5rem]'>
-          <SelectValue placeholder='Catégorie' />
+        <SelectTrigger className="h-10 w-auto min-w-[8rem]">
+          <SelectValue placeholder="Catégorie" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={'all'}>
+          <SelectItem value={"all"}>
             <p>Toutes</p>
           </SelectItem>
           {categoriesData?.map((category) => (
             <SelectItem key={category.id} value={category.id}>
-              <div className='flex flex-row items-center justify-start gap-2'>
+              <div className="flex flex-row items-center justify-start gap-2">
                 <Image
                   height={20}
                   width={20}
-                  className='h-5 w-5 object-contain'
+                  className="h-5 w-5 object-contain"
                   src={category.image}
-                  alt=''
+                  alt=""
                 />
                 <p>{category.name}</p>
               </div>
@@ -249,15 +304,15 @@ function NavBar({
         </SelectContent>
       </Select>
       {isDashboard && setOpenCreateModal && (
-        <button
+        <Button
           onClick={() => setOpenCreateModal(true)}
-          type='button'
-          className='flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-lg bg-brand-600 text-sm font-semibold text-white shadow-card transition-colors hover:bg-brand-700 lg:w-auto lg:px-4'
+          type="button"
+          className="w-10 shrink-0 px-0 lg:w-auto lg:px-4"
         >
-          <AddIcon width='14' height='14' />
-          <span className='hidden lg:block'>Nouvelle mensualité</span>
-          <span className='sr-only lg:hidden'>Nouvelle mensualité</span>
-        </button>
+          <Plus />
+          <span className="hidden lg:block">Nouvelle mensualité</span>
+          <span className="sr-only lg:hidden">Nouvelle mensualité</span>
+        </Button>
       )}
     </div>
   );

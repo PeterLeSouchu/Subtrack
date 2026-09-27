@@ -47,7 +47,7 @@ export function Toast() {
       {toast && (
         <motion.div
           role={toast.type === 'error' ? 'alert' : 'status'}
-          className='fixed right-4 top-4 z-[60] flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 rounded-xl border border-line bg-white p-4 text-ink shadow-pop'
+          className='fixed right-4 top-4 z-[60] flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 rounded-2xl bg-white p-4 text-ink shadow-float ring-1 ring-ink/5'
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -12 }}
@@ -57,11 +57,15 @@ export function Toast() {
           }}
         >
           {toast.type === 'success' ? (
-            <CheckCircle2 className='mt-0.5 h-5 w-5 shrink-0 text-green-600' />
+            <span className='flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 ring-1 ring-inset ring-emerald-100'>
+              <CheckCircle2 className='h-4 w-4' />
+            </span>
           ) : (
-            <AlertCircle className='mt-0.5 h-5 w-5 shrink-0 text-red-600' />
+            <span className='flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-600 ring-1 ring-inset ring-red-100'>
+              <AlertCircle className='h-4 w-4' />
+            </span>
           )}
-          <p className='flex-1 text-sm font-medium'>{toast.message}</p>
+          <p className='flex-1 self-center text-sm font-medium'>{toast.message}</p>
           <button
             onClick={closeToast}
             aria-label='Fermer la notification'

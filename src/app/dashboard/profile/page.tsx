@@ -1,17 +1,19 @@
 'use client';
 
 import { signOut } from 'next-auth/react';
-import {
-  AddIcon,
-  TrashIcon,
-  EditIcon,
-} from '@/src/components/icons';
 import { Button } from '@/src/components/ui/button';
 import { PageHeader } from '../components/Page-header';
-import { CategoryChip } from '../components/Category-chip';
+import { CategoryIcon } from '../components/Category-chip';
 import Image from 'next/image';
-import { LogOut } from 'lucide-react';
-import { LockIcon } from '@/src/components/icons';
+import {
+  KeyRound,
+  Lock,
+  LogOut,
+  PencilLine,
+  Plus,
+  ShieldAlert,
+  Trash2,
+} from 'lucide-react';
 import { useDeleteLimit, useGetProfileData } from './profile.service';
 import Spinner from '@/src/components/Spinner';
 import { useState } from 'react';
@@ -63,7 +65,7 @@ export default function Profile() {
   if (isLoading) return <Spinner />;
 
   return (
-    <div className='mx-auto flex w-full max-w-3xl flex-col gap-8 p-4 md:p-6 xl:p-8'>
+    <div className='mx-auto flex w-full max-w-6xl flex-col gap-6 p-4 md:p-6 xl:p-10'>
       <ModalCreateLimit
         open={openCreateLimitModal}
         onClose={() => setOpenCreateLimitModal(false)}
@@ -93,37 +95,153 @@ export default function Profile() {
 
       <PageHeader title='Profil' description='Votre compte et vos limites.' />
 
-      <section className='overflow-hidden rounded-2xl border border-line bg-white shadow-card'>
-        <div className='border-b border-line px-5 py-4 md:px-6'>
-          <h2 className='text-lg font-semibold text-ink'>
-            Informations personelles
-          </h2>
-        </div>
-        <div className='flex flex-col divide-y divide-line'>
-          <div className='flex flex-wrap items-center justify-between gap-3 px-5 py-4 md:px-6'>
-            <p className='text-stattext'>Connecté avec</p>
-            <p className='font-semibold text-ink'>{data?.userData.email}</p>
+      <div className='grid gap-4 md:gap-6 lg:grid-cols-5 lg:items-start'>
+          <section className='overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-ink/5 lg:col-span-2'>
+            <div className='relative isolate overflow-hidden bg-gradient-to-br from-brand-600 to-brand-800 px-5 pb-5 pt-6 md:px-6'>
+              <span className='absolute -right-10 -top-12 -z-10 h-36 w-36 rounded-full bg-white/10' />
+              <span className='flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 text-xl font-semibold uppercase text-white ring-1 ring-inset ring-white/25'>
+                {data?.userData.email?.charAt(0)}
+              </span>
+              <p className='mt-4 text-xs text-brand-100'>Connecté avec</p>
+              <p className='truncate font-semibold text-white'>
+                {data?.userData.email}
+              </p>
+            </div>
+            <div className='flex flex-col divide-y divide-line'>
+              {!data?.userData.hasAccount && (
+                <div className='flex items-center justify-between gap-3 px-5 py-4 md:px-6'>
+                  <div className='flex items-center gap-3'>
+                    <span className='flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 text-stattext ring-1 ring-inset ring-ink/5'>
+                      <KeyRound className='h-4 w-4' />
+                    </span>
+                    <p className='text-sm font-medium text-ink'>Mot de passe</p>
+                  </div>
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    onClick={() => setEditPasswordModal(true)}
+                  >
+                    Modifier
+                  </Button>
+                </div>
+              )}
+              <div className='flex items-center justify-between gap-3 px-5 py-4 md:px-6'>
+                <div className='flex items-center gap-3'>
+                  <span className='flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 text-stattext ring-1 ring-inset ring-ink/5'>
+                    <LogOut className='h-4 w-4' />
+                  </span>
+                  <p className='text-sm font-medium text-ink'>Session</p>
+                </div>
+                <Button variant='outline' size='sm' onClick={() => signOut()}>
+                  Se déconnecter
+                </Button>
+              </div>
+            </div>
+          </section>
+
+
+        <section className='overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-ink/5 lg:col-span-3 lg:row-span-2'>
+          <div className='flex items-start justify-between gap-4 px-5 py-5 md:px-6'>
+            <div>
+              <h2 className='text-base font-semibold tracking-tight text-ink'>
+                Limites budgétaires
+              </h2>
+              <p className='mt-1 max-w-md text-sm text-stattext'>
+                Plafonnez vos mensualités par catégorie. Elles s&apos;affichent
+                ici, vous pouvez les modifier ou les supprimer à tout moment.
+              </p>
+            </div>
+            <Button
+              onClick={() => setOpenCreateLimitModal(true)}
+              aria-label='Ajouter une limite'
+              className='shrink-0'
+            >
+              <Plus />
+              <span className='hidden sm:inline'>Ajouter</span>
+            </Button>
           </div>
-          {!data?.userData.hasAccount && (
-            <div className='flex flex-wrap items-center justify-between gap-3 px-5 py-4 md:px-6'>
-              <p className='text-stattext'>Mot de passe</p>
-              <Button variant='outline' onClick={() => setEditPasswordModal(true)}>
-                Modifier son mot de passe
+          {data?.userData && data?.userData.limits.length > 0 ? (
+            <ul className='divide-y divide-line border-t border-line'>
+              {data?.userData.limits.map((limit, index) => (
+                <li
+                  className='group flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-brand-50/40 md:px-6'
+                  key={index}
+                >
+                  <CategoryIcon image={limit.category.image} />
+                  <div className='min-w-0 flex-1'>
+                    <p className='truncate font-medium text-ink'>
+                      {limit.category.name}
+                    </p>
+                    <p className='hidden text-xs text-stattext sm:block'>Plafond mensuel</p>
+                  </div>
+                  <p className='flex shrink-0 items-center gap-1.5 rounded-lg bg-slate-50 px-2 py-1 font-semibold sm:px-2.5 text-ink ring-1 ring-inset ring-ink/5'>
+                    <Lock className='h-3.5 w-3.5 text-stattext' />
+                    {limit.price} €
+                  </p>
+                  <div className='flex items-center gap-0.5'>
+                    <button
+                      className='rounded-lg p-2 text-stattext transition-colors hover:bg-brand-50 hover:text-brand-700'
+                      aria-label={`Modifier la limite ${limit.category.name}`}
+                      onClick={() => handleEditLimit(limit)}
+                    >
+                      <PencilLine className='h-4 w-4' />
+                    </button>
+                    <button
+                      className='rounded-lg p-2 text-stattext transition-colors hover:bg-red-50 hover:text-red-600'
+                      aria-label={`Supprimer la limite ${limit.category.name}`}
+                      onClick={() =>
+                        handleDeleteLimit(limit.categoryId, limit.category.name)
+                      }
+                    >
+                      <Trash2 className='h-4 w-4' />
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className='flex flex-col items-center justify-center gap-3 border-t border-line px-4 py-14 text-center'>
+              <span className='flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-50 ring-1 ring-inset ring-brand-100'>
+                <Image
+                  className='w-9'
+                  src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1743004270/vmbkh2o0t1i71l9kne7y.png'
+                  alt=''
+                  width={200}
+                  height={200}
+                />
+              </span>
+              <h3 className='text-base font-semibold tracking-normal text-ink'>
+                Vous n&apos;avez pas encore de limites budgétaires.
+              </h3>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() => setOpenCreateLimitModal(true)}
+              >
+                <Plus />
+                Ajouter une limite
               </Button>
             </div>
           )}
-          <div className='flex flex-wrap items-center justify-between gap-3 px-5 py-4 md:px-6'>
-            <p className='text-stattext'>Session</p>
-            <Button variant='outline' onClick={() => signOut()}>
-              <LogOut />
-              Se déconnecter
-            </Button>
-          </div>
-          <div className='flex flex-wrap items-center justify-between gap-3 px-5 py-4 md:px-6'>
-            <p className='text-stattext'>Zone sensible</p>
+        </section>
+
+          <section className='rounded-2xl bg-white p-5 shadow-soft ring-1 ring-red-100 md:p-6 lg:col-span-2'>
+            <div className='flex items-start gap-3'>
+              <span className='flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-600 ring-1 ring-inset ring-red-100'>
+                <ShieldAlert className='h-4 w-4' />
+              </span>
+              <div>
+                <h2 className='text-base font-semibold tracking-tight text-ink'>
+                  Zone sensible
+                </h2>
+                <p className='mt-1 text-sm text-stattext'>
+                  La suppression de votre compte efface toutes vos données.
+                </p>
+              </div>
+            </div>
             <Button
               variant='outline'
-              className='border-red-200 text-red-600 hover:bg-red-50'
+              className='mt-4 w-full text-red-600 ring-red-200 hover:bg-red-50 hover:text-red-700'
               onClick={() => {
                 if (data?.userData.hasAccount) {
                   setDeleteGoogleAccountModal(true);
@@ -132,85 +250,11 @@ export default function Profile() {
                 }
               }}
             >
+              <Trash2 />
               Supprimer son compte
             </Button>
-          </div>
-        </div>
-      </section>
-
-      <section className='overflow-hidden rounded-2xl border border-line bg-white shadow-card'>
-        <div className='flex items-center justify-between gap-4 border-b border-line px-5 py-4 md:px-6'>
-          <div>
-            <h2 className='text-lg font-semibold text-ink'>
-              Limites budgétaires
-            </h2>
-            <p className='mt-1 max-w-md text-sm text-stattext'>
-              Plafonnez vos mensualités par catégorie. Elles s&apos;affichent
-              ici, vous pouvez les modifier ou les supprimer à tout moment.
-            </p>
-          </div>
-          <Button
-            onClick={() => setOpenCreateLimitModal(true)}
-            aria-label='Ajouter une limite'
-            className='shrink-0'
-          >
-            <AddIcon width='14' height='14' />
-            <span className='hidden sm:inline'>Ajouter</span>
-          </Button>
-        </div>
-        {data?.userData && data?.userData.limits.length > 0 ? (
-          <ul className='divide-y divide-line'>
-            {data?.userData.limits.map((limit, index) => (
-              <li
-                className='flex items-center gap-3 px-5 py-3.5 md:px-6'
-                key={index}
-              >
-                <div className='flex-1'>
-                  <CategoryChip
-                    name={limit.category.name}
-                    image={limit.category.image}
-                  />
-                </div>
-                <p className='flex items-center gap-2 font-display text-lg font-semibold tabular-nums text-ink'>
-                  <LockIcon width='16' height='16' className='text-stattext' />
-                  {limit.price} €
-                </p>
-                <div className='flex items-center gap-1'>
-                  <button
-                    className='rounded-md p-2 text-stattext transition-colors hover:bg-brand-50 hover:text-brand-700'
-                    aria-label={`Modifier la limite ${limit.category.name}`}
-                    onClick={() => handleEditLimit(limit)}
-                  >
-                    <EditIcon width='16' height='16' />
-                  </button>
-                  <button
-                    className='rounded-md p-2 text-stattext transition-colors hover:bg-red-50 hover:text-red-600'
-                    aria-label={`Supprimer la limite ${limit.category.name}`}
-                    onClick={() =>
-                      handleDeleteLimit(limit.categoryId, limit.category.name)
-                    }
-                  >
-                    <TrashIcon width='16' height='16' />
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className='flex flex-col items-center justify-center gap-3 px-4 py-14 text-center'>
-            <Image
-              className='w-24'
-              src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1743004270/vmbkh2o0t1i71l9kne7y.png'
-              alt=''
-              width={200}
-              height={200}
-            />
-            <h3 className='font-sans text-base font-medium tracking-normal text-ink'>
-              Vous n&apos;avez pas encore de limites budgétaires.
-            </h3>
-          </div>
-        )}
-      </section>
+          </section>
+      </div>
     </div>
   );
 }

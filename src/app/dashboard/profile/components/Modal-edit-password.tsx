@@ -98,7 +98,7 @@ export default function ModalEditPassword({
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
           {errorPassword && (
-            <div className='flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-medium text-red-700'>
+            <div className='flex items-start gap-2 rounded-xl bg-red-50 p-3 text-sm font-medium text-red-700 ring-1 ring-inset ring-red-100'>
               <AlertIcon width='20' height='20' className='mt-0.5 shrink-0' />
               <p>{errorPassword}</p>
             </div>
@@ -126,7 +126,7 @@ export default function ModalEditPassword({
               </button>
             </div>
             {errors.formerPassword?.message && (
-              <p className='text-sm font-medium text-destructive'>
+              <p className='mt-1.5 text-sm font-medium text-destructive'>
                 {errors.formerPassword.message}
               </p>
             )}
@@ -154,7 +154,7 @@ export default function ModalEditPassword({
               </button>
             </div>
             {errors.password?.message && (
-              <p className='text-sm font-medium text-destructive'>{errors.password.message}</p>
+              <p className='mt-1.5 text-sm font-medium text-destructive'>{errors.password.message}</p>
             )}
           </div>
           <div>
@@ -180,7 +180,7 @@ export default function ModalEditPassword({
               </button>
             </div>
             {errors.passwordConfirm?.message && (
-              <p className='text-sm font-medium text-destructive'>
+              <p className='mt-1.5 text-sm font-medium text-destructive'>
                 {errors.passwordConfirm.message}
               </p>
             )}
@@ -192,7 +192,6 @@ export default function ModalEditPassword({
             </Button>
             <Button
               disabled={isPending}
-              className='bg-brand-600 text-white transition hover:bg-brand-700'
               type='submit'
             >
               {isPending ? <Spinner color='border-white' /> : 'Modifier'}

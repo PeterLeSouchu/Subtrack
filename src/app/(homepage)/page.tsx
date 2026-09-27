@@ -26,10 +26,7 @@ import AccordionHomePage from './components/Accordion';
 import SiteNav from './components/Site-nav';
 import SiteFooter from './components/Site-footer';
 import FeaturesBento from './components/Features-bento';
-import ProductMockup, {
-  FloatingLimit,
-  FloatingRenewal,
-} from './components/Product-mockup';
+import ProductMockup, { FloatingToast } from './components/Product-mockup';
 
 const categories = [
   { name: 'Logement', icon: HomeIcon },
@@ -109,18 +106,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Link
-              href='/sign-up'
-              className='group inline-flex items-center gap-2 rounded-full bg-white/80 py-1 pl-1 pr-3 text-sm text-stattext shadow-soft ring-1 ring-ink/5 backdrop-blur transition hover:ring-brand-200'
-            >
-              <span className='rounded-full bg-brand-600 px-2 py-0.5 text-xs font-semibold text-white'>
-                Gratuit
-              </span>
-              Sans carte bancaire, sans publicité
-              <ArrowRight className='h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5' />
-            </Link>
-
-            <h1 className='mt-7 text-balance text-[2.6rem] font-semibold leading-[1.05] tracking-[-0.045em] sm:text-6xl md:text-7xl'>
+            <h1 className='text-balance text-[2.6rem] font-semibold leading-[1.05] tracking-[-0.045em] sm:text-6xl md:text-7xl'>
               Reprenez le contrôle de vos{' '}
               <span className='text-gradient'>mensualités</span>
             </h1>
@@ -165,7 +151,7 @@ export default function Home() {
           {/* Product */}
           <div
             ref={mockupRef}
-            className='relative mx-auto mt-16 max-w-6xl px-3 [perspective:1600px] md:mt-20 md:px-8'
+            className='relative mx-auto mt-24 max-w-6xl px-3 [perspective:1600px] md:mt-40 md:px-8'
           >
             <div className='absolute inset-x-10 top-10 -z-10 h-2/3 rounded-full bg-brand-500/25 blur-[100px]' />
             <motion.div
@@ -183,20 +169,12 @@ export default function Home() {
             </motion.div>
 
             <motion.div
-              className='absolute -bottom-7 left-16 hidden lg:block'
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.9 }}
-            >
-              <FloatingRenewal />
-            </motion.div>
-            <motion.div
               className='absolute -right-2 -top-10 hidden lg:block'
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 1.05 }}
             >
-              <FloatingLimit />
+              <FloatingToast />
             </motion.div>
           </div>
         </header>
@@ -206,16 +184,16 @@ export default function Home() {
           <p className='text-center text-sm font-medium text-stattext'>
             Toutes vos dépenses récurrentes, rangées dans 10 catégories
           </p>
-          <div className='mask-fade-x mt-6 overflow-hidden'>
-            <ul className='flex w-max animate-marquee gap-3 hover:[animation-play-state:paused] motion-reduce:animate-none'>
+          <div className='mask-fade-x mt-4 overflow-hidden py-4'>
+            <ul className='flex w-max animate-marquee gap-4 hover:[animation-play-state:paused] motion-reduce:animate-none'>
               {[...categories, ...categories].map(({ name, icon: Icon }, i) => (
                 <li
                   key={`${name}-${i}`}
                   aria-hidden={i >= categories.length}
-                  className='flex items-center gap-2 rounded-full bg-white py-2 pl-2 pr-4 text-sm font-medium text-ink shadow-soft ring-1 ring-ink/5'
+                  className='flex items-center gap-2.5 whitespace-nowrap rounded-full bg-white py-2.5 pl-2.5 pr-5 text-[0.95rem] font-medium text-ink shadow-soft ring-1 ring-ink/5'
                 >
-                  <span className='flex h-7 w-7 items-center justify-center rounded-full bg-brand-50 text-brand-600'>
-                    <Icon className='h-3.5 w-3.5' />
+                  <span className='flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-brand-600'>
+                    <Icon className='h-4 w-4' />
                   </span>
                   {name}
                 </li>

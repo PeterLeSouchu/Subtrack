@@ -83,7 +83,7 @@ export default function ModalDeleteGoogleAccount({
         </DialogHeader>
 
         {error && (
-          <div className='flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-medium text-red-700'>
+          <div className='flex items-start gap-2 rounded-xl bg-red-50 p-3 text-sm font-medium text-red-700 ring-1 ring-inset ring-red-100'>
             <AlertIcon width='20' height='20' className='mt-0.5 shrink-0' />
             <p>{error}</p>
           </div>

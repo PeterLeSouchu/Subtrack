@@ -23,9 +23,9 @@ const Chart = ({
         data: statsCategories?.map((item) => item.price) ?? [],
         backgroundColor:
           statsCategories?.map((category) => category.color) ?? [],
-        borderWidth: 3,
+        borderWidth: 2,
         borderColor: '#FFFFFF',
-        borderRadius: 4,
+        borderRadius: 6,
         hoverOffset: 4,
       },
     ],
@@ -33,7 +33,7 @@ const Chart = ({
 
   const options = {
     responsive: true,
-    cutout: '68%',
+    cutout: '74%',
     plugins: {
       legend: { display: false },
       tooltip: {
@@ -53,53 +53,77 @@ const Chart = ({
     },
   };
 
+  const total =
+    statsCategories?.reduce((sum, category) => sum + category.price, 0) ?? 0;
+
   const content =
     statsCategories && statsCategories?.length > 0 ? (
       <div className='flex w-full flex-col gap-6'>
-        <div className='mx-auto w-full max-w-[18rem]'>
+        <div className='relative mx-auto w-full max-w-[16rem]'>
           <Doughnut data={data} options={options} />
+          <div className='pointer-events-none absolute inset-0 flex flex-col items-center justify-center'>
+            <span className='text-xs text-stattext'>Total</span>
+            <span className='text-2xl font-semibold tracking-tight text-ink'>
+              {Math.round(total * 100) / 100} €
+            </span>
+          </div>
         </div>
-        <ul className='flex flex-col divide-y divide-line'>
+        <ul className='flex flex-col gap-3.5'>
           {statsCategories.map((category) => (
-            <li
-              key={category.name}
-              className='flex items-center gap-3 py-2.5 text-sm'
-            >
-              <span
-                className='h-2.5 w-2.5 shrink-0 rounded-full'
-                style={{ backgroundColor: category.color }}
-              />
-              <span className='flex-1 font-medium text-ink'>
-                {category.name}
-              </span>
-              <span className='tabular-nums text-stattext'>
-                {category.percentage}%
-              </span>
-              <span className='w-16 text-right font-semibold tabular-nums text-ink'>
-                {category.price} €
-              </span>
+            <li key={category.name} className='text-sm'>
+              <div className='flex items-center gap-2.5'>
+                <span
+                  className='h-2.5 w-2.5 shrink-0 rounded-full'
+                  style={{ backgroundColor: category.color }}
+                />
+                <span className='flex-1 font-medium text-ink'>
+                  {category.name}
+                </span>
+                <span className='text-xs text-stattext'>
+                  {category.percentage}%
+                </span>
+                <span className='w-20 text-right font-semibold text-ink'>
+                  {category.price} €
+                </span>
+              </div>
+              <div className='ml-5 mt-1.5 h-1.5 overflow-hidden rounded-full bg-slate-100'>
+                <div
+                  className='h-full rounded-full'
+                  style={{
+                    width: `${category.percentage}%`,
+                    backgroundColor: category.color,
+                  }}
+                />
+              </div>
             </li>
           ))}
         </ul>
       </div>
     ) : (
       <div className='flex flex-col items-center gap-3 py-10 text-center'>
-        <Image
-          className='w-24'
-          src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742746412/rk1ydjczqgwruz2ye3qu.png'
-          alt='icone chart'
-          width={200}
-          height={200}
-        />
-        <h2 className='max-w-56 font-sans text-base font-medium tracking-normal text-stattext'>
+        <span className='flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-50 ring-1 ring-inset ring-brand-100'>
+          <Image
+            className='w-9'
+            src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742746412/rk1ydjczqgwruz2ye3qu.png'
+            alt='icone chart'
+            width={200}
+            height={200}
+          />
+        </span>
+        <h2 className='max-w-56 text-sm font-medium tracking-normal text-stattext'>
           Renseignez une mensualité pour voir le graphique
         </h2>
       </div>
     );
 
   const card = (
-    <div className='flex h-full flex-col gap-4 rounded-2xl border border-line bg-white p-5 shadow-card'>
-      <h2 className='text-lg font-semibold text-ink'>Répartition</h2>
+    <div className='flex h-full flex-col gap-5 rounded-2xl bg-white p-5 shadow-soft ring-1 ring-ink/5'>
+      <div>
+        <h2 className='text-base font-semibold tracking-tight text-ink'>
+          Répartition
+        </h2>
+        <p className='mt-0.5 text-sm text-stattext'>Par catégorie</p>
+      </div>
       <div className='flex flex-1 items-center justify-center'>{content}</div>
     </div>
   );
@@ -114,7 +138,7 @@ const Chart = ({
       {card}
     </motion.div>
   ) : (
-    <div className='hidden w-[22rem] shrink-0 xl:sticky xl:top-8 xl:block xl:self-start'>
+    <div className='hidden w-[22rem] shrink-0 xl:sticky xl:top-6 xl:block xl:self-start'>
       {card}
     </div>
   );

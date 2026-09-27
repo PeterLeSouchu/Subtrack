@@ -5,6 +5,7 @@ import { useGetDate } from './history.service';
 import Spinner from '@/src/components/Spinner';
 import Image from 'next/image';
 import { PageHeader } from '../components/Page-header';
+import { CalendarDays, ChevronRight } from 'lucide-react';
 
 export default function History() {
   const { data, isLoading } = useGetDate();
@@ -14,7 +15,7 @@ export default function History() {
   }
 
   return (
-    <div className='mx-auto flex w-full max-w-4xl flex-col gap-8 p-4 md:p-6 xl:p-8'>
+    <div className='mx-auto flex w-full max-w-5xl flex-col gap-6 p-4 md:p-6 xl:p-10'>
       <PageHeader
         title='Historique'
         description='Retrouvez vos mensualités mois par mois.'
@@ -24,19 +25,28 @@ export default function History() {
           {data?.date.map((date, index) => (
             <section
               key={index}
-              className='flex flex-col gap-4 rounded-2xl border border-line bg-white p-5 shadow-card md:flex-row md:items-start md:gap-8 md:p-6'
+              className='rounded-2xl bg-white p-5 shadow-soft ring-1 ring-ink/5 md:p-6'
             >
-              <h2 className='w-24 shrink-0 text-2xl font-semibold text-ink'>
-                {date?.year}
-              </h2>
-              <div className='flex flex-1 flex-wrap items-center gap-2'>
+              <div className='flex items-center justify-between gap-4'>
+                <h2 className='text-2xl font-semibold tracking-[-0.03em] text-ink'>
+                  {date?.year}
+                </h2>
+                <span className='rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-stattext'>
+                  {date.month.length} mois
+                </span>
+              </div>
+              <div className='mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6'>
                 {date.month.map((m, index) => (
                   <Link
                     href={`history/details?year=${date.year}&month=${m}`}
                     key={index}
-                    className='rounded-lg border border-line bg-white px-3.5 py-2 font-medium capitalize text-ink transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700'
+                    className='group flex items-center justify-between gap-2 rounded-xl bg-slate-50 px-3.5 py-3 text-sm font-medium capitalize text-ink ring-1 ring-inset ring-ink/5 transition hover:bg-brand-50 hover:text-brand-700 hover:ring-brand-200'
                   >
-                    {m}
+                    <span className='flex items-center gap-2'>
+                      <CalendarDays className='h-4 w-4 text-stattext transition-colors group-hover:text-brand-600' />
+                      {m}
+                    </span>
+                    <ChevronRight className='h-4 w-4 text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-brand-500' />
                   </Link>
                 ))}
               </div>
@@ -44,17 +54,23 @@ export default function History() {
           ))}
         </div>
       ) : (
-        <div className='flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-input bg-white px-4 py-16 text-center'>
-          <Image
-            width={200}
-            height={200}
-            src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp'
-            alt=''
-            className='w-24'
-          />
-          <h2 className='font-sans text-lg font-medium tracking-normal text-ink'>
+        <div className='flex flex-col items-center justify-center gap-3 rounded-2xl bg-white px-4 py-16 text-center shadow-soft ring-1 ring-ink/5'>
+          <span className='flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-50 ring-1 ring-inset ring-brand-100'>
+            <Image
+              width={200}
+              height={200}
+              src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp'
+              alt=''
+              className='w-9'
+            />
+          </span>
+          <h2 className='text-base font-semibold tracking-normal text-ink'>
             Vous n&apos;avez pas encore d&apos;historique.
           </h2>
+          <p className='max-w-sm text-sm text-stattext'>
+            Chaque mois écoulé apparaîtra ici avec le détail de vos
+            mensualités.
+          </p>
         </div>
       )}
     </div>

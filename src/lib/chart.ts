@@ -5,11 +5,11 @@ export function chartFontFamily() {
 }
 
 export const chartTooltip = {
-  backgroundColor: '#0F1E3D',
+  backgroundColor: '#0E1433',
   titleColor: '#FFFFFF',
-  bodyColor: '#DCE6FA',
+  bodyColor: '#DFE4FF',
   padding: 12,
-  cornerRadius: 10,
+  cornerRadius: 12,
   boxPadding: 4,
   displayColors: true,
   usePointStyle: true,

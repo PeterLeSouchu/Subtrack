@@ -98,7 +98,7 @@ export default function ModalEditLimit({
             Modification de la catégorie :{' '}
           </DialogTitle>
           <div className='flex justify-center items-center gap-3'>
-            <span className='bg-brand-50 text-brand-700 w-fit font-semibold py-1 px-2 flex items-center gap-2 rounded-xl'>
+            <span className='flex w-fit items-center gap-2 rounded-xl bg-brand-50 px-2.5 py-1.5 font-semibold text-brand-700 ring-1 ring-inset ring-brand-100'>
               <div className='w-7 h-7 overflow-hidden'>
                 <Image
                   width={28}
@@ -116,7 +116,7 @@ export default function ModalEditLimit({
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
           {errorLimit && (
-            <div className='flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-medium text-red-700'>
+            <div className='flex items-start gap-2 rounded-xl bg-red-50 p-3 text-sm font-medium text-red-700 ring-1 ring-inset ring-red-100'>
               <AlertIcon width='20' height='20' className='mt-0.5 shrink-0' />
               <p>{errorLimit}</p>
             </div>
@@ -143,7 +143,7 @@ export default function ModalEditLimit({
               }}
             />
             {errors.price && (
-              <p className='text-sm font-medium text-destructive'>{errors.price.message}</p>
+              <p className='mt-1.5 text-sm font-medium text-destructive'>{errors.price.message}</p>
             )}
           </div>
 
@@ -154,7 +154,6 @@ export default function ModalEditLimit({
             </Button>
             <Button
               disabled={isPending}
-              className='bg-brand-600 text-white transition hover:bg-brand-700'
               type='submit'
             >
               {isPending ? <Spinner color='border-white' /> : 'Modifier'}

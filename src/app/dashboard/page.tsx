@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { Switch } from '@/src/components/ui/switch';
-import { Label } from '@/src/components/ui/label';
 
 import { useConfirm } from '../providers/Confirm-provider';
 import ModalCreateMensuality from './components/Modal-create-mensuality';
@@ -15,6 +13,7 @@ import {
 } from './dashboard.service';
 import { MensualityGetType } from '@/src/types/mensuality';
 import Spinner from '@/src/components/Spinner';
+import { ViewToggle } from './components/View-toggle';
 import { useToast } from '../providers/Toast-provider';
 import { StatsHeader } from './components/Stats-header';
 import { PageHeader } from './components/Page-header';
@@ -69,19 +68,13 @@ export default function Dashboard() {
   }
 
   return (
-    <div className='mx-auto flex w-full max-w-[90rem] flex-col gap-6 p-4 md:p-6 xl:p-8'>
+    <div className='mx-auto flex w-full max-w-[90rem] flex-col gap-5 p-4 md:gap-6 md:p-6 xl:p-10'>
       <PageHeader
         title='Tableau de bord'
-        description='Vos mensualités du mois en cours.'
+        description={`Vos mensualités de ${new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}.`}
       />
       <StatsHeader statsData={stats?.stats} />
-      <div className='flex items-center gap-3 xl:hidden'>
-        <Switch
-          onCheckedChange={() => setShowGraphic((value) => !value)}
-          id='airplane-mode'
-        />
-        <Label htmlFor='airplane-mode'>Voir graphique</Label>
-      </div>
+      <ViewToggle showGraphic={showGraphic} setShowGraphic={setShowGraphic} />
       <div className='flex flex-col gap-6 xl:flex-row xl:items-start'>
         <TableMensuality
           handleDelete={handleDelete}
