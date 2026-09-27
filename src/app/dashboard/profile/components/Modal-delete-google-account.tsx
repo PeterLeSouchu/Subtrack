@@ -77,14 +77,14 @@ export default function ModalDeleteGoogleAccount({
 
   return (
     <Dialog open={open} onOpenChange={closeModal}>
-      <DialogContent className='w-2/3'>
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Suppression du compte</DialogTitle>
         </DialogHeader>
 
         {error && (
-          <div className='font-bold text-white rounded-md bg-red-500 p-2 flex items-center gap-2'>
-            <AlertIcon width='40' height='40' />
+          <div className='flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-medium text-red-700'>
+            <AlertIcon width='20' height='20' className='mt-0.5 shrink-0' />
             <p>{error}</p>
           </div>
         )}
@@ -113,16 +113,16 @@ export default function ModalDeleteGoogleAccount({
               </InputOTP>
             </div>
             <div className='flex justify-end gap-2 mt-4'>
-              <Button disabled={isOtpVerifPending} onClick={closeModal}>
+              <Button variant='outline' disabled={isOtpVerifPending} onClick={closeModal}>
                 Annuler
               </Button>
               <Button
                 onClick={handleVerifyOtp}
-                className='bg-brand-600 text-white transition hover:bg-brand-700'
+                variant='destructive'
                 type='button'
                 disabled={isOtpVerifPending || !otp || otp.length < 6}
               >
-                {isOtpVerifPending ? <Spinner /> : 'Supprimer mon compte'}
+                {isOtpVerifPending ? <Spinner color='border-white' /> : 'Supprimer mon compte'}
               </Button>
             </div>
           </>
@@ -134,7 +134,7 @@ export default function ModalDeleteGoogleAccount({
               supprimer votre compte ?
             </DialogDescription>
             <div className='flex justify-end gap-2'>
-              <Button
+              <Button variant='outline'
                 disabled={isOtpSendPending}
                 type='button'
                 onClick={closeModal}
@@ -143,10 +143,10 @@ export default function ModalDeleteGoogleAccount({
               </Button>
               <Button
                 onClick={() => handleSentOtp()}
-                className='bg-brand-600 text-white transition hover:bg-brand-700'
+                variant='destructive'
                 type='button'
               >
-                {isOtpSendPending ? <Spinner /> : 'Continuer'}
+                {isOtpSendPending ? <Spinner color='border-white' /> : 'Continuer'}
               </Button>
             </div>
           </>

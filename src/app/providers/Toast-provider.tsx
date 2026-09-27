@@ -1,7 +1,7 @@
 'use client';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { CloseIcon } from '@/src/components/icons';
+import { AlertCircle, CheckCircle2, X } from 'lucide-react';
 
 type ToastType = {
   message: string;
@@ -46,34 +46,29 @@ export function Toast() {
     <AnimatePresence>
       {toast && (
         <motion.div
-          className={`
-            max-w-96
-            fixed top-2 right-2
-            px-5 py-2
-            rounded-lg
-            ${toast.type === 'success' ? 'bg-green-500' : 'bg-red-500'}
-            text-white font-bold
-            z-50
-            shadow-lg
-          `}
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 100 }}
+          role={toast.type === 'error' ? 'alert' : 'status'}
+          className='fixed right-4 top-4 z-[60] flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 rounded-xl border border-line bg-white p-4 text-ink shadow-pop'
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -12 }}
           transition={{
-            duration: 0.5,
-            ease: 'easeInOut',
+            duration: 0.25,
+            ease: 'easeOut',
           }}
         >
-          <div className='flex justify-between items-center'>
-            <div>{toast.message}</div>
-
-            <button
-              onClick={closeToast}
-              className='text-white font-bold  rounded-full p-1 border border-white ml-3 transition  hover:opacity-70'
-            >
-              <CloseIcon width='20' height='20' />
-            </button>
-          </div>
+          {toast.type === 'success' ? (
+            <CheckCircle2 className='mt-0.5 h-5 w-5 shrink-0 text-green-600' />
+          ) : (
+            <AlertCircle className='mt-0.5 h-5 w-5 shrink-0 text-red-600' />
+          )}
+          <p className='flex-1 text-sm font-medium'>{toast.message}</p>
+          <button
+            onClick={closeToast}
+            aria-label='Fermer la notification'
+            className='rounded-md p-1 text-stattext transition-colors hover:bg-slate-100 hover:text-ink'
+          >
+            <X className='h-4 w-4' />
+          </button>
         </motion.div>
       )}
     </AnimatePresence>

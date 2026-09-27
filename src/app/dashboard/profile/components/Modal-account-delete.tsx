@@ -74,7 +74,7 @@ export default function ModalDeleteAccount({
 
   return (
     <Dialog open={open} onOpenChange={closeModal}>
-      <DialogContent className='w-2/3'>
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Supression du compte</DialogTitle>
         </DialogHeader>
@@ -84,15 +84,15 @@ export default function ModalDeleteAccount({
           Attention, cette action est irréversible.
         </DialogDescription>
         {}
-        <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+        <form onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
           {error && (
-            <div className='font-bold text-white rounded-md bg-red-500 p-2 flex items-center gap-2'>
-              <AlertIcon width='40' height='40' />
+            <div className='flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-medium text-red-700'>
+              <AlertIcon width='20' height='20' className='mt-0.5 shrink-0' />
               <p>{error}</p>
             </div>
           )}
           <div>
-            <Label htmlFor='password'>Mot de passe</Label>
+            <Label htmlFor='password' className='mb-1.5 block'>Mot de passe</Label>
             <div className='relative'>
               <Input
                 disabled={isPending}
@@ -103,7 +103,7 @@ export default function ModalDeleteAccount({
               />
               <button
                 type='button'
-                className='absolute right-2 top-2'
+                className='absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground' aria-label='Afficher ou masquer le mot de passe'
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
@@ -114,21 +114,21 @@ export default function ModalDeleteAccount({
               </button>
             </div>
             {errors.password?.message && (
-              <p className='text-red-500 text-sm'>{errors.password.message}</p>
+              <p className='text-sm font-medium text-destructive'>{errors.password.message}</p>
             )}
           </div>
 
           <div className='flex justify-end gap-2'>
             {' '}
-            <Button disabled={isPending} type='button' onClick={closeModal}>
+            <Button variant='outline' disabled={isPending} type='button' onClick={closeModal}>
               Annuler
             </Button>
             <Button
               disabled={isPending}
-              className='bg-brand-600 text-white transition hover:bg-brand-700'
+              variant='destructive'
               type='submit'
             >
-              {isPending ? <Spinner /> : 'Supprimer mon compte'}
+              {isPending ? <Spinner color='border-white' /> : 'Supprimer mon compte'}
             </Button>
           </div>
         </form>

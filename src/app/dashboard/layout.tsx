@@ -1,18 +1,20 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { signOut } from 'next-auth/react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  DashboardIcon,
-  BookIcon,
-  StonkIcon,
-  ProfileIcon,
-  MenuMobileIcon,
-  CloseIcon,
-} from '@/src/components/icons';
+  BarChart3,
+  History,
+  LayoutDashboard as DashboardNavIcon,
+  LogOut,
+  Menu,
+  User,
+  X,
+} from 'lucide-react';
 import { ConfirmProvider } from '../providers/Confirm-provider';
 import { ToastProvider } from '../providers/Toast-provider';
 
@@ -20,147 +22,193 @@ const menuItems = [
   {
     name: 'Dashboard',
     path: '/dashboard',
-    icon: DashboardIcon,
+    icon: DashboardNavIcon,
   },
   {
     name: 'Historique',
     path: '/dashboard/history',
-    icon: BookIcon,
+    icon: History,
   },
   {
     name: 'Bilan',
     path: '/dashboard/result',
-    icon: StonkIcon,
+    icon: BarChart3,
   },
   {
     name: 'Profil',
     path: '/dashboard/profile',
-    icon: ProfileIcon,
+    icon: User,
   },
 ];
+
+function isItemActive(pathName: string, path: string) {
+  if (path === '/dashboard') return pathName === path;
+  return pathName === path || pathName.startsWith(`${path}/`);
+}
 
 export default function LayoutDashboard({ children }: { children: ReactNode }) {
   return (
     <ToastProvider>
       <ConfirmProvider>
-        <div className='w-full overflow-hidden flex flex-col h-[100dvh]  bg-dashboardbg'>
-          <NavBar />
-          <main className='flex-1 h-full overflow-y-scroll'>{children}</main>
+        <div className='flex h-[100dvh] w-full overflow-hidden bg-dashboardbg'>
+          <Sidebar />
+          <div className='flex min-w-0 flex-1 flex-col'>
+            <MobileBar />
+            <main className='flex-1 overflow-y-auto'>{children}</main>
+          </div>
         </div>
       </ConfirmProvider>
     </ToastProvider>
   );
 }
 
-function NavBar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+function Brand() {
+  return (
+    <Link href='/dashboard' className='flex items-center gap-2.5'>
+      <Image
+        src='/logo.png'
+        className='h-9 w-9'
+        width={100}
+        height={100}
+        alt=''
+      />
+      <span className='font-display text-xl font-semibold tracking-tight text-ink'>
+        Subtrack
+      </span>
+    </Link>
+  );
+}
 
+function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
   const pathName = usePathname();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  return (
+    <ul className='flex flex-col gap-1'>
+      {menuItems.map((item) => {
+        const Icon = item.icon;
+        const isActive = isItemActive(pathName, item.path);
 
-  function displayMobilePageName(pathName: string) {
-    const currentItem = menuItems.find((item) => item.path === pathName);
-    return currentItem ? currentItem.name : '';
-  }
+        return (
+          <li key={item.path}>
+            <Link
+              href={item.path}
+              onClick={onNavigate}
+              aria-current={isActive ? 'page' : undefined}
+              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-[0.95rem] font-medium transition-colors ${
+                isActive
+                  ? 'bg-brand-50 text-brand-700'
+                  : 'text-stattext hover:bg-slate-100 hover:text-ink'
+              }`}
+            >
+              <Icon
+                className={`h-[18px] w-[18px] ${
+                  isActive ? 'text-brand-600' : ''
+                }`}
+                strokeWidth={2}
+              />
+              {item.name}
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function Sidebar() {
+  return (
+    <aside className='hidden w-60 shrink-0 flex-col justify-between border-r border-line bg-white px-4 py-6 lg:flex'>
+      <div className='flex flex-col gap-8'>
+        <div className='px-2'>
+          <Brand />
+        </div>
+        <nav aria-label='Navigation principale'>
+          <NavLinks />
+        </nav>
+      </div>
+      <button
+        type='button'
+        onClick={() => signOut()}
+        className='flex items-center gap-3 rounded-lg px-3 py-2.5 text-[0.95rem] font-medium text-stattext transition-colors hover:bg-slate-100 hover:text-ink'
+      >
+        <LogOut className='h-[18px] w-[18px]' />
+        Se déconnecter
+      </button>
+    </aside>
+  );
+}
+
+function MobileBar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathName = usePathname();
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathName]);
+
+  const currentItem = menuItems.find((item) =>
+    isItemActive(pathName, item.path)
+  );
 
   return (
-    <header className='w-full p-3'>
-      <nav className='w-full flex items-center rounded-xl bg-gradient-to-r from-brand-600 via-brand-500 to-brand-700 text-white font-semibold justify-between lg:justify-center px-4 relative shadow-md'>
-        <Image
-          src='/logowhite.png'
-          className='w-10'
-          width={100}
-          height={100}
-          alt='logo'
-        />
+    <header className='flex items-center justify-between border-b border-line bg-white px-4 py-3 lg:hidden'>
+      <Brand />
+      <h2 className='sr-only'>{currentItem?.name}</h2>
+      <button
+        type='button'
+        onClick={() => setIsMenuOpen(true)}
+        aria-label='Ouvrir le menu'
+        className='rounded-lg p-2 text-ink transition-colors hover:bg-slate-100'
+      >
+        <Menu className='h-6 w-6' />
+      </button>
 
-        <ul className='hidden w-full justify-center gap-20 relative lg:flex'>
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            const isActive =
-              item.name === 'Historique'
-                ? pathName === item.path || pathName.startsWith(`${item.path}/`)
-                : pathName === item.path;
-
-            return (
-              <li key={item.path} className='relative text-lg'>
-                <Link
-                  className={`flex justify-center items-center gap-1 px-4 py-1 rounded-xl transition-all ${
-                    isActive
-                      ? 'bg-white text-brand-700'
-                      : 'hover:bg-white/15 text-white'
-                  }`}
-                  href={item.path}
-                >
-                  <Icon
-                    width={item.name === 'Dashboard' ? '15' : '18'}
-                    height={item.name === 'Dashboard' ? '15' : '18'}
-                    className={isActive ? 'text-brand-600' : 'text-white'}
-                  />
-                  {item.name}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-
-        <h1 className='font-bold text-2xl lg:hidden text-white'>
-          {displayMobilePageName(pathName)}
-        </h1>
-
-        <button type='button' onClick={toggleMenu}>
-          <MenuMobileIcon className='lg:hidden block' width='40' height='40' />
-        </button>
-
+      <AnimatePresence>
         {isMenuOpen && (
-          <div
-            className='fixed inset-0 bg-black bg-opacity-50 z-20'
-            onClick={toggleMenu}
-          ></div>
-        )}
-
-        <motion.div
-          className={`fixed lg:hidden top-0 flex flex-col gap-10 rounded-l ${
-            isMenuOpen ? 'right-0' : '-right-full'
-          } w-3/5 h-full min-w-48 bg-gradient-to-b from-brand-600 to-brand-800 shadow-lg z-30`}
-          initial={{ right: '-100%' }}
-          animate={{ right: isMenuOpen ? '0' : '-100%' }}
-          exit={{ right: '-100%' }}
-          transition={{ duration: 0.4, ease: 'easeInOut' }}
-        >
-          <div className='flex p-5 justify-end w-full'>
-            <button onClick={toggleMenu}>
-              <CloseIcon width='22' height='22' />
-            </button>
-          </div>
-          <ul className='flex flex-col gap-14 font-bold items-center'>
-            {menuItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = pathName === item.path;
-
-              return (
-                <li key={item.path} className='text-xl'>
-                  <Link
-                    href={item.path}
-                    onClick={toggleMenu}
-                    className='flex items-center gap-2 text-white hover:text-brand-200'
+          <>
+            <motion.div
+              className='fixed inset-0 z-20 bg-ink/40 backdrop-blur-[2px]'
+              onClick={() => setIsMenuOpen(false)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            />
+            <motion.div
+              className='fixed right-0 top-0 z-30 flex h-full w-4/5 max-w-xs flex-col justify-between bg-white p-5 shadow-pop'
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+            >
+              <div className='flex flex-col gap-8'>
+                <div className='flex items-center justify-between'>
+                  <Brand />
+                  <button
+                    type='button'
+                    onClick={() => setIsMenuOpen(false)}
+                    aria-label='Fermer le menu'
+                    className='rounded-lg p-2 text-ink transition-colors hover:bg-slate-100'
                   >
-                    <Icon
-                      width='22'
-                      height='22'
-                      className={isActive ? 'text-brand-200' : 'text-white'}
-                    />
-                    {item.name}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </motion.div>
-      </nav>
+                    <X className='h-5 w-5' />
+                  </button>
+                </div>
+                <nav aria-label='Navigation principale'>
+                  <NavLinks onNavigate={() => setIsMenuOpen(false)} />
+                </nav>
+              </div>
+              <button
+                type='button'
+                onClick={() => signOut()}
+                className='flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium text-stattext transition-colors hover:bg-slate-100 hover:text-ink'
+              >
+                <LogOut className='h-[18px] w-[18px]' />
+                Se déconnecter
+              </button>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

@@ -21,8 +21,8 @@ export default function GoogleButton({
         void signIn("google", { redirectTo: "/dashboard" });
       }}
       disabled={isLoading}
-      className={`bg-white py-2 px-4 w-full rounded-full flex items-center border border-brand/20 shadow-sm mx-auto font-bold gap-3 transition ${
-        isLoading ? "opacity-60 cursor-not-allowed" : "hover:bg-brand-50"
+      className={`flex h-12 w-full items-center gap-3 rounded-xl border-0 bg-white px-4 text-sm font-semibold text-ink shadow-soft ring-1 ring-ink/10 transition-colors ${
+        isLoading ? "cursor-not-allowed opacity-60" : "hover:bg-slate-50"
       }`}
     >
       <GoogleIcon />

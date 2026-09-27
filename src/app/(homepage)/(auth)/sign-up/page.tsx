@@ -1,10 +1,8 @@
 "use client";
-import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
-import logo from "@/public/logo.png";
 import {
   Form,
   FormControl,
@@ -53,18 +51,19 @@ export default function SignUp() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-3/4 min-w-72 max-w-96 space-y-8 rounded-xl bg-white p-5 shadow-2xl drop-shadow-md"
+        className="w-full max-w-[22rem] space-y-6"
       >
-        <Image
-          src={logo}
-          width={300}
-          height={300}
-          alt="logo-subtrack"
-          className="w-14 mx-auto lg:hidden"
-        />
-        <h2 className="text-center text-2xl font-extrabold">Inscription</h2>
+        <div className="space-y-2">
+          <h2 className="text-3xl font-semibold tracking-[-0.03em] text-ink">Inscription</h2>
+          <p className="text-stattext">Créez votre compte en quelques secondes.</p>
+        </div>
         <ErrorMessage message={error} />
         <GoogleButton auth="S'inscrire" />
+        <div className="flex items-center gap-3 text-sm text-stattext">
+          <span className="h-px flex-1 bg-line" />
+          ou
+          <span className="h-px flex-1 bg-line" />
+        </div>
         <FormField
           control={form.control}
           name="email"
@@ -98,7 +97,8 @@ export default function SignUp() {
                   />
                   <button
                     type="button"
-                    className="absolute right-2 top-2"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                    aria-label="Afficher ou masquer le mot de passe"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
@@ -129,7 +129,8 @@ export default function SignUp() {
                   />
                   <button
                     type="button"
-                    className="absolute right-2 top-2"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                    aria-label="Afficher ou masquer le mot de passe"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? (
@@ -148,19 +149,19 @@ export default function SignUp() {
           <Button
             disabled={form.formState.isSubmitting}
             type="submit"
-            className="w-full bg-brand-600 text-white transition hover:bg-brand-700"
+            className="h-12 w-full text-base"
           >
             {form.formState.isSubmitting ? (
-              <Spinner color="border-black" />
+              <Spinner color="border-white" />
             ) : (
               "S'inscrire"
             )}
           </Button>
           <Link
-            className="text-center underline block my-3 lg:hover:text-icon transition"
+            className="mt-5 block text-center text-sm text-stattext [&>span]:font-semibold [&>span]:text-brand-700 hover:[&>span]:underline"
             href="/sign-in"
           >
-            Déjà inscrit ? Connectez-vous ici
+            Déjà inscrit ? <span>Se connecter</span>
           </Link>
         </div>
       </form>
