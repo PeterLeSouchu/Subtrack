@@ -103,27 +103,26 @@ export default function ModalEditMensuality({
     onClose();
   }
 
-  if (categoriesLoading) return <Spinner />;
+  if (categoriesLoading) return <Spinner color='border-white' />;
 
   return (
     <Dialog open={open} onOpenChange={closeModal}>
       <DialogContent
-        className='w-2/3'
         onOpenAutoFocus={(event) => event.preventDefault()}
         aria-describedby={undefined}
       >
         <DialogHeader>
           <DialogTitle>Nouvelle mensualité</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+        <form onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
           {errorLimit && (
-            <div className='font-bold text-white rounded-md  bg-red-500 p-2 flex items-center gap-2'>
-              <AlertIcon width='40' height='40' />
+            <div className='flex items-start gap-2 rounded-xl bg-red-50 p-3 text-sm font-medium text-red-700 ring-1 ring-inset ring-red-100'>
+              <AlertIcon width='20' height='20' className='mt-0.5 shrink-0' />
               <p>{errorLimit}</p>
             </div>
           )}
           <div>
-            <Label htmlFor='name'>Nom</Label>
+            <Label htmlFor='name' className='mb-1.5 block'>Nom</Label>
             <Input
               disabled={isPending}
               {...register('name')}
@@ -131,11 +130,11 @@ export default function ModalEditMensuality({
               id='name'
             />
             {errors.name && (
-              <p className='text-red-500 text-sm'>{errors.name.message}</p>
+              <p className='mt-1.5 text-sm font-medium text-destructive'>{errors.name.message}</p>
             )}
           </div>
           <div>
-            <Label htmlFor='price'>Prix</Label>
+            <Label htmlFor='price' className='mb-1.5 block'>Prix</Label>
             <Input
               disabled={isPending}
               {...register('price')}
@@ -156,7 +155,7 @@ export default function ModalEditMensuality({
               }}
             />
             {errors.price && (
-              <p className='text-red-500 text-sm'>{errors.price.message}</p>
+              <p className='mt-1.5 text-sm font-medium text-destructive'>{errors.price.message}</p>
             )}
           </div>
           <Controller
@@ -164,7 +163,7 @@ export default function ModalEditMensuality({
             control={control}
             render={({ field }) => (
               <div>
-                <Label htmlFor='category'>Categorie</Label>
+                <Label htmlFor='category' className='mb-1.5 block'>Categorie</Label>
                 <Select
                   disabled={isPending}
                   onValueChange={field.onChange}
@@ -199,7 +198,7 @@ export default function ModalEditMensuality({
                   </SelectContent>
                 </Select>
                 {errors.category && (
-                  <p className='text-red-500 text-sm'>
+                  <p className='mt-1.5 text-sm font-medium text-destructive'>
                     {errors.category.message}
                   </p>
                 )}
@@ -208,15 +207,14 @@ export default function ModalEditMensuality({
           />
           <div className='flex justify-end gap-2'>
             {' '}
-            <Button disabled={isPending} type='button' onClick={closeModal}>
+            <Button variant='outline' disabled={isPending} type='button' onClick={closeModal}>
               Annuler
             </Button>
             <Button
               disabled={isPending || !isValid}
-              className='bg-brand-600 text-white transition hover:bg-brand-700'
               type='submit'
             >
-              {isPending ? <Spinner /> : 'Modifier'}
+              {isPending ? <Spinner color='border-white' /> : 'Modifier'}
             </Button>
           </div>
         </form>

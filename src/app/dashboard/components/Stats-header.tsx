@@ -1,5 +1,6 @@
-import { UpIcon, DownIcon } from '@/src/components/icons';
+import { Hash, Receipt, TrendingDown, TrendingUp, Wallet } from 'lucide-react';
 import { StatsType } from '@/src/types/stats';
+import { StatCard } from './Stat-card';
 
 export function StatsHeader({
   statsData,
@@ -15,60 +16,57 @@ export function StatsHeader({
   const benefitOrLoss = statsData?.benefitOrLoss ?? 0;
   const isPositive = benefitOrLoss > 0;
   const formattedBenefitOrLoss = `${isPositive ? '+' : ''}${benefitOrLoss}`;
+  const showDelta = !isHistory && benefitOrLoss !== 0;
 
   return (
-    <section className='flex py-3 px-3 justify-start items-center w-full overflow-x-scroll gap-3'>
-      {/* Montant total */}
-      <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20 text-nowrap'>
-        <span className='text-[#D6A514] font-black lg:text-4xl text-lg'>
-          {totalPrice} €
-        </span>
-        <h3 className='text-stattext font-bold text-left text-sm'>
-          Montant total
-        </h3>
-      </article>
-
-      {/* Nombre de mensualités */}
-      <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20 text-nowrap'>
-        <span className='text-[#2C4A7B] font-black lg:text-4xl text-lg'>
-          # {totalMensuality}
-        </span>
-        <h3 className='text-stattext font-bold text-left text-sm'>
-          Nombre de mensualités
-        </h3>
-      </article>
-
-      {/* Moyenne */}
-      <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20 text-nowrap'>
-        <span className='text-[#43669D] font-black lg:text-4xl text-lg flex gap-1 items-center'>
-          {averagePrice} €
-        </span>
-        <h3 className='text-stattext font-bold text-left text-sm'>Moyenne</h3>
-      </article>
+    <section
+      className={`grid grid-cols-2 gap-3 md:gap-4 ${
+        showDelta ? 'xl:grid-cols-4' : 'lg:grid-cols-3'
+      }`}
+    >
+      <StatCard
+        featured
+        className='col-span-2 sm:col-span-1'
+        icon={Wallet}
+        label='Montant total'
+        value={`${totalPrice} €`}
+        hint={isHistory ? 'Sur ce mois' : 'Ce mois-ci'}
+      />
+      <StatCard
+        icon={Hash}
+        label='Mensualités'
+        value={totalMensuality}
+      />
+      <StatCard
+        icon={Receipt}
+        label='Moyenne'
+        value={`${averagePrice} €`}
+        hint='Par mensualité'
+      />
 
       {/* Bénéfice/Pertes (si pas en mode historique et si différent de 0) */}
-      {!isHistory && benefitOrLoss !== 0 && (
-        <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20 w-auto text-nowrap'>
-          <span
-            className={`${
-              isPositive ? 'text-[#ca3333]' : 'text-[#17C058]'
-            } font-black lg:text-4xl text-lg flex gap-1 items-center`}
-          >
-            {isPositive ? (
-              <DownIcon
-                width='30'
-                height='30'
-                className='mr-3 text-[#ca3333]'
-              />
-            ) : (
-              <UpIcon width='30' height='30' className='mr-3 text-[#17C058]' />
-            )}
-            {formattedBenefitOrLoss} €
-          </span>
-          <h3 className='text-stattext font-bold text-left text-sm'>
-            par rapport au mois précédent
-          </h3>
-        </article>
+      {showDelta && (
+        <StatCard
+          className='col-span-2 sm:col-span-1'
+          icon={isPositive ? TrendingUp : TrendingDown}
+          label='Par rapport au mois précédent'
+          value={
+            <span className={isPositive ? 'text-red-600' : 'text-emerald-600'}>
+              {formattedBenefitOrLoss} €
+            </span>
+          }
+          hint={
+            <span
+              className={`inline-flex rounded-full px-2 py-0.5 font-medium ${
+                isPositive
+                  ? 'bg-red-50 text-red-700'
+                  : 'bg-emerald-50 text-emerald-700'
+              }`}
+            >
+              {isPositive ? 'Dépenses en hausse' : 'Dépenses en baisse'}
+            </span>
+          }
+        />
       )}
     </section>
   );

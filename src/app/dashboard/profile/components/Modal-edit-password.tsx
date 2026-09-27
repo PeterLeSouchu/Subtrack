@@ -92,19 +92,19 @@ export default function ModalEditPassword({
 
   return (
     <Dialog open={open} onOpenChange={closeModal}>
-      <DialogContent className='w-2/3'>
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Modification du mot de passe</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+        <form onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
           {errorPassword && (
-            <div className='font-bold text-white rounded-md bg-red-500 p-2 flex items-center gap-2'>
-              <AlertIcon width='40' height='40' />
+            <div className='flex items-start gap-2 rounded-xl bg-red-50 p-3 text-sm font-medium text-red-700 ring-1 ring-inset ring-red-100'>
+              <AlertIcon width='20' height='20' className='mt-0.5 shrink-0' />
               <p>{errorPassword}</p>
             </div>
           )}
           <div>
-            <Label htmlFor='formerPassword'>Mot de passe actuel</Label>
+            <Label htmlFor='formerPassword' className='mb-1.5 block'>Mot de passe actuel</Label>
             <div className='relative'>
               <Input
                 disabled={isPending}
@@ -115,7 +115,7 @@ export default function ModalEditPassword({
               />
               <button
                 type='button'
-                className='absolute right-2 top-2'
+                className='absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground' aria-label='Afficher ou masquer le mot de passe'
                 onClick={() => setShowFormerPassword(!showFormerPassword)}
               >
                 {showFormerPassword ? (
@@ -126,13 +126,13 @@ export default function ModalEditPassword({
               </button>
             </div>
             {errors.formerPassword?.message && (
-              <p className='text-red-500 text-sm'>
+              <p className='mt-1.5 text-sm font-medium text-destructive'>
                 {errors.formerPassword.message}
               </p>
             )}
           </div>
           <div>
-            <Label htmlFor='password'>Nouveau mot de passe</Label>
+            <Label htmlFor='password' className='mb-1.5 block'>Nouveau mot de passe</Label>
             <div className='relative'>
               <Input
                 disabled={isPending}
@@ -143,7 +143,7 @@ export default function ModalEditPassword({
               />
               <button
                 type='button'
-                className='absolute right-2 top-2'
+                className='absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground' aria-label='Afficher ou masquer le mot de passe'
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
@@ -154,11 +154,11 @@ export default function ModalEditPassword({
               </button>
             </div>
             {errors.password?.message && (
-              <p className='text-red-500 text-sm'>{errors.password.message}</p>
+              <p className='mt-1.5 text-sm font-medium text-destructive'>{errors.password.message}</p>
             )}
           </div>
           <div>
-            <Label htmlFor='passwordConfirm'>Confirmez le mot de passe</Label>
+            <Label htmlFor='passwordConfirm' className='mb-1.5 block'>Confirmez le mot de passe</Label>
             <div className='relative'>
               <Input
                 disabled={isPending}
@@ -169,7 +169,7 @@ export default function ModalEditPassword({
               />
               <button
                 type='button'
-                className='absolute right-2 top-2'
+                className='absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground' aria-label='Afficher ou masquer le mot de passe'
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
                 {showConfirmPassword ? (
@@ -180,22 +180,21 @@ export default function ModalEditPassword({
               </button>
             </div>
             {errors.passwordConfirm?.message && (
-              <p className='text-red-500 text-sm'>
+              <p className='mt-1.5 text-sm font-medium text-destructive'>
                 {errors.passwordConfirm.message}
               </p>
             )}
           </div>
 
           <div className='flex justify-end gap-2'>
-            <Button disabled={isPending} type='button' onClick={closeModal}>
+            <Button variant='outline' disabled={isPending} type='button' onClick={closeModal}>
               Annuler
             </Button>
             <Button
               disabled={isPending}
-              className='bg-brand-600 text-white transition hover:bg-brand-700'
               type='submit'
             >
-              {isPending ? <Spinner /> : 'Modifier'}
+              {isPending ? <Spinner color='border-white' /> : 'Modifier'}
             </Button>
           </div>
         </form>

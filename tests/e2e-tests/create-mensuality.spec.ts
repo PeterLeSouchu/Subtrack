@@ -12,11 +12,11 @@ test("Connexion + création d'une mensualité", async ({
   console.log("✅ Page d’accueil chargée");
 
   console.log("➡️ Vérification du titre principal");
-  await page.getByRole('heading', { name: 'Gardez une longueur d’avance' }).click();
+  await page.getByRole('heading', { name: 'Reprenez le contrôle de vos mensualités' }).click();
   console.log("✅ Titre affiché");
 
   console.log('➡️ Recherche du bouton (Link) "Inscription"');
-  await page.getByRole('link', { name: 'Inscription' }).click();
+  await page.getByRole('link', { name: 'Créer mon compte gratuit' }).first().click();
   console.log('✅ Bouton "Se connecter" trouvé et cliqué');
 
 
@@ -81,7 +81,7 @@ console.log(' ✅ Bouton Se connecter cliqué');
 await expect(page).toHaveURL(/\/dashboard$/);
 
 console.log('➡️ Click sur le bouton "Nouvelle mensualité"');
-await page.getByRole('button', { name: /Nouvelle mensualité/i }).click();
+await page.getByRole('button', { name: /Nouvelle mensualité/i }).first().click();
 console.log(' ✅ Bouton "Nouvelle mensualité" cliqué');
 
 console.log('➡️ Remplissage du champ Nom');

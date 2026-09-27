@@ -1,10 +1,14 @@
 export default function Spinner({ color }: { color?: string }) {
   return (
-    <div className="flex items-center w-full h-full justify-center ">
+    <div
+      role="status"
+      aria-label="Chargement"
+      className="flex items-center w-full h-full justify-center"
+    >
       <div
-        className={`w-8 h-8 border-4 border-t-transparent  ${
+        className={`w-7 h-7 border-[3px] border-t-transparent ${
           color ? color : "border-brand-500"
-        }  rounded-full animate-spin`}
+        } rounded-full animate-spin`}
       ></div>
     </div>
   );

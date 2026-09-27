@@ -22,6 +22,10 @@ import {
 import { useGetYearDate, useGetYearStats } from './result.service';
 import Spinner from '@/src/components/Spinner';
 import { useState } from 'react';
+import { PageHeader } from '../components/Page-header';
+import { StatCard } from '../components/Stat-card';
+import { chartFontFamily, chartTooltip } from '@/src/lib/chart';
+import { CalendarRange, Hash, Wallet } from 'lucide-react';
 
 ChartJS.register(
   CategoryScale,
@@ -57,29 +61,25 @@ const BarChart = ({ mensualityData }: { mensualityData: MonthlyStat[] }) => {
     }
   });
 
+  const maxPrice = Math.max(...pricePerMonth);
+
   const data = {
     labels: months,
     datasets: [
       {
         data: pricePerMonth,
-        backgroundColor: [
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 205, 86, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(255, 99, 71, 0.2)',
-          'rgba(0, 255, 0, 0.2)',
-          'rgba(255, 0, 255, 0.2)',
-          'rgba(0, 0, 255, 0.2)',
-          'rgba(255, 165, 0, 0.2)',
-        ],
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: pricePerMonth.map((price) =>
+          price === maxPrice && price > 0 ? '#2F43E0' : '#C0CAFF'
+        ),
+        hoverBackgroundColor: '#2233B8',
+        borderRadius: 8,
+        borderSkipped: false,
+        maxBarThickness: 40,
       },
     ],
   };
+
+  const fontFamily = chartFontFamily();
 
   const options = {
     responsive: true,
@@ -88,10 +88,29 @@ const BarChart = ({ mensualityData }: { mensualityData: MonthlyStat[] }) => {
       legend: {
         display: false,
       },
+      tooltip: {
+        ...chartTooltip,
+        titleFont: { family: fontFamily },
+        bodyFont: { family: fontFamily },
+        displayColors: false,
+        callbacks: {
+          label: ({ parsed }: { parsed: { y: number | null } }) =>
+            `${parsed.y ?? 0} €`,
+        },
+      },
     },
     scales: {
+      x: {
+        grid: { display: false },
+        border: { display: false },
+        ticks: { color: '#555E7D', font: { family: fontFamily } },
+      },
       y: {
+        border: { display: false },
+        grid: { color: '#EEF0F6' },
         ticks: {
+          color: '#555E7D',
+          font: { family: fontFamily },
           callback: function (value: number | string) {
             return value + ' €';
           },
@@ -120,76 +139,92 @@ export default function Bilan() {
   return (
     <>
       {yearData?.date && yearStatsData?.stats ? (
-        <div className='h-full flex-1 flex flex-col p-3 overflow-y-scroll'>
-          {' '}
-          <div className='flex    h-30   w-full overflow-x-scroll gap-3 pb-4'>
-            {' '}
-            <article className=' drop-shadow-md'>
+        <div className='mx-auto flex w-full max-w-[90rem] flex-col gap-5 p-4 md:gap-6 md:p-6 xl:p-10'>
+          <PageHeader
+            title='Bilan'
+            description="Vos dépenses mensuelles sur l'année."
+            actions={
               <Select
                 value={selectedYear || yearData?.date[0].toString()}
                 onValueChange={handleYearChange}
               >
-                <SelectTrigger className='w-full h-20 lg:text-2xl text-lg font-bold mr-2 '>
+                <SelectTrigger className='h-10 w-32 bg-white font-semibold shadow-soft'>
                   <SelectValue
                     placeholder='Année'
-                    className='text-xl'
                     defaultValue={yearData?.date[0].toString()}
                   />
                 </SelectTrigger>
                 <SelectContent>
                   {yearData?.date.map((year, index) => (
-                    <SelectItem
-                      key={index}
-                      className='lg:text-xl text-base'
-                      value={year.toString()}
-                    >
+                    <SelectItem key={index} value={year.toString()}>
                       {year}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-            </article>
-            <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20 text-nowrap'>
-              <span className='text-[#D6A514]  font-black lg:text-4xl text-lg'>
-                {yearStatsData?.stats?.totalPrice} €
-              </span>
-              <h3 className='text-stattext font-bold text-left text-sm'>
-                Total
-              </h3>
-            </article>
-            <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20 text-nowrap'>
-              <span className='text-[#2C4A7B] font-black lg:text-4xl text-lg'>
-                # {yearStatsData?.stats?.totalMensuality}
-              </span>
-              <h3 className='text-stattext font-bold text-left text-sm'>
-                Nombre de mensualités
-              </h3>
-            </article>
-            <article className='flex flex-1 flex-col bg-white drop-shadow-md rounded-lg p-3 lg:h-20 text-nowrap'>
-              <span className='text-[#43669D] font-black lg:text-4xl text-lg'>
-                {yearStatsData?.stats?.averageMonthlyPrice} € / mois
-              </span>
-              <h3 className='text-stattext font-bold text-left text-sm'>
-                Moyenne
-              </h3>
-            </article>
+            }
+          />
+          <div className='grid gap-3 sm:grid-cols-3 md:gap-4'>
+            <StatCard
+              featured
+              icon={Wallet}
+              label='Total'
+              value={`${yearStatsData?.stats?.totalPrice} €`}
+              hint={`Sur l'année ${selectedYear || yearData?.date[0]}`}
+            />
+            <StatCard
+              icon={Hash}
+              label='Nombre de mensualités'
+              value={yearStatsData?.stats?.totalMensuality}
+            />
+            <StatCard
+              icon={CalendarRange}
+              label='Moyenne'
+              value={`${yearStatsData?.stats?.averageMonthlyPrice} €`}
+              hint='Par mois'
+            />
           </div>
-          <div className='flex-1'>
-            <BarChart mensualityData={yearStatsData.stats.monthlyStats} />
+          <div className='rounded-2xl bg-white p-4 shadow-soft ring-1 ring-ink/5 md:p-6'>
+            <div className='mb-6 flex flex-wrap items-center justify-between gap-3'>
+              <div>
+                <h2 className='text-base font-semibold tracking-tight text-ink'>
+                  Dépenses par mois
+                </h2>
+                <p className='mt-0.5 text-sm text-stattext'>
+                  Le mois le plus élevé est mis en évidence.
+                </p>
+              </div>
+              <div className='flex items-center gap-4 text-xs text-stattext'>
+                <span className='flex items-center gap-1.5'>
+                  <span className='h-2.5 w-2.5 rounded-sm bg-brand-600' />
+                  Mois le plus élevé
+                </span>
+                <span className='flex items-center gap-1.5'>
+                  <span className='h-2.5 w-2.5 rounded-sm bg-brand-200' />
+                  Autres mois
+                </span>
+              </div>
+            </div>
+            <div className='h-[20rem] md:h-[24rem]'>
+              <BarChart mensualityData={yearStatsData.stats.monthlyStats} />
+            </div>
           </div>
         </div>
       ) : (
-        <div className='flex flex-col items-center justify-center h-full'>
-          <h2 className='text-xl font-semibold text-center pt-10'>
-            Vous n&apos;avez pas encore de bilan.
-          </h2>
-          <Image
-            className='w-32 mt-6'
-            src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742935563/g9dotyrgpwn7txg4hown.png'
-            alt='icone chart'
-            width={200}
-            height={200}
-          />
+        <div className='mx-auto flex max-w-5xl flex-col gap-6 p-4 md:p-6 xl:p-10'>
+          <PageHeader title='Bilan' />
+          <div className='flex flex-col items-center justify-center gap-3 rounded-2xl bg-white px-4 py-16 text-center shadow-soft ring-1 ring-ink/5'>
+            <Image
+              className='w-16'
+              src='https://res.cloudinary.com/dix2wzs7n/image/upload/v1742935563/g9dotyrgpwn7txg4hown.png'
+              alt=''
+              width={200}
+              height={200}
+            />
+            <h2 className='text-base font-semibold tracking-normal text-ink'>
+              Vous n&apos;avez pas encore de bilan.
+            </h2>
+          </div>
         </div>
       )}
     </>

@@ -1,6 +1,6 @@
 import { CategoryType } from "@/src/types/category";
 import { MensualityGetType } from "@/src/types/mensuality";
-import { EditIcon, SearchIcon, TrashIcon } from "lucide-react";
+import { PencilLine, Plus, SearchIcon, Trash2 } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import {
   Select,
@@ -18,7 +18,8 @@ import {
   TableBody,
   TableCell,
 } from "@/src/components/ui/table";
-import { AddIcon } from "@/src/components/icons";
+import { Button } from "@/src/components/ui/button";
+import { CategoryChip, CategoryIcon } from "./Category-chip";
 import { motion } from "framer-motion";
 
 export function TableMensuality({
@@ -44,13 +45,14 @@ export function TableMensuality({
   showGraphic: boolean;
   isDashboard?: boolean;
 }) {
+  const hasData = mensualitiesData && mensualitiesData.length > 0;
+  const showActions = isDashboard && editMensuality && handleDelete;
+
   return (
     <section
-      className={`flex-1 p-3 w-full ${
-        showGraphic ? "overflow-hidden hidden" : "md:overflow-hidden"
-      } block `}
+      className={`min-w-0 flex-1 ${showGraphic ? "hidden" : "block"} xl:block`}
     >
-      <div className="xl:bg-white xl:drop-shadow-md w-full h-full p-4 flex flex-col gap-4 rounded-md md:overflow-hidden overflow-y-scroll">
+      <div className="overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-ink/5">
         <NavBar
           setOpenCreateModal={setOpenCreateModal}
           categoriesData={categoriesData}
@@ -60,153 +62,185 @@ export function TableMensuality({
           isDashboard={isDashboard}
         />
 
-        <Table className="w-full rounded-lg overflow-y-scroll md:table hidden">
+        <Table className="hidden w-full md:table">
           <TableHeader>
-            <TableRow>
-              <TableHead className="text-left p-4 font-extrabold text-[#253145]">
+            <TableRow className="border-line bg-slate-50/70 hover:bg-slate-50/70">
+              <TableHead className="h-10 px-5 text-xs font-medium text-stattext">
+                Mensualité
+              </TableHead>
+              <TableHead className="h-10 px-5 text-xs font-medium text-stattext">
                 Catégorie
               </TableHead>
-              <TableHead className="text-left p-4 font-extrabold text-[#253145]">
-                Nom
-              </TableHead>
-              <TableHead className="text-left p-4 font-extrabold text-[#253145]">
+              <TableHead className="h-10 px-5 text-right text-xs font-medium text-stattext">
                 Prix
               </TableHead>
-              <TableHead className="text-left p-4 font-extrabold"></TableHead>
+              {showActions && <TableHead className="h-10 w-24 px-5" />}
             </TableRow>
           </TableHeader>
           <TableBody>
-            {mensualitiesData && mensualitiesData.length > 0 ? (
+            {hasData ? (
               mensualitiesData.map((mensuality, index) => (
-                <TableRow key={index} className="border-t p-0 border-gray-200">
-                  <TableCell className="p-4 flex items-center gap-2">
-                    <span className="bg-brand-50 text-brand-700 font-semibold py-1 px-2 flex gap-2 items-center rounded-xl">
-                      <Image
-                        width={450}
-                        height={450}
-                        className="w-7"
-                        src={mensuality.category.image}
-                        alt="Icone catégorie"
-                      />
-                      <p className="font-extrabold">
-                        {mensuality.category.name}
-                      </p>
-                    </span>
-                  </TableCell>
-                  <TableCell className="p-4 text-gray-700 font-semibold">
+                <TableRow
+                  key={index}
+                  className="group border-line hover:bg-brand-50/40"
+                >
+                  <TableCell className="px-5 py-4 font-medium text-ink">
                     {mensuality.name}
                   </TableCell>
-                  <TableCell className="p-4 text-gray-700 font-medium">
+                  <TableCell className="px-5 py-4">
+                    <CategoryChip
+                      name={mensuality.category.name}
+                      image={mensuality.category.image}
+                    />
+                  </TableCell>
+                  <TableCell className="px-5 py-4 text-right font-semibold text-ink">
                     {mensuality.price} €
                   </TableCell>
-                  {isDashboard && editMensuality && handleDelete && (
-                    <TableCell className="p-4 flex justify-center gap-3">
-                      <button
-                        className="hover:bg-red-200 transition p-1 rounded-full"
-                        onClick={() => handleDelete(mensuality)}
-                      >
-                        <TrashIcon width="18" />
-                      </button>
-                      <button
-                        onClick={() => editMensuality(mensuality)}
-                        className="hover:bg-amber-100 transition p-1 rounded-full"
-                      >
-                        <EditIcon width="16" />
-                      </button>
+                  {showActions && (
+                    <TableCell className="px-5 py-4">
+                      <RowActions
+                        name={mensuality.name}
+                        onEdit={() => editMensuality(mensuality)}
+                        onDelete={() => handleDelete(mensuality)}
+                      />
                     </TableCell>
                   )}
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={4}
-                  className="text-center p-4 text-gray-500"
-                >
-                  Aucune mensualité.
-                  <div className="flex justify-center">
-                    <Image
-                      width={200}
-                      height={200}
-                      src="https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp"
-                      alt="empty file"
-                      className="w-32 "
-                    />
-                  </div>
+              <TableRow className="hover:bg-transparent">
+                <TableCell colSpan={4} className="p-0">
+                  <EmptyState
+                    onCreate={
+                      isDashboard && setOpenCreateModal
+                        ? () => setOpenCreateModal(true)
+                        : undefined
+                    }
+                  />
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
 
-        {mensualitiesData && mensualitiesData.length > 0 ? (
-          mensualitiesData?.map((mensuality, index) => (
-            <motion.article
-              initial={{ opacity: 0 }}
-              animate={{ opacity: showGraphic ? 0 : 1 }}
-              transition={{ duration: 0.5 }}
-              className=" md:hidden drop-shadow-md flex  bg-white rounded-2xl px-6 gap-2 py-3"
-              key={index}
-            >
-              <div className="w-4/5 flex flex-col gap-4 justify-center">
-                <p className="font-bold text-sm sm:text-base ">
-                  {" "}
-                  {mensuality.name}
-                </p>
-                <span className="bg-brand-50 text-brand-700 font-semibold py-1 px-2 inline-flex w-fit gap-2 items-center rounded-xl">
-                  <Image
-                    width={450}
-                    height={450}
-                    className="w-7"
-                    src={mensuality.category.image}
-                    alt={"Icone catégorie "}
-                  />
-                  <p className="font-extrabold text-sm sm:text-base">
-                    {" "}
-                    {mensuality.category.name}
-                  </p>
-                </span>
-              </div>
-              <div className="w-1/5 flex flex-col items-center gap-4">
-                <p className="sm:text-xl text-lg text-center font-bold break-words w-full ">
-                  {" "}
-                  {mensuality.price} €
-                </p>
-                {isDashboard && editMensuality && handleDelete && (
-                  <div>
-                    <button
-                      className=" p-1"
-                      onClick={() => handleDelete(mensuality)}
-                    >
-                      <TrashIcon width="20" />
-                    </button>
-                    <button
-                      onClick={() => editMensuality(mensuality)}
-                      className=" p-1"
-                    >
-                      <EditIcon width="18" />
-                    </button>
+        <div className="md:hidden">
+          {hasData ? (
+            <ul className="divide-y divide-line">
+              {mensualitiesData.map((mensuality, index) => (
+                <motion.li
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: showGraphic ? 0 : 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex items-center gap-3 px-4 py-3"
+                  key={index}
+                >
+                  <CategoryIcon image={mensuality.category.image} />
+                  <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                    <p className="truncate font-medium text-ink">
+                      {mensuality.name}
+                    </p>
+                    <p className="truncate text-xs text-stattext">
+                      {mensuality.category.name}
+                    </p>
                   </div>
-                )}
-              </div>
-            </motion.article>
-          ))
-        ) : (
-          <div className="flex flex-col items-center">
-            <p className="text-center md:hidden text-gray-500">
-              Aucune mensualité.
-            </p>
-            <Image
-              width={200}
-              height={200}
-              src="https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp"
-              alt="empty file"
-              className="w-32 md:hidden"
+                  <p className="font-semibold text-ink">{mensuality.price} €</p>
+                  {showActions && (
+                    <RowActions
+                      name={mensuality.name}
+                      onEdit={() => editMensuality(mensuality)}
+                      onDelete={() => handleDelete(mensuality)}
+                      alwaysVisible
+                    />
+                  )}
+                </motion.li>
+              ))}
+            </ul>
+          ) : (
+            <EmptyState
+              onCreate={
+                isDashboard && setOpenCreateModal
+                  ? () => setOpenCreateModal(true)
+                  : undefined
+              }
             />
+          )}
+        </div>
+
+        {hasData && (
+          <div className="border-t border-line bg-slate-50/50 px-5 py-3 text-xs text-stattext">
+            {mensualitiesData.length}{" "}
+            {mensualitiesData.length > 1 ? "mensualités" : "mensualité"}
           </div>
         )}
       </div>
     </section>
+  );
+}
+
+function RowActions({
+  name,
+  onEdit,
+  onDelete,
+  alwaysVisible = false,
+}: {
+  name: string;
+  onEdit: () => void;
+  onDelete: () => void;
+  alwaysVisible?: boolean;
+}) {
+  return (
+    <div
+      className={`flex justify-end gap-0.5 transition-opacity ${
+        alwaysVisible
+          ? ""
+          : "opacity-60 group-hover:opacity-100 focus-within:opacity-100"
+      }`}
+    >
+      <button
+        onClick={onEdit}
+        aria-label={`Modifier ${name}`}
+        className="rounded-lg p-2 text-stattext transition-colors hover:bg-brand-50 hover:text-brand-700"
+      >
+        <PencilLine className="h-4 w-4" />
+      </button>
+      <button
+        onClick={onDelete}
+        aria-label={`Supprimer ${name}`}
+        className="rounded-lg p-2 text-stattext transition-colors hover:bg-red-50 hover:text-red-600"
+      >
+        <Trash2 className="h-4 w-4" />
+      </button>
+    </div>
+  );
+}
+
+function EmptyState({ onCreate }: { onCreate?: () => void }) {
+  return (
+    <div className="flex flex-col items-center gap-3 px-4 py-16 text-center">
+      <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-50 ring-1 ring-inset ring-brand-100">
+        <Image
+          width={200}
+          height={200}
+          src="https://res.cloudinary.com/dix2wzs7n/image/upload/v1742933761/d82emd9fze6brfxsoxt4.webp"
+          alt=""
+          className="w-9"
+        />
+      </span>
+      <div>
+        <p className="font-semibold text-ink">Aucune mensualité</p>
+        <p className="mt-1 text-sm text-stattext">
+          {onCreate
+            ? "Ajoutez votre première mensualité pour commencer le suivi."
+            : "Aucun résultat pour cette recherche."}
+        </p>
+      </div>
+      {onCreate && (
+        <Button onClick={onCreate} className="mt-2">
+          <Plus />
+          Nouvelle mensualité
+        </Button>
+      )}
+    </div>
   );
 }
 
@@ -227,45 +261,41 @@ function NavBar({
   isDashboard: boolean;
 }) {
   return (
-    <div className="flex gap-2 w-full ">
-      <div className="flex flex-1 bg-white border items-center rounded-full w-full p-1">
+    <div className="flex items-center gap-2 p-3 md:p-4">
+      <div className="relative min-w-0 flex-1">
+        <label htmlFor="search" className="sr-only">
+          Rechercher
+        </label>
+        <SearchIcon
+          className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stattext"
+          aria-hidden="true"
+        />
         <input
           id="search"
-          placeholder="Cherchez une mensualité par nom , par catégorie ou par prix ... "
+          placeholder="Rechercher par nom, catégorie ou prix"
           type="text"
-          className="rounded-full bg-transparent flex-1 outline-none px-3 w-full min-w-[120px]"
+          className="h-10 w-full truncate rounded-xl border-0 bg-slate-50 pl-9 pr-3 text-sm ring-1 ring-inset ring-ink/5 transition placeholder:text-muted-foreground/70 hover:ring-ink/10 focus-visible:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
         />
-        <label htmlFor="search">
-          <SearchIcon width="20" height="20" />
-        </label>
       </div>
       <Select onValueChange={setSelectedCategory}>
-        <SelectTrigger className="w-auto">
+        <SelectTrigger className="h-10 w-auto min-w-[8rem]">
           <SelectValue placeholder="Catégorie" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={"all"} className="cursor-pointer border-b">
+          <SelectItem value={"all"}>
             <p>Toutes</p>
           </SelectItem>
-          {categoriesData?.map((category, categoryIndex) => (
-            <SelectItem
-              key={category.id}
-              value={category.id}
-              className={`cursor-pointer ${
-                categoryIndex === categoriesData.length - 1
-                  ? "border-none"
-                  : "border-b"
-              }`}
-            >
-              <div className="flex flex-row items-center justify-start gap-1">
+          {categoriesData?.map((category) => (
+            <SelectItem key={category.id} value={category.id}>
+              <div className="flex flex-row items-center justify-start gap-2">
                 <Image
                   height={20}
                   width={20}
-                  className="w-5 h-5 object-contain"
+                  className="h-5 w-5 object-contain"
                   src={category.image}
-                  alt="icone categorie"
+                  alt=""
                 />
                 <p>{category.name}</p>
               </div>
@@ -274,14 +304,15 @@ function NavBar({
         </SelectContent>
       </Select>
       {isDashboard && setOpenCreateModal && (
-        <button
+        <Button
           onClick={() => setOpenCreateModal(true)}
           type="button"
-          className="flex gap-3 p-2 lg:w-auto lg:h-auto w-10 h-10 justify-center items-center rounded-full bg-brand-600 text-white transition hover:bg-brand-700 lg:rounded-md"
+          className="w-10 shrink-0 px-0 lg:w-auto lg:px-4"
         >
-          <AddIcon width="16" height="16" />
-          <p className="lg:block hidden"> Nouvelle mensualité</p>
-        </button>
+          <Plus />
+          <span className="hidden lg:block">Nouvelle mensualité</span>
+          <span className="sr-only lg:hidden">Nouvelle mensualité</span>
+        </Button>
       )}
     </div>
   );

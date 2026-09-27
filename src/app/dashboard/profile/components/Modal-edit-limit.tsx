@@ -90,7 +90,6 @@ export default function ModalEditLimit({
   return (
     <Dialog open={open} onOpenChange={closeModal}>
       <DialogContent
-        className='w-2/3'
         onOpenAutoFocus={(event) => event.preventDefault()}
         aria-describedby={undefined}
       >
@@ -99,7 +98,7 @@ export default function ModalEditLimit({
             Modification de la catégorie :{' '}
           </DialogTitle>
           <div className='flex justify-center items-center gap-3'>
-            <span className='bg-brand-50 text-brand-700 w-fit font-semibold py-1 px-2 flex items-center gap-2 rounded-xl'>
+            <span className='flex w-fit items-center gap-2 rounded-xl bg-brand-50 px-2.5 py-1.5 font-semibold text-brand-700 ring-1 ring-inset ring-brand-100'>
               <div className='w-7 h-7 overflow-hidden'>
                 <Image
                   width={28}
@@ -115,15 +114,15 @@ export default function ModalEditLimit({
             </span>{' '}
           </div>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+        <form onSubmit={handleSubmit(onSubmit)} className='space-y-5'>
           {errorLimit && (
-            <div className='font-bold text-white rounded-md  bg-red-500 p-2 flex items-center gap-2'>
-              <AlertIcon width='40' height='40' />
+            <div className='flex items-start gap-2 rounded-xl bg-red-50 p-3 text-sm font-medium text-red-700 ring-1 ring-inset ring-red-100'>
+              <AlertIcon width='20' height='20' className='mt-0.5 shrink-0' />
               <p>{errorLimit}</p>
             </div>
           )}
           <div>
-            <Label htmlFor='price'>Prix</Label>
+            <Label htmlFor='price' className='mb-1.5 block'>Prix</Label>
             <Input
               disabled={isPending}
               {...register('price')}
@@ -144,21 +143,20 @@ export default function ModalEditLimit({
               }}
             />
             {errors.price && (
-              <p className='text-red-500 text-sm'>{errors.price.message}</p>
+              <p className='mt-1.5 text-sm font-medium text-destructive'>{errors.price.message}</p>
             )}
           </div>
 
           <div className='flex justify-end gap-2'>
             {' '}
-            <Button disabled={isPending} type='button' onClick={closeModal}>
+            <Button variant='outline' disabled={isPending} type='button' onClick={closeModal}>
               Annuler
             </Button>
             <Button
               disabled={isPending}
-              className='bg-brand-600 text-white transition hover:bg-brand-700'
               type='submit'
             >
-              {isPending ? <Spinner /> : 'Modifier'}
+              {isPending ? <Spinner color='border-white' /> : 'Modifier'}
             </Button>
           </div>
         </form>

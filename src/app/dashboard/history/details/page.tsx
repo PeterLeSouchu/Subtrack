@@ -1,10 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Switch } from '@/src/components/ui/switch';
-import { Label } from '@/src/components/ui/label';
 import { useGetCategory } from '../../dashboard.service';
 import Spinner from '@/src/components/Spinner';
+import { ViewToggle } from '../../components/View-toggle';
 import { StatsHeader } from '../../components/Stats-header';
 import { ChartDesktop, ChartMobile } from '../../components/Charts';
 import { TableMensuality } from '../../components/Tables';
@@ -14,6 +13,9 @@ import {
   useGetHistoryStats,
 } from '../history.service';
 import { filtered } from '@/src/utils/filtered';
+import { PageHeader } from '../../components/Page-header';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 export default function HistoryDetail() {
   const searchParams = useSearchParams();
@@ -60,42 +62,40 @@ export default function HistoryDetail() {
     historyMensualities?.mensualities.length === 0
   ) {
     return (
-      <div className='flex justify-center items-center h-full'>
-        <p>
+      <div className='mx-auto flex h-full max-w-md flex-col items-center justify-center gap-4 p-6 text-center'>
+        <p className='text-stattext'>
           Il semblerait qu&apos;il n&apos;y ait pas d&apos;historique pour cette
           date là !
         </p>
+        <Link
+          href='/dashboard/history'
+          className='inline-flex h-9 items-center gap-1.5 rounded-lg bg-white px-3 text-sm font-medium text-ink shadow-soft ring-1 ring-ink/5 transition-colors hover:text-brand-700'
+        >
+          <ArrowLeft className='h-4 w-4' />
+          Retour à l&apos;historique
+        </Link>
       </div>
     );
   }
 
-  console.log('mensualité historique', historyMensualities);
-
   return (
-    <div className='flex   h-full    '>
-      <div className='xl:w-2/3 w-full h-full flex overflow-y-scroll  flex-col'>
-        <div className=''>
-          {' '}
-          <StatsHeader statsData={historyStats?.stats} isHistory={true} />
-        </div>
-        <div className='hidden xl:flex  justify-center  mt-1 '>
-          <span className='px-4 py-1 bg-brand-600 text-white rounded-md text-lg font-extrabold'>
-            {month} {year}
-          </span>
-        </div>
-        <div className='flex items-center justify-center xl:hidden pt-4 gap-2 '>
-          <div className='flex items-center justify-center space-x-2'>
-            {' '}
-            <Switch
-              onCheckedChange={() => setShowGraphic((value) => !value)}
-              id='airplane-mode'
-            />
-            <Label htmlFor='airplane-mode'>Voir graphique</Label>
-          </div>
-          <span className='px-4 py-1 sm:text-base text-sm bg-brand-600 text-white rounded-md font-extrabold'>
-            {month} {year}
-          </span>
-        </div>{' '}
+    <div className='mx-auto flex w-full max-w-[90rem] flex-col gap-5 p-4 md:gap-6 md:p-6 xl:p-10'>
+      <div>
+        <Link
+          href='/dashboard/history'
+          className='mb-4 inline-flex h-8 items-center gap-1.5 rounded-lg bg-white px-3 text-sm font-medium text-stattext shadow-soft ring-1 ring-ink/5 transition-colors hover:text-brand-700'
+        >
+          <ArrowLeft className='h-4 w-4' />
+          Historique
+        </Link>
+        <PageHeader
+          title={`${month ?? ''} ${year ?? ''}`.trim()}
+          description='Détail des mensualités de cette période.'
+        />
+      </div>
+      <StatsHeader statsData={historyStats?.stats} isHistory={true} />
+      <ViewToggle showGraphic={showGraphic} setShowGraphic={setShowGraphic} />
+      <div className='flex flex-col gap-6 xl:flex-row xl:items-start'>
         <TableMensuality
           mensualitiesData={filteredMensualities}
           categoriesData={categories?.categories}
@@ -108,9 +108,8 @@ export default function HistoryDetail() {
           showGraphic={showGraphic}
           statsCategories={historyStats?.statsCategory}
         />
+        <ChartDesktop statsCategories={historyStats?.statsCategory} />
       </div>
-
-      <ChartDesktop statsCategories={historyStats?.statsCategory} />
     </div>
   );
 }
