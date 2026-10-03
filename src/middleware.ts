@@ -31,5 +31,7 @@ export default function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|video).*)'],
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|icon|apple-icon|video|.*\\.(?:png|svg|ico|jpg|jpeg|webp)$).*)',
+  ],
 };

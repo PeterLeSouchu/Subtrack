@@ -14,10 +14,6 @@ const body = Geist({
 export const metadata: Metadata = {
   title: 'Subtrack',
   description: 'Suivez toutes vos mensualités au même endroit.',
-  icons: {
-    icon: '/logo.png',
-    apple: '/logo.png',
-  },
 };
 
 export default function RootLayout({
